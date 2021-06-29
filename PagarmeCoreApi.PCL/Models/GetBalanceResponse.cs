@@ -22,8 +22,10 @@ namespace PagarmeCoreApi.PCL.Models
     {
         // These fields hold the values for the public properties.
         private string currency;
-        private int availableAmount;
+        private long availableAmount;
         private Models.GetRecipientResponse recipient;
+        private long transferredAmount;
+        private long waitingFundsAmount;
 
         /// <summary>
         /// Currency
@@ -46,7 +48,7 @@ namespace PagarmeCoreApi.PCL.Models
         /// Amount available for transferring
         /// </summary>
         [JsonProperty("available_amount")]
-        public int AvailableAmount 
+        public long AvailableAmount 
         { 
             get 
             {
@@ -73,6 +75,40 @@ namespace PagarmeCoreApi.PCL.Models
             {
                 this.recipient = value;
                 onPropertyChanged("Recipient");
+            }
+        }
+
+        /// <summary>
+        /// TODO: Write general description for this method
+        /// </summary>
+        [JsonProperty("transferred_amount")]
+        public long TransferredAmount 
+        { 
+            get 
+            {
+                return this.transferredAmount; 
+            } 
+            set 
+            {
+                this.transferredAmount = value;
+                onPropertyChanged("TransferredAmount");
+            }
+        }
+
+        /// <summary>
+        /// TODO: Write general description for this method
+        /// </summary>
+        [JsonProperty("waiting_funds_amount")]
+        public long WaitingFundsAmount 
+        { 
+            get 
+            {
+                return this.waitingFundsAmount; 
+            } 
+            set 
+            {
+                this.waitingFundsAmount = value;
+                onPropertyChanged("WaitingFundsAmount");
             }
         }
     }

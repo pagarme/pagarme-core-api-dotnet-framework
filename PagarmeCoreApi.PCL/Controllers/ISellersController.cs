@@ -23,16 +23,54 @@ namespace PagarmeCoreApi.PCL.Controllers
         /// <summary>
         /// TODO: type endpoint description here
         /// </summary>
-        /// <param name="id">Required parameter: Seller Id</param>
+        /// <param name="request">Required parameter: Seller Model</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
         /// <return>Returns the Models.GetSellerResponse response from the API call</return>
-        Models.GetSellerResponse GetSellerById(string id);
+        Models.GetSellerResponse CreateSeller(Models.CreateSellerRequest request, string idempotencyKey = null);
 
         /// <summary>
         /// TODO: type endpoint description here
         /// </summary>
-        /// <param name="id">Required parameter: Seller Id</param>
+        /// <param name="request">Required parameter: Seller Model</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
         /// <return>Returns the Models.GetSellerResponse response from the API call</return>
-        Task<Models.GetSellerResponse> GetSellerByIdAsync(string id);
+        Task<Models.GetSellerResponse> CreateSellerAsync(Models.CreateSellerRequest request, string idempotencyKey = null);
+
+        /// <summary>
+        /// TODO: type endpoint description here
+        /// </summary>
+        /// <param name="sellerId">Required parameter: Seller Id</param>
+        /// <param name="request">Required parameter: Request for updating the charge metadata</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSellerResponse response from the API call</return>
+        Models.GetSellerResponse UpdateSellerMetadata(string sellerId, Models.UpdateMetadataRequest request, string idempotencyKey = null);
+
+        /// <summary>
+        /// TODO: type endpoint description here
+        /// </summary>
+        /// <param name="sellerId">Required parameter: Seller Id</param>
+        /// <param name="request">Required parameter: Request for updating the charge metadata</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSellerResponse response from the API call</return>
+        Task<Models.GetSellerResponse> UpdateSellerMetadataAsync(string sellerId, Models.UpdateMetadataRequest request, string idempotencyKey = null);
+
+        /// <summary>
+        /// TODO: type endpoint description here
+        /// </summary>
+        /// <param name="id">Required parameter: Example: </param>
+        /// <param name="request">Required parameter: Update Seller model</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSellerResponse response from the API call</return>
+        Models.GetSellerResponse UpdateSeller(string id, Models.UpdateSellerRequest request, string idempotencyKey = null);
+
+        /// <summary>
+        /// TODO: type endpoint description here
+        /// </summary>
+        /// <param name="id">Required parameter: Example: </param>
+        /// <param name="request">Required parameter: Update Seller model</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSellerResponse response from the API call</return>
+        Task<Models.GetSellerResponse> UpdateSellerAsync(string id, Models.UpdateSellerRequest request, string idempotencyKey = null);
 
         /// <summary>
         /// TODO: type endpoint description here
@@ -53,18 +91,16 @@ namespace PagarmeCoreApi.PCL.Controllers
         /// <summary>
         /// TODO: type endpoint description here
         /// </summary>
-        /// <param name="request">Required parameter: Seller Model</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <param name="id">Required parameter: Seller Id</param>
         /// <return>Returns the Models.GetSellerResponse response from the API call</return>
-        Models.GetSellerResponse CreateSeller(Models.CreateSellerRequest request, string idempotencyKey = null);
+        Models.GetSellerResponse GetSellerById(string id);
 
         /// <summary>
         /// TODO: type endpoint description here
         /// </summary>
-        /// <param name="request">Required parameter: Seller Model</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <param name="id">Required parameter: Seller Id</param>
         /// <return>Returns the Models.GetSellerResponse response from the API call</return>
-        Task<Models.GetSellerResponse> CreateSellerAsync(Models.CreateSellerRequest request, string idempotencyKey = null);
+        Task<Models.GetSellerResponse> GetSellerByIdAsync(string id);
 
         /// <summary>
         /// TODO: type endpoint description here
@@ -113,42 +149,6 @@ namespace PagarmeCoreApi.PCL.Controllers
                 string type = null,
                 DateTime? createdSince = null,
                 DateTime? createdUntil = null);
-
-        /// <summary>
-        /// TODO: type endpoint description here
-        /// </summary>
-        /// <param name="id">Required parameter: Example: </param>
-        /// <param name="request">Required parameter: Update Seller model</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSellerResponse response from the API call</return>
-        Models.GetSellerResponse UpdateSeller(string id, Models.UpdateSellerRequest request, string idempotencyKey = null);
-
-        /// <summary>
-        /// TODO: type endpoint description here
-        /// </summary>
-        /// <param name="id">Required parameter: Example: </param>
-        /// <param name="request">Required parameter: Update Seller model</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSellerResponse response from the API call</return>
-        Task<Models.GetSellerResponse> UpdateSellerAsync(string id, Models.UpdateSellerRequest request, string idempotencyKey = null);
-
-        /// <summary>
-        /// TODO: type endpoint description here
-        /// </summary>
-        /// <param name="sellerId">Required parameter: Seller Id</param>
-        /// <param name="request">Required parameter: Request for updating the charge metadata</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSellerResponse response from the API call</return>
-        Models.GetSellerResponse UpdateSellerMetadata(string sellerId, Models.UpdateMetadataRequest request, string idempotencyKey = null);
-
-        /// <summary>
-        /// TODO: type endpoint description here
-        /// </summary>
-        /// <param name="sellerId">Required parameter: Seller Id</param>
-        /// <param name="request">Required parameter: Request for updating the charge metadata</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSellerResponse response from the API call</return>
-        Task<Models.GetSellerResponse> UpdateSellerMetadataAsync(string sellerId, Models.UpdateMetadataRequest request, string idempotencyKey = null);
 
     }
 } 
