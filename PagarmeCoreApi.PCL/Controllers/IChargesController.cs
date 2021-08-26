@@ -21,22 +21,22 @@ namespace PagarmeCoreApi.PCL.Controllers
     public partial interface IChargesController
     {
         /// <summary>
-        /// Updates the card from a charge
+        /// Updates the metadata from a charge
         /// </summary>
-        /// <param name="chargeId">Required parameter: Charge id</param>
-        /// <param name="request">Required parameter: Request for updating a charge's card</param>
+        /// <param name="chargeId">Required parameter: The charge id</param>
+        /// <param name="request">Required parameter: Request for updating the charge metadata</param>
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
         /// <return>Returns the Models.GetChargeResponse response from the API call</return>
-        Models.GetChargeResponse UpdateChargeCard(string chargeId, Models.UpdateChargeCardRequest request, string idempotencyKey = null);
+        Models.GetChargeResponse UpdateChargeMetadata(string chargeId, Models.UpdateMetadataRequest request, string idempotencyKey = null);
 
         /// <summary>
-        /// Updates the card from a charge
+        /// Updates the metadata from a charge
         /// </summary>
-        /// <param name="chargeId">Required parameter: Charge id</param>
-        /// <param name="request">Required parameter: Request for updating a charge's card</param>
+        /// <param name="chargeId">Required parameter: The charge id</param>
+        /// <param name="request">Required parameter: Request for updating the charge metadata</param>
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
         /// <return>Returns the Models.GetChargeResponse response from the API call</return>
-        Task<Models.GetChargeResponse> UpdateChargeCardAsync(string chargeId, Models.UpdateChargeCardRequest request, string idempotencyKey = null);
+        Task<Models.GetChargeResponse> UpdateChargeMetadataAsync(string chargeId, Models.UpdateMetadataRequest request, string idempotencyKey = null);
 
         /// <summary>
         /// Updates a charge's payment method
@@ -57,50 +57,40 @@ namespace PagarmeCoreApi.PCL.Controllers
         Task<Models.GetChargeResponse> UpdateChargePaymentMethodAsync(string chargeId, Models.UpdateChargePaymentMethodRequest request, string idempotencyKey = null);
 
         /// <summary>
-        /// Creates a new charge
+        /// TODO: type endpoint description here
         /// </summary>
-        /// <param name="request">Required parameter: Request for creating a charge</param>
+        /// <param name="chargeId">Required parameter: Charge Id</param>
+        /// <param name="page">Optional parameter: Page number</param>
+        /// <param name="size">Optional parameter: Page size</param>
+        /// <return>Returns the Models.ListChargeTransactionsResponse response from the API call</return>
+        Models.ListChargeTransactionsResponse GetChargeTransactions(string chargeId, int? page = null, int? size = null);
+
+        /// <summary>
+        /// TODO: type endpoint description here
+        /// </summary>
+        /// <param name="chargeId">Required parameter: Charge Id</param>
+        /// <param name="page">Optional parameter: Page number</param>
+        /// <param name="size">Optional parameter: Page size</param>
+        /// <return>Returns the Models.ListChargeTransactionsResponse response from the API call</return>
+        Task<Models.ListChargeTransactionsResponse> GetChargeTransactionsAsync(string chargeId, int? page = null, int? size = null);
+
+        /// <summary>
+        /// Updates the due date from a charge
+        /// </summary>
+        /// <param name="chargeId">Required parameter: Charge Id</param>
+        /// <param name="request">Required parameter: Request for updating the due date</param>
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
         /// <return>Returns the Models.GetChargeResponse response from the API call</return>
-        Models.GetChargeResponse CreateCharge(Models.CreateChargeRequest request, string idempotencyKey = null);
+        Models.GetChargeResponse UpdateChargeDueDate(string chargeId, Models.UpdateChargeDueDateRequest request, string idempotencyKey = null);
 
         /// <summary>
-        /// Creates a new charge
+        /// Updates the due date from a charge
         /// </summary>
-        /// <param name="request">Required parameter: Request for creating a charge</param>
+        /// <param name="chargeId">Required parameter: Charge Id</param>
+        /// <param name="request">Required parameter: Request for updating the due date</param>
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
         /// <return>Returns the Models.GetChargeResponse response from the API call</return>
-        Task<Models.GetChargeResponse> CreateChargeAsync(Models.CreateChargeRequest request, string idempotencyKey = null);
-
-        /// <summary>
-        /// Get a charge from its id
-        /// </summary>
-        /// <param name="chargeId">Required parameter: Charge id</param>
-        /// <return>Returns the Models.GetChargeResponse response from the API call</return>
-        Models.GetChargeResponse GetCharge(string chargeId);
-
-        /// <summary>
-        /// Get a charge from its id
-        /// </summary>
-        /// <param name="chargeId">Required parameter: Charge id</param>
-        /// <return>Returns the Models.GetChargeResponse response from the API call</return>
-        Task<Models.GetChargeResponse> GetChargeAsync(string chargeId);
-
-        /// <summary>
-        /// Retries a charge
-        /// </summary>
-        /// <param name="chargeId">Required parameter: Charge id</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetChargeResponse response from the API call</return>
-        Models.GetChargeResponse RetryCharge(string chargeId, string idempotencyKey = null);
-
-        /// <summary>
-        /// Retries a charge
-        /// </summary>
-        /// <param name="chargeId">Required parameter: Charge id</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetChargeResponse response from the API call</return>
-        Task<Models.GetChargeResponse> RetryChargeAsync(string chargeId, string idempotencyKey = null);
+        Task<Models.GetChargeResponse> UpdateChargeDueDateAsync(string chargeId, Models.UpdateChargeDueDateRequest request, string idempotencyKey = null);
 
         /// <summary>
         /// Lists all charges
@@ -151,22 +141,88 @@ namespace PagarmeCoreApi.PCL.Controllers
                 DateTime? createdUntil = null);
 
         /// <summary>
-        /// Updates the metadata from a charge
+        /// Captures a charge
         /// </summary>
-        /// <param name="chargeId">Required parameter: The charge id</param>
-        /// <param name="request">Required parameter: Request for updating the charge metadata</param>
+        /// <param name="chargeId">Required parameter: Charge id</param>
+        /// <param name="request">Optional parameter: Request for capturing a charge</param>
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
         /// <return>Returns the Models.GetChargeResponse response from the API call</return>
-        Models.GetChargeResponse UpdateChargeMetadata(string chargeId, Models.UpdateMetadataRequest request, string idempotencyKey = null);
+        Models.GetChargeResponse CaptureCharge(string chargeId, Models.CreateCaptureChargeRequest request = null, string idempotencyKey = null);
 
         /// <summary>
-        /// Updates the metadata from a charge
+        /// Captures a charge
         /// </summary>
-        /// <param name="chargeId">Required parameter: The charge id</param>
-        /// <param name="request">Required parameter: Request for updating the charge metadata</param>
+        /// <param name="chargeId">Required parameter: Charge id</param>
+        /// <param name="request">Optional parameter: Request for capturing a charge</param>
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
         /// <return>Returns the Models.GetChargeResponse response from the API call</return>
-        Task<Models.GetChargeResponse> UpdateChargeMetadataAsync(string chargeId, Models.UpdateMetadataRequest request, string idempotencyKey = null);
+        Task<Models.GetChargeResponse> CaptureChargeAsync(string chargeId, Models.CreateCaptureChargeRequest request = null, string idempotencyKey = null);
+
+        /// <summary>
+        /// Updates the card from a charge
+        /// </summary>
+        /// <param name="chargeId">Required parameter: Charge id</param>
+        /// <param name="request">Required parameter: Request for updating a charge's card</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetChargeResponse response from the API call</return>
+        Models.GetChargeResponse UpdateChargeCard(string chargeId, Models.UpdateChargeCardRequest request, string idempotencyKey = null);
+
+        /// <summary>
+        /// Updates the card from a charge
+        /// </summary>
+        /// <param name="chargeId">Required parameter: Charge id</param>
+        /// <param name="request">Required parameter: Request for updating a charge's card</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetChargeResponse response from the API call</return>
+        Task<Models.GetChargeResponse> UpdateChargeCardAsync(string chargeId, Models.UpdateChargeCardRequest request, string idempotencyKey = null);
+
+        /// <summary>
+        /// Get a charge from its id
+        /// </summary>
+        /// <param name="chargeId">Required parameter: Charge id</param>
+        /// <return>Returns the Models.GetChargeResponse response from the API call</return>
+        Models.GetChargeResponse GetCharge(string chargeId);
+
+        /// <summary>
+        /// Get a charge from its id
+        /// </summary>
+        /// <param name="chargeId">Required parameter: Charge id</param>
+        /// <return>Returns the Models.GetChargeResponse response from the API call</return>
+        Task<Models.GetChargeResponse> GetChargeAsync(string chargeId);
+
+        /// <summary>
+        /// TODO: type endpoint description here
+        /// </summary>
+        /// <param name="status">Required parameter: Example: </param>
+        /// <param name="createdSince">Optional parameter: Example: </param>
+        /// <param name="createdUntil">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetChargesSummaryResponse response from the API call</return>
+        Models.GetChargesSummaryResponse GetChargesSummary(string status, DateTime? createdSince = null, DateTime? createdUntil = null);
+
+        /// <summary>
+        /// TODO: type endpoint description here
+        /// </summary>
+        /// <param name="status">Required parameter: Example: </param>
+        /// <param name="createdSince">Optional parameter: Example: </param>
+        /// <param name="createdUntil">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetChargesSummaryResponse response from the API call</return>
+        Task<Models.GetChargesSummaryResponse> GetChargesSummaryAsync(string status, DateTime? createdSince = null, DateTime? createdUntil = null);
+
+        /// <summary>
+        /// Retries a charge
+        /// </summary>
+        /// <param name="chargeId">Required parameter: Charge id</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetChargeResponse response from the API call</return>
+        Models.GetChargeResponse RetryCharge(string chargeId, string idempotencyKey = null);
+
+        /// <summary>
+        /// Retries a charge
+        /// </summary>
+        /// <param name="chargeId">Required parameter: Charge id</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetChargeResponse response from the API call</return>
+        Task<Models.GetChargeResponse> RetryChargeAsync(string chargeId, string idempotencyKey = null);
 
         /// <summary>
         /// Cancel a charge
@@ -187,40 +243,20 @@ namespace PagarmeCoreApi.PCL.Controllers
         Task<Models.GetChargeResponse> CancelChargeAsync(string chargeId, Models.CreateCancelChargeRequest request = null, string idempotencyKey = null);
 
         /// <summary>
-        /// Captures a charge
+        /// Creates a new charge
         /// </summary>
-        /// <param name="chargeId">Required parameter: Charge id</param>
-        /// <param name="request">Optional parameter: Request for capturing a charge</param>
+        /// <param name="request">Required parameter: Request for creating a charge</param>
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
         /// <return>Returns the Models.GetChargeResponse response from the API call</return>
-        Models.GetChargeResponse CaptureCharge(string chargeId, Models.CreateCaptureChargeRequest request = null, string idempotencyKey = null);
+        Models.GetChargeResponse CreateCharge(Models.CreateChargeRequest request, string idempotencyKey = null);
 
         /// <summary>
-        /// Captures a charge
+        /// Creates a new charge
         /// </summary>
-        /// <param name="chargeId">Required parameter: Charge id</param>
-        /// <param name="request">Optional parameter: Request for capturing a charge</param>
+        /// <param name="request">Required parameter: Request for creating a charge</param>
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
         /// <return>Returns the Models.GetChargeResponse response from the API call</return>
-        Task<Models.GetChargeResponse> CaptureChargeAsync(string chargeId, Models.CreateCaptureChargeRequest request = null, string idempotencyKey = null);
-
-        /// <summary>
-        /// Updates the due date from a charge
-        /// </summary>
-        /// <param name="chargeId">Required parameter: Charge Id</param>
-        /// <param name="request">Required parameter: Request for updating the due date</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetChargeResponse response from the API call</return>
-        Models.GetChargeResponse UpdateChargeDueDate(string chargeId, Models.UpdateChargeDueDateRequest request, string idempotencyKey = null);
-
-        /// <summary>
-        /// Updates the due date from a charge
-        /// </summary>
-        /// <param name="chargeId">Required parameter: Charge Id</param>
-        /// <param name="request">Required parameter: Request for updating the due date</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetChargeResponse response from the API call</return>
-        Task<Models.GetChargeResponse> UpdateChargeDueDateAsync(string chargeId, Models.UpdateChargeDueDateRequest request, string idempotencyKey = null);
+        Task<Models.GetChargeResponse> CreateChargeAsync(Models.CreateChargeRequest request, string idempotencyKey = null);
 
         /// <summary>
         /// TODO: type endpoint description here
@@ -239,42 +275,6 @@ namespace PagarmeCoreApi.PCL.Controllers
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
         /// <return>Returns the Models.GetChargeResponse response from the API call</return>
         Task<Models.GetChargeResponse> ConfirmPaymentAsync(string chargeId, Models.CreateConfirmPaymentRequest request = null, string idempotencyKey = null);
-
-        /// <summary>
-        /// TODO: type endpoint description here
-        /// </summary>
-        /// <param name="chargeId">Required parameter: Charge Id</param>
-        /// <param name="page">Optional parameter: Page number</param>
-        /// <param name="size">Optional parameter: Page size</param>
-        /// <return>Returns the Models.ListChargeTransactionsResponse response from the API call</return>
-        Models.ListChargeTransactionsResponse GetChargeTransactions(string chargeId, int? page = null, int? size = null);
-
-        /// <summary>
-        /// TODO: type endpoint description here
-        /// </summary>
-        /// <param name="chargeId">Required parameter: Charge Id</param>
-        /// <param name="page">Optional parameter: Page number</param>
-        /// <param name="size">Optional parameter: Page size</param>
-        /// <return>Returns the Models.ListChargeTransactionsResponse response from the API call</return>
-        Task<Models.ListChargeTransactionsResponse> GetChargeTransactionsAsync(string chargeId, int? page = null, int? size = null);
-
-        /// <summary>
-        /// TODO: type endpoint description here
-        /// </summary>
-        /// <param name="status">Required parameter: Example: </param>
-        /// <param name="createdSince">Optional parameter: Example: </param>
-        /// <param name="createdUntil">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetChargesSummaryResponse response from the API call</return>
-        Models.GetChargesSummaryResponse GetChargesSummary(string status, DateTime? createdSince = null, DateTime? createdUntil = null);
-
-        /// <summary>
-        /// TODO: type endpoint description here
-        /// </summary>
-        /// <param name="status">Required parameter: Example: </param>
-        /// <param name="createdSince">Optional parameter: Example: </param>
-        /// <param name="createdUntil">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetChargesSummaryResponse response from the API call</return>
-        Task<Models.GetChargesSummaryResponse> GetChargesSummaryAsync(string status, DateTime? createdSince = null, DateTime? createdUntil = null);
 
     }
 } 

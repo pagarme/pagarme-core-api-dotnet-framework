@@ -15,14 +15,14 @@ namespace PagarmeCoreApi.PCL.Models
             typeName = "transaction_type";
             dic = new System.Collections.Generic.Dictionary<string, System.Type>()
             {
-                { "voucher",typeof(GetVoucherTransactionResponse)},
                 { "bank_transfer",typeof(GetBankTransferTransactionResponse)},
                 { "safetypay",typeof(GetSafetyPayTransactionResponse)},
+                { "voucher",typeof(GetVoucherTransactionResponse)},
                 { "boleto",typeof(GetBoletoTransactionResponse)},
                 { "debit_card",typeof(GetDebitCardTransactionResponse)},
+                { "private_label",typeof(GetPrivateLabelTransactionResponse)},
                 { "cash",typeof(GetCashTransactionResponse)},
                 { "credit_card",typeof(GetCreditCardTransactionResponse)},
-                { "private_label",typeof(GetPrivateLabelTransactionResponse)},
                 { "pix",typeof(GetPixTransactionResponse)},
             };
         }

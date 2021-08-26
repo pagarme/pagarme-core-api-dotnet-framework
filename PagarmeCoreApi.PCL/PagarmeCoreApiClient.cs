@@ -14,28 +14,6 @@ namespace PagarmeCoreApi.PCL
     {
 
         /// <summary>
-        /// Singleton access to Subscriptions controller
-        /// </summary>
-        public ISubscriptionsController Subscriptions
-        {
-            get
-            {
-                return SubscriptionsController.Instance;
-            }
-        }
-
-        /// <summary>
-        /// Singleton access to Orders controller
-        /// </summary>
-        public IOrdersController Orders
-        {
-            get
-            {
-                return OrdersController.Instance;
-            }
-        }
-
-        /// <summary>
         /// Singleton access to Plans controller
         /// </summary>
         public IPlansController Plans
@@ -43,6 +21,17 @@ namespace PagarmeCoreApi.PCL
             get
             {
                 return PlansController.Instance;
+            }
+        }
+
+        /// <summary>
+        /// Singleton access to Subscriptions controller
+        /// </summary>
+        public ISubscriptionsController Subscriptions
+        {
+            get
+            {
+                return SubscriptionsController.Instance;
             }
         }
 
@@ -58,6 +47,17 @@ namespace PagarmeCoreApi.PCL
         }
 
         /// <summary>
+        /// Singleton access to Orders controller
+        /// </summary>
+        public IOrdersController Orders
+        {
+            get
+            {
+                return OrdersController.Instance;
+            }
+        }
+
+        /// <summary>
         /// Singleton access to Customers controller
         /// </summary>
         public ICustomersController Customers
@@ -65,6 +65,17 @@ namespace PagarmeCoreApi.PCL
             get
             {
                 return CustomersController.Instance;
+            }
+        }
+
+        /// <summary>
+        /// Singleton access to Recipients controller
+        /// </summary>
+        public IRecipientsController Recipients
+        {
+            get
+            {
+                return RecipientsController.Instance;
             }
         }
 
@@ -80,13 +91,13 @@ namespace PagarmeCoreApi.PCL
         }
 
         /// <summary>
-        /// Singleton access to Recipients controller
+        /// Singleton access to Transfers controller
         /// </summary>
-        public IRecipientsController Recipients
+        public ITransfersController Transfers
         {
             get
             {
-                return RecipientsController.Instance;
+                return TransfersController.Instance;
             }
         }
 
@@ -120,17 +131,6 @@ namespace PagarmeCoreApi.PCL
             get
             {
                 return TransactionsController.Instance;
-            }
-        }
-
-        /// <summary>
-        /// Singleton access to Transfers controller
-        /// </summary>
-        public ITransfersController Transfers
-        {
-            get
-            {
-                return TransfersController.Instance;
             }
         }
         /// <summary>

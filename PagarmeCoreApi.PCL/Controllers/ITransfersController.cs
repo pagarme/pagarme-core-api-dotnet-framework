@@ -23,20 +23,6 @@ namespace PagarmeCoreApi.PCL.Controllers
         /// <summary>
         /// TODO: type endpoint description here
         /// </summary>
-        /// <param name="request">Required parameter: Example: </param>
-        /// <return>Returns the Models.GetTransfer response from the API call</return>
-        Models.GetTransfer CreateTransfer(Models.CreateTransfer request);
-
-        /// <summary>
-        /// TODO: type endpoint description here
-        /// </summary>
-        /// <param name="request">Required parameter: Example: </param>
-        /// <return>Returns the Models.GetTransfer response from the API call</return>
-        Task<Models.GetTransfer> CreateTransferAsync(Models.CreateTransfer request);
-
-        /// <summary>
-        /// TODO: type endpoint description here
-        /// </summary>
         /// <param name="transferId">Required parameter: Example: </param>
         /// <return>Returns the Models.GetTransfer response from the API call</return>
         Models.GetTransfer GetTransferById(string transferId);
@@ -47,6 +33,20 @@ namespace PagarmeCoreApi.PCL.Controllers
         /// <param name="transferId">Required parameter: Example: </param>
         /// <return>Returns the Models.GetTransfer response from the API call</return>
         Task<Models.GetTransfer> GetTransferByIdAsync(string transferId);
+
+        /// <summary>
+        /// TODO: type endpoint description here
+        /// </summary>
+        /// <param name="request">Required parameter: Example: </param>
+        /// <return>Returns the Models.GetTransfer response from the API call</return>
+        Models.GetTransfer CreateTransfer(Models.CreateTransfer request);
+
+        /// <summary>
+        /// TODO: type endpoint description here
+        /// </summary>
+        /// <param name="request">Required parameter: Example: </param>
+        /// <return>Returns the Models.GetTransfer response from the API call</return>
+        Task<Models.GetTransfer> CreateTransferAsync(Models.CreateTransfer request);
 
         /// <summary>
         /// Gets all transfers
