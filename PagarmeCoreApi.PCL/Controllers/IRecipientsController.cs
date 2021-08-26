@@ -21,22 +21,6 @@ namespace PagarmeCoreApi.PCL.Controllers
     public partial interface IRecipientsController
     {
         /// <summary>
-        /// Gets a transfer
-        /// </summary>
-        /// <param name="recipientId">Required parameter: Recipient id</param>
-        /// <param name="transferId">Required parameter: Transfer id</param>
-        /// <return>Returns the Models.GetTransferResponse response from the API call</return>
-        Models.GetTransferResponse GetTransfer(string recipientId, string transferId);
-
-        /// <summary>
-        /// Gets a transfer
-        /// </summary>
-        /// <param name="recipientId">Required parameter: Recipient id</param>
-        /// <param name="transferId">Required parameter: Transfer id</param>
-        /// <return>Returns the Models.GetTransferResponse response from the API call</return>
-        Task<Models.GetTransferResponse> GetTransferAsync(string recipientId, string transferId);
-
-        /// <summary>
         /// Updates a recipient
         /// </summary>
         /// <param name="recipientId">Required parameter: Recipient id</param>
@@ -195,6 +179,22 @@ namespace PagarmeCoreApi.PCL.Controllers
                 DateTime? createdUntil = null);
 
         /// <summary>
+        /// Gets a transfer
+        /// </summary>
+        /// <param name="recipientId">Required parameter: Recipient id</param>
+        /// <param name="transferId">Required parameter: Transfer id</param>
+        /// <return>Returns the Models.GetTransferResponse response from the API call</return>
+        Models.GetTransferResponse GetTransfer(string recipientId, string transferId);
+
+        /// <summary>
+        /// Gets a transfer
+        /// </summary>
+        /// <param name="recipientId">Required parameter: Recipient id</param>
+        /// <param name="transferId">Required parameter: Transfer id</param>
+        /// <return>Returns the Models.GetTransferResponse response from the API call</return>
+        Task<Models.GetTransferResponse> GetTransferAsync(string recipientId, string transferId);
+
+        /// <summary>
         /// TODO: type endpoint description here
         /// </summary>
         /// <param name="recipientId">Required parameter: Example: </param>
@@ -325,6 +325,20 @@ namespace PagarmeCoreApi.PCL.Controllers
         Task<Models.GetRecipientResponse> GetRecipientAsync(string recipientId);
 
         /// <summary>
+        /// Get balance information for a recipient
+        /// </summary>
+        /// <param name="recipientId">Required parameter: Recipient id</param>
+        /// <return>Returns the Models.GetBalanceResponse response from the API call</return>
+        Models.GetBalanceResponse GetBalance(string recipientId);
+
+        /// <summary>
+        /// Get balance information for a recipient
+        /// </summary>
+        /// <param name="recipientId">Required parameter: Recipient id</param>
+        /// <return>Returns the Models.GetBalanceResponse response from the API call</return>
+        Task<Models.GetBalanceResponse> GetBalanceAsync(string recipientId);
+
+        /// <summary>
         /// Gets a paginated list of transfers for the recipient
         /// </summary>
         /// <param name="recipientId">Required parameter: Example: </param>
@@ -359,20 +373,6 @@ namespace PagarmeCoreApi.PCL.Controllers
                 string status = null,
                 DateTime? createdSince = null,
                 DateTime? createdUntil = null);
-
-        /// <summary>
-        /// Get balance information for a recipient
-        /// </summary>
-        /// <param name="recipientId">Required parameter: Recipient id</param>
-        /// <return>Returns the Models.GetBalanceResponse response from the API call</return>
-        Models.GetBalanceResponse GetBalance(string recipientId);
-
-        /// <summary>
-        /// Get balance information for a recipient
-        /// </summary>
-        /// <param name="recipientId">Required parameter: Recipient id</param>
-        /// <return>Returns the Models.GetBalanceResponse response from the API call</return>
-        Task<Models.GetBalanceResponse> GetBalanceAsync(string recipientId);
 
         /// <summary>
         /// Creates a transfer for a recipient

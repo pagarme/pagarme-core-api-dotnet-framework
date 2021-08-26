@@ -92,7 +92,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 1.0.0-beta.0" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.0.0" },
                 { "accept", "application/json" },
                 { "content-type", "application/json; charset=utf-8" },
                 { "idempotency-key", idempotencyKey }
@@ -162,7 +162,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 1.0.0-beta.0" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.0.0" },
                 { "accept", "application/json" }
             };
 
