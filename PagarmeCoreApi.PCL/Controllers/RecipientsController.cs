@@ -50,6 +50,71 @@ namespace PagarmeCoreApi.PCL.Controllers
         #endregion Singleton Pattern
 
         /// <summary>
+        /// Gets a transfer
+        /// </summary>
+        /// <param name="recipientId">Required parameter: Recipient id</param>
+        /// <param name="transferId">Required parameter: Transfer id</param>
+        /// <return>Returns the Models.GetTransferResponse response from the API call</return>
+        public Models.GetTransferResponse GetTransfer(string recipientId, string transferId)
+        {
+            Task<Models.GetTransferResponse> t = GetTransferAsync(recipientId, transferId);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Gets a transfer
+        /// </summary>
+        /// <param name="recipientId">Required parameter: Recipient id</param>
+        /// <param name="transferId">Required parameter: Transfer id</param>
+        /// <return>Returns the Models.GetTransferResponse response from the API call</return>
+        public async Task<Models.GetTransferResponse> GetTransferAsync(string recipientId, string transferId)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/recipients/{recipient_id}/transfers/{transfer_id}");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "recipient_id", recipientId },
+                { "transfer_id", transferId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.0.1" },
+                { "accept", "application/json" }
+            };
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetTransferResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
         /// Updates a recipient
         /// </summary>
         /// <param name="recipientId">Required parameter: Recipient id</param>
@@ -92,7 +157,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.0.0" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.0.1" },
                 { "accept", "application/json" },
                 { "content-type", "application/json; charset=utf-8" },
                 { "idempotency-key", idempotencyKey }
@@ -163,7 +228,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.0.0" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.0.1" },
                 { "accept", "application/json" },
                 { "content-type", "application/json; charset=utf-8" },
                 { "idempotency-key", idempotencyKey }
@@ -241,7 +306,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.0.0" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.0.1" },
                 { "accept", "application/json" }
             };
 
@@ -306,7 +371,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.0.0" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.0.1" },
                 { "accept", "application/json" }
             };
 
@@ -371,7 +436,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.0.0" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.0.1" },
                 { "accept", "application/json" }
             };
 
@@ -437,7 +502,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.0.0" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.0.1" },
                 { "accept", "application/json" },
                 { "content-type", "application/json; charset=utf-8" },
                 { "idempotency-key", idempotencyKey }
@@ -508,7 +573,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.0.0" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.0.1" },
                 { "accept", "application/json" },
                 { "content-type", "application/json; charset=utf-8" },
                 { "idempotency-key", idempotencyKey }
@@ -607,7 +672,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.0.0" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.0.1" },
                 { "accept", "application/json" }
             };
 
@@ -623,71 +688,6 @@ namespace PagarmeCoreApi.PCL.Controllers
             try
             {
                 return APIHelper.JsonDeserialize<Models.ListTransferResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// Gets a transfer
-        /// </summary>
-        /// <param name="recipientId">Required parameter: Recipient id</param>
-        /// <param name="transferId">Required parameter: Transfer id</param>
-        /// <return>Returns the Models.GetTransferResponse response from the API call</return>
-        public Models.GetTransferResponse GetTransfer(string recipientId, string transferId)
-        {
-            Task<Models.GetTransferResponse> t = GetTransferAsync(recipientId, transferId);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Gets a transfer
-        /// </summary>
-        /// <param name="recipientId">Required parameter: Recipient id</param>
-        /// <param name="transferId">Required parameter: Transfer id</param>
-        /// <return>Returns the Models.GetTransferResponse response from the API call</return>
-        public async Task<Models.GetTransferResponse> GetTransferAsync(string recipientId, string transferId)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/recipients/{recipient_id}/transfers/{transfer_id}");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "recipient_id", recipientId },
-                { "transfer_id", transferId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.0.0" },
-                { "accept", "application/json" }
-            };
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetTransferResponse>(_response.Body);
             }
             catch (Exception _ex)
             {
@@ -736,7 +736,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.0.0" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.0.1" },
                 { "accept", "application/json" },
                 { "content-type", "application/json; charset=utf-8" }
             };
@@ -806,7 +806,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.0.0" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.0.1" },
                 { "accept", "application/json" },
                 { "content-type", "application/json; charset=utf-8" },
                 { "idempotency-key", idempotencyKey }
@@ -876,7 +876,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.0.0" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.0.1" },
                 { "accept", "application/json" }
             };
 
@@ -942,7 +942,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.0.0" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.0.1" },
                 { "accept", "application/json" },
                 { "content-type", "application/json; charset=utf-8" },
                 { "idempotency-key", idempotencyKey }
@@ -1056,7 +1056,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.0.0" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.0.1" },
                 { "accept", "application/json" }
             };
 
@@ -1118,7 +1118,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.0.0" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.0.1" },
                 { "accept", "application/json" }
             };
 
@@ -1134,68 +1134,6 @@ namespace PagarmeCoreApi.PCL.Controllers
             try
             {
                 return APIHelper.JsonDeserialize<Models.GetRecipientResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// Get balance information for a recipient
-        /// </summary>
-        /// <param name="recipientId">Required parameter: Recipient id</param>
-        /// <return>Returns the Models.GetBalanceResponse response from the API call</return>
-        public Models.GetBalanceResponse GetBalance(string recipientId)
-        {
-            Task<Models.GetBalanceResponse> t = GetBalanceAsync(recipientId);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Get balance information for a recipient
-        /// </summary>
-        /// <param name="recipientId">Required parameter: Recipient id</param>
-        /// <return>Returns the Models.GetBalanceResponse response from the API call</return>
-        public async Task<Models.GetBalanceResponse> GetBalanceAsync(string recipientId)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/recipients/{recipient_id}/balance");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "recipient_id", recipientId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.0.0" },
-                { "accept", "application/json" }
-            };
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetBalanceResponse>(_response.Body);
             }
             catch (Exception _ex)
             {
@@ -1274,7 +1212,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.0.0" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.0.1" },
                 { "accept", "application/json" }
             };
 
@@ -1290,6 +1228,68 @@ namespace PagarmeCoreApi.PCL.Controllers
             try
             {
                 return APIHelper.JsonDeserialize<Models.ListWithdrawals>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// Get balance information for a recipient
+        /// </summary>
+        /// <param name="recipientId">Required parameter: Recipient id</param>
+        /// <return>Returns the Models.GetBalanceResponse response from the API call</return>
+        public Models.GetBalanceResponse GetBalance(string recipientId)
+        {
+            Task<Models.GetBalanceResponse> t = GetBalanceAsync(recipientId);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Get balance information for a recipient
+        /// </summary>
+        /// <param name="recipientId">Required parameter: Recipient id</param>
+        /// <return>Returns the Models.GetBalanceResponse response from the API call</return>
+        public async Task<Models.GetBalanceResponse> GetBalanceAsync(string recipientId)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/recipients/{recipient_id}/balance");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "recipient_id", recipientId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.0.1" },
+                { "accept", "application/json" }
+            };
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetBalanceResponse>(_response.Body);
             }
             catch (Exception _ex)
             {
@@ -1340,7 +1340,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.0.0" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.0.1" },
                 { "accept", "application/json" },
                 { "content-type", "application/json; charset=utf-8" },
                 { "idempotency-key", idempotencyKey }
@@ -1403,7 +1403,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.0.0" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.0.1" },
                 { "accept", "application/json" },
                 { "content-type", "application/json; charset=utf-8" },
                 { "idempotency-key", idempotencyKey }
@@ -1470,7 +1470,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.0.0" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.0.1" },
                 { "accept", "application/json" }
             };
 
