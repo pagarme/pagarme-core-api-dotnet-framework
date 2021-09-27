@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PagarmeCoreApi.PCL", "PagarmeCoreApi.PCL/PagarmeCoreApi.PCL.csproj", "{e923679a-a8ac-44b0-ba48-0d77490d7c43}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PagarmeCoreApi.PCL", "PagarmeCoreApi.PCL/PagarmeCoreApi.PCL.csproj", "{15975bc1-830d-4fdc-9614-a9df7477f527}"
 EndProject
 Global
     GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -10,10 +10,10 @@ Global
         Release|Any CPU = Release|Any CPU
     EndGlobalSection
     GlobalSection(ProjectConfigurationPlatforms) = postSolution
-        {e923679a-a8ac-44b0-ba48-0d77490d7c43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-        {e923679a-a8ac-44b0-ba48-0d77490d7c43}.Debug|Any CPU.Build.0 = Debug|Any CPU
-        {e923679a-a8ac-44b0-ba48-0d77490d7c43}.Release|Any CPU.ActiveCfg = Release|Any CPU
-        {e923679a-a8ac-44b0-ba48-0d77490d7c43}.Release|Any CPU.Build.0 = Release|Any CPU
+        {15975bc1-830d-4fdc-9614-a9df7477f527}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {15975bc1-830d-4fdc-9614-a9df7477f527}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {15975bc1-830d-4fdc-9614-a9df7477f527}.Release|Any CPU.ActiveCfg = Release|Any CPU
+        {15975bc1-830d-4fdc-9614-a9df7477f527}.Release|Any CPU.Build.0 = Release|Any CPU
     EndGlobalSection
     GlobalSection(SolutionProperties) = preSolution
         HideSolutionNode = FALSE
