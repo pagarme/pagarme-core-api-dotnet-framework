@@ -47,6 +47,7 @@ namespace PagarmeCoreApi.PCL.Models
         private Models.GetCheckoutDebitCardPaymentResponse debitCard;
         private Models.GetCheckoutBankTransferPaymentResponse bankTransfer;
         private List<string> acceptedBrands;
+        private Models.GetCheckoutPixPaymentResponse pix;
 
         /// <summary>
         /// TODO: Write general description for this method
@@ -492,6 +493,23 @@ namespace PagarmeCoreApi.PCL.Models
             {
                 this.acceptedBrands = value;
                 onPropertyChanged("AcceptedBrands");
+            }
+        }
+
+        /// <summary>
+        /// Pix payment response
+        /// </summary>
+        [JsonProperty("pix")]
+        public Models.GetCheckoutPixPaymentResponse Pix 
+        { 
+            get 
+            {
+                return this.pix; 
+            } 
+            set 
+            {
+                this.pix = value;
+                onPropertyChanged("Pix");
             }
         }
     }
