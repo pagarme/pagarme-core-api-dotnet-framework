@@ -37,6 +37,7 @@ namespace PagarmeCoreApi.PCL.Models
         private string paidAmount;
         private string type;
         private DateTime? creditAt;
+        private string statementDescriptor;
 
         /// <summary>
         /// TODO: Write general description for this method
@@ -310,6 +311,23 @@ namespace PagarmeCoreApi.PCL.Models
             {
                 this.creditAt = value;
                 onPropertyChanged("CreditAt");
+            }
+        }
+
+        /// <summary>
+        /// Soft Descriptor
+        /// </summary>
+        [JsonProperty("statement_descriptor")]
+        public string StatementDescriptor 
+        { 
+            get 
+            {
+                return this.statementDescriptor; 
+            } 
+            set 
+            {
+                this.statementDescriptor = value;
+                onPropertyChanged("StatementDescriptor");
             }
         }
     }
