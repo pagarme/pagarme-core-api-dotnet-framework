@@ -36,6 +36,7 @@ namespace PagarmeCoreApi.PCL.Models
         private Models.CreateAddressRequest billingAddress;
         private Models.CreateCheckoutBankTransferRequest bankTransfer;
         private List<string> acceptedBrands;
+        private Models.CreateCheckoutPixPaymentRequest pix;
 
         /// <summary>
         /// Accepted Payment Methods
@@ -289,6 +290,23 @@ namespace PagarmeCoreApi.PCL.Models
             {
                 this.acceptedBrands = value;
                 onPropertyChanged("AcceptedBrands");
+            }
+        }
+
+        /// <summary>
+        /// Pix payment request
+        /// </summary>
+        [JsonProperty("pix")]
+        public Models.CreateCheckoutPixPaymentRequest Pix 
+        { 
+            get 
+            {
+                return this.pix; 
+            } 
+            set 
+            {
+                this.pix = value;
+                onPropertyChanged("Pix");
             }
         }
     }
