@@ -29,6 +29,7 @@ namespace PagarmeCoreApi.PCL.Models
         private string billingAddressId;
         private string nossoNumero;
         private string documentNumber;
+        private string statementDescriptor;
 
         /// <summary>
         /// Number of retries
@@ -164,6 +165,23 @@ namespace PagarmeCoreApi.PCL.Models
             {
                 this.documentNumber = value;
                 onPropertyChanged("DocumentNumber");
+            }
+        }
+
+        /// <summary>
+        /// Soft Descriptor
+        /// </summary>
+        [JsonProperty("statement_descriptor")]
+        public string StatementDescriptor 
+        { 
+            get 
+            {
+                return this.statementDescriptor; 
+            } 
+            set 
+            {
+                this.statementDescriptor = value;
+                onPropertyChanged("StatementDescriptor");
             }
         }
     }
