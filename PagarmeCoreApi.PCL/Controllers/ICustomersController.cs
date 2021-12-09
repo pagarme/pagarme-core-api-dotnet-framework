@@ -95,20 +95,22 @@ namespace PagarmeCoreApi.PCL.Controllers
         Task<Models.GetAccessTokenResponse> DeleteAccessTokenAsync(string customerId, string tokenId, string idempotencyKey = null);
 
         /// <summary>
-        /// Creates a new customer
+        /// Creates a access token for a customer
         /// </summary>
-        /// <param name="request">Required parameter: Request for creating a customer</param>
+        /// <param name="customerId">Required parameter: Customer Id</param>
+        /// <param name="request">Required parameter: Request for creating a access token</param>
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetCustomerResponse response from the API call</return>
-        Models.GetCustomerResponse CreateCustomer(Models.CreateCustomerRequest request, string idempotencyKey = null);
+        /// <return>Returns the Models.GetAccessTokenResponse response from the API call</return>
+        Models.GetAccessTokenResponse CreateAccessToken(string customerId, Models.CreateAccessTokenRequest request, string idempotencyKey = null);
 
         /// <summary>
-        /// Creates a new customer
+        /// Creates a access token for a customer
         /// </summary>
-        /// <param name="request">Required parameter: Request for creating a customer</param>
+        /// <param name="customerId">Required parameter: Customer Id</param>
+        /// <param name="request">Required parameter: Request for creating a access token</param>
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetCustomerResponse response from the API call</return>
-        Task<Models.GetCustomerResponse> CreateCustomerAsync(Models.CreateCustomerRequest request, string idempotencyKey = null);
+        /// <return>Returns the Models.GetAccessTokenResponse response from the API call</return>
+        Task<Models.GetAccessTokenResponse> CreateAccessTokenAsync(string customerId, Models.CreateAccessTokenRequest request, string idempotencyKey = null);
 
         /// <summary>
         /// Creates a new address for a customer
@@ -127,6 +129,22 @@ namespace PagarmeCoreApi.PCL.Controllers
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
         /// <return>Returns the Models.GetAddressResponse response from the API call</return>
         Task<Models.GetAddressResponse> CreateAddressAsync(string customerId, Models.CreateAddressRequest request, string idempotencyKey = null);
+
+        /// <summary>
+        /// Creates a new customer
+        /// </summary>
+        /// <param name="request">Required parameter: Request for creating a customer</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetCustomerResponse response from the API call</return>
+        Models.GetCustomerResponse CreateCustomer(Models.CreateCustomerRequest request, string idempotencyKey = null);
+
+        /// <summary>
+        /// Creates a new customer
+        /// </summary>
+        /// <param name="request">Required parameter: Request for creating a customer</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetCustomerResponse response from the API call</return>
+        Task<Models.GetCustomerResponse> CreateCustomerAsync(Models.CreateCustomerRequest request, string idempotencyKey = null);
 
         /// <summary>
         /// Delete a Customer's access tokens
@@ -247,24 +265,6 @@ namespace PagarmeCoreApi.PCL.Controllers
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
         /// <return>Returns the Models.GetCustomerResponse response from the API call</return>
         Task<Models.GetCustomerResponse> UpdateCustomerAsync(string customerId, Models.UpdateCustomerRequest request, string idempotencyKey = null);
-
-        /// <summary>
-        /// Creates a access token for a customer
-        /// </summary>
-        /// <param name="customerId">Required parameter: Customer Id</param>
-        /// <param name="request">Required parameter: Request for creating a access token</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetAccessTokenResponse response from the API call</return>
-        Models.GetAccessTokenResponse CreateAccessToken(string customerId, Models.CreateAccessTokenRequest request, string idempotencyKey = null);
-
-        /// <summary>
-        /// Creates a access token for a customer
-        /// </summary>
-        /// <param name="customerId">Required parameter: Customer Id</param>
-        /// <param name="request">Required parameter: Request for creating a access token</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetAccessTokenResponse response from the API call</return>
-        Task<Models.GetAccessTokenResponse> CreateAccessTokenAsync(string customerId, Models.CreateAccessTokenRequest request, string idempotencyKey = null);
 
         /// <summary>
         /// Get all access tokens from a customer
