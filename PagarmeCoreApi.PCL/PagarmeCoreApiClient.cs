@@ -36,17 +36,6 @@ namespace PagarmeCoreApi.PCL
         }
 
         /// <summary>
-        /// Singleton access to Orders controller
-        /// </summary>
-        public IOrdersController Orders
-        {
-            get
-            {
-                return OrdersController.Instance;
-            }
-        }
-
-        /// <summary>
         /// Singleton access to Invoices controller
         /// </summary>
         public IInvoicesController Invoices
@@ -58,6 +47,17 @@ namespace PagarmeCoreApi.PCL
         }
 
         /// <summary>
+        /// Singleton access to Orders controller
+        /// </summary>
+        public IOrdersController Orders
+        {
+            get
+            {
+                return OrdersController.Instance;
+            }
+        }
+
+        /// <summary>
         /// Singleton access to Customers controller
         /// </summary>
         public ICustomersController Customers
@@ -65,6 +65,17 @@ namespace PagarmeCoreApi.PCL
             get
             {
                 return CustomersController.Instance;
+            }
+        }
+
+        /// <summary>
+        /// Singleton access to Recipients controller
+        /// </summary>
+        public IRecipientsController Recipients
+        {
+            get
+            {
+                return RecipientsController.Instance;
             }
         }
 
@@ -87,17 +98,6 @@ namespace PagarmeCoreApi.PCL
             get
             {
                 return TransfersController.Instance;
-            }
-        }
-
-        /// <summary>
-        /// Singleton access to Recipients controller
-        /// </summary>
-        public IRecipientsController Recipients
-        {
-            get
-            {
-                return RecipientsController.Instance;
             }
         }
 
