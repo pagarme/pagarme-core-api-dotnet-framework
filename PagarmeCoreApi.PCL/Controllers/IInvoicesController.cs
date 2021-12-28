@@ -21,6 +21,24 @@ namespace PagarmeCoreApi.PCL.Controllers
     public partial interface IInvoicesController
     {
         /// <summary>
+        /// Updates the metadata from an invoice
+        /// </summary>
+        /// <param name="invoiceId">Required parameter: The invoice id</param>
+        /// <param name="request">Required parameter: Request for updating the invoice metadata</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetInvoiceResponse response from the API call</return>
+        Models.GetInvoiceResponse UpdateInvoiceMetadata(string invoiceId, Models.UpdateMetadataRequest request, string idempotencyKey = null);
+
+        /// <summary>
+        /// Updates the metadata from an invoice
+        /// </summary>
+        /// <param name="invoiceId">Required parameter: The invoice id</param>
+        /// <param name="request">Required parameter: Request for updating the invoice metadata</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetInvoiceResponse response from the API call</return>
+        Task<Models.GetInvoiceResponse> UpdateInvoiceMetadataAsync(string invoiceId, Models.UpdateMetadataRequest request, string idempotencyKey = null);
+
+        /// <summary>
         /// TODO: type endpoint description here
         /// </summary>
         /// <param name="subscriptionId">Required parameter: Subscription Id</param>
@@ -77,24 +95,6 @@ namespace PagarmeCoreApi.PCL.Controllers
                 string cycleId,
                 Models.CreateInvoiceRequest request = null,
                 string idempotencyKey = null);
-
-        /// <summary>
-        /// Updates the metadata from an invoice
-        /// </summary>
-        /// <param name="invoiceId">Required parameter: The invoice id</param>
-        /// <param name="request">Required parameter: Request for updating the invoice metadata</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetInvoiceResponse response from the API call</return>
-        Models.GetInvoiceResponse UpdateInvoiceMetadata(string invoiceId, Models.UpdateMetadataRequest request, string idempotencyKey = null);
-
-        /// <summary>
-        /// Updates the metadata from an invoice
-        /// </summary>
-        /// <param name="invoiceId">Required parameter: The invoice id</param>
-        /// <param name="request">Required parameter: Request for updating the invoice metadata</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetInvoiceResponse response from the API call</return>
-        Task<Models.GetInvoiceResponse> UpdateInvoiceMetadataAsync(string invoiceId, Models.UpdateMetadataRequest request, string idempotencyKey = null);
 
         /// <summary>
         /// Gets all invoices
