@@ -21,6 +21,22 @@ namespace PagarmeCoreApi.PCL.Controllers
     public partial interface ISubscriptionsController
     {
         /// <summary>
+        /// TODO: type endpoint description here
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Example: </param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetPeriodResponse response from the API call</return>
+        Models.GetPeriodResponse RenewSubscription(string subscriptionId, string idempotencyKey = null);
+
+        /// <summary>
+        /// TODO: type endpoint description here
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Example: </param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetPeriodResponse response from the API call</return>
+        Task<Models.GetPeriodResponse> RenewSubscriptionAsync(string subscriptionId, string idempotencyKey = null);
+
+        /// <summary>
         /// Updates the credit card from a subscription
         /// </summary>
         /// <param name="subscriptionId">Required parameter: Subscription id</param>
@@ -121,24 +137,6 @@ namespace PagarmeCoreApi.PCL.Controllers
         Task UpdateCurrentCycleStatusAsync(string subscriptionId, Models.UpdateCurrentCycleStatusRequest request, string idempotencyKey = null);
 
         /// <summary>
-        /// Updates the payment method from a subscription
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription id</param>
-        /// <param name="request">Required parameter: Request for updating the paymentmethod from a subscription</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        Models.GetSubscriptionResponse UpdateSubscriptionPaymentMethod(string subscriptionId, Models.UpdateSubscriptionPaymentMethodRequest request, string idempotencyKey = null);
-
-        /// <summary>
-        /// Updates the payment method from a subscription
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription id</param>
-        /// <param name="request">Required parameter: Request for updating the paymentmethod from a subscription</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        Task<Models.GetSubscriptionResponse> UpdateSubscriptionPaymentMethodAsync(string subscriptionId, Models.UpdateSubscriptionPaymentMethodRequest request, string idempotencyKey = null);
-
-        /// <summary>
         /// Deletes a discount
         /// </summary>
         /// <param name="subscriptionId">Required parameter: Subscription id</param>
@@ -203,6 +201,24 @@ namespace PagarmeCoreApi.PCL.Controllers
                 string description = null,
                 string createdSince = null,
                 string createdUntil = null);
+
+        /// <summary>
+        /// Updates the payment method from a subscription
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription id</param>
+        /// <param name="request">Required parameter: Request for updating the paymentmethod from a subscription</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        Models.GetSubscriptionResponse UpdateSubscriptionPaymentMethod(string subscriptionId, Models.UpdateSubscriptionPaymentMethodRequest request, string idempotencyKey = null);
+
+        /// <summary>
+        /// Updates the payment method from a subscription
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription id</param>
+        /// <param name="request">Required parameter: Request for updating the paymentmethod from a subscription</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        Task<Models.GetSubscriptionResponse> UpdateSubscriptionPaymentMethodAsync(string subscriptionId, Models.UpdateSubscriptionPaymentMethodRequest request, string idempotencyKey = null);
 
         /// <summary>
         /// Get Subscription Item
@@ -345,6 +361,22 @@ namespace PagarmeCoreApi.PCL.Controllers
                 string idempotencyKey = null);
 
         /// <summary>
+        /// TODO: type endpoint description here
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="discountId">Required parameter: Example: </param>
+        /// <return>Returns the Models.GetDiscountResponse response from the API call</return>
+        Models.GetDiscountResponse GetDiscountById(string subscriptionId, string discountId);
+
+        /// <summary>
+        /// TODO: type endpoint description here
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="discountId">Required parameter: Example: </param>
+        /// <return>Returns the Models.GetDiscountResponse response from the API call</return>
+        Task<Models.GetDiscountResponse> GetDiscountByIdAsync(string subscriptionId, string discountId);
+
+        /// <summary>
         /// Creates a new subscription
         /// </summary>
         /// <param name="body">Required parameter: Request for creating a subscription</param>
@@ -363,18 +395,18 @@ namespace PagarmeCoreApi.PCL.Controllers
         /// <summary>
         /// TODO: type endpoint description here
         /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="discountId">Required parameter: Example: </param>
-        /// <return>Returns the Models.GetDiscountResponse response from the API call</return>
-        Models.GetDiscountResponse GetDiscountById(string subscriptionId, string discountId);
+        /// <param name="subscriptionId">Required parameter: The subscription Id</param>
+        /// <param name="incrementId">Required parameter: The increment Id</param>
+        /// <return>Returns the Models.GetIncrementResponse response from the API call</return>
+        Models.GetIncrementResponse GetIncrementById(string subscriptionId, string incrementId);
 
         /// <summary>
         /// TODO: type endpoint description here
         /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="discountId">Required parameter: Example: </param>
-        /// <return>Returns the Models.GetDiscountResponse response from the API call</return>
-        Task<Models.GetDiscountResponse> GetDiscountByIdAsync(string subscriptionId, string discountId);
+        /// <param name="subscriptionId">Required parameter: The subscription Id</param>
+        /// <param name="incrementId">Required parameter: The increment Id</param>
+        /// <return>Returns the Models.GetIncrementResponse response from the API call</return>
+        Task<Models.GetIncrementResponse> GetIncrementByIdAsync(string subscriptionId, string incrementId);
 
         /// <summary>
         /// TODO: type endpoint description here
@@ -447,22 +479,6 @@ namespace PagarmeCoreApi.PCL.Controllers
         /// <param name="size">Required parameter: Page size</param>
         /// <return>Returns the Models.ListCyclesResponse response from the API call</return>
         Task<Models.ListCyclesResponse> GetSubscriptionCyclesAsync(string subscriptionId, string page, string size);
-
-        /// <summary>
-        /// TODO: type endpoint description here
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription Id</param>
-        /// <param name="incrementId">Required parameter: The increment Id</param>
-        /// <return>Returns the Models.GetIncrementResponse response from the API call</return>
-        Models.GetIncrementResponse GetIncrementById(string subscriptionId, string incrementId);
-
-        /// <summary>
-        /// TODO: type endpoint description here
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription Id</param>
-        /// <param name="incrementId">Required parameter: The increment Id</param>
-        /// <return>Returns the Models.GetIncrementResponse response from the API call</return>
-        Task<Models.GetIncrementResponse> GetIncrementByIdAsync(string subscriptionId, string incrementId);
 
         /// <summary>
         /// TODO: type endpoint description here
@@ -731,22 +747,6 @@ namespace PagarmeCoreApi.PCL.Controllers
         /// <summary>
         /// TODO: type endpoint description here
         /// </summary>
-        /// <param name="subscriptionId">Required parameter: Example: </param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetPeriodResponse response from the API call</return>
-        Models.GetPeriodResponse RenewSubscription(string subscriptionId, string idempotencyKey = null);
-
-        /// <summary>
-        /// TODO: type endpoint description here
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Example: </param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetPeriodResponse response from the API call</return>
-        Task<Models.GetPeriodResponse> RenewSubscriptionAsync(string subscriptionId, string idempotencyKey = null);
-
-        /// <summary>
-        /// TODO: type endpoint description here
-        /// </summary>
         /// <param name="subscriptionId">Required parameter: The subscription Id</param>
         /// <param name="periodId">Required parameter: The period Id</param>
         /// <return>Returns the Models.GetUsageReportResponse response from the API call</return>
@@ -759,6 +759,22 @@ namespace PagarmeCoreApi.PCL.Controllers
         /// <param name="periodId">Required parameter: The period Id</param>
         /// <return>Returns the Models.GetUsageReportResponse response from the API call</return>
         Task<Models.GetUsageReportResponse> GetUsageReportAsync(string subscriptionId, string periodId);
+
+        /// <summary>
+        /// TODO: type endpoint description here
+        /// </summary>
+        /// <param name="id">Required parameter: Subscription's id</param>
+        /// <param name="request">Required parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        Models.GetSubscriptionResponse UpdateSplitSubscription(string id, Models.UpdateSubscriptionSplitRequest request);
+
+        /// <summary>
+        /// TODO: type endpoint description here
+        /// </summary>
+        /// <param name="id">Required parameter: Subscription's id</param>
+        /// <param name="request">Required parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        Task<Models.GetSubscriptionResponse> UpdateSplitSubscriptionAsync(string id, Models.UpdateSubscriptionSplitRequest request);
 
     }
 } 
