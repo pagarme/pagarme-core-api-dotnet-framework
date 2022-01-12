@@ -25,7 +25,7 @@ namespace PagarmeCoreApi.PCL.Models
         private int amount;
         private string recipientId;
         private Models.CreateSplitOptionsRequest options;
-        private string splitRuleID;
+        private string splitRuleId;
 
         /// <summary>
         /// Split type
@@ -98,17 +98,17 @@ namespace PagarmeCoreApi.PCL.Models
         /// <summary>
         /// Rule id
         /// </summary>
-        [JsonProperty("Split_Rule_ID")]
-        public string SplitRuleID 
+        [JsonProperty("split_rule_id")]
+        public string SplitRuleId 
         { 
             get 
             {
-                return this.splitRuleID; 
+                return this.splitRuleId; 
             } 
             set 
             {
-                this.splitRuleID = value;
-                onPropertyChanged("SplitRuleID");
+                this.splitRuleId = value;
+                onPropertyChanged("SplitRuleId");
             }
         }
     }
