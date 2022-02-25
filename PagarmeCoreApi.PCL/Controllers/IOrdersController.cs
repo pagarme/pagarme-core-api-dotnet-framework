@@ -64,6 +64,22 @@ namespace PagarmeCoreApi.PCL.Controllers
         /// TODO: type endpoint description here
         /// </summary>
         /// <param name="orderId">Required parameter: Order Id</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetOrderResponse response from the API call</return>
+        Models.GetOrderResponse DeleteAllOrderItems(string orderId, string idempotencyKey = null);
+
+        /// <summary>
+        /// TODO: type endpoint description here
+        /// </summary>
+        /// <param name="orderId">Required parameter: Order Id</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetOrderResponse response from the API call</return>
+        Task<Models.GetOrderResponse> DeleteAllOrderItemsAsync(string orderId, string idempotencyKey = null);
+
+        /// <summary>
+        /// TODO: type endpoint description here
+        /// </summary>
+        /// <param name="orderId">Required parameter: Order Id</param>
         /// <param name="itemId">Required parameter: Item Id</param>
         /// <param name="request">Required parameter: Item Model</param>
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
@@ -87,22 +103,6 @@ namespace PagarmeCoreApi.PCL.Controllers
                 string itemId,
                 Models.UpdateOrderItemRequest request,
                 string idempotencyKey = null);
-
-        /// <summary>
-        /// TODO: type endpoint description here
-        /// </summary>
-        /// <param name="orderId">Required parameter: Order Id</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetOrderResponse response from the API call</return>
-        Models.GetOrderResponse DeleteAllOrderItems(string orderId, string idempotencyKey = null);
-
-        /// <summary>
-        /// TODO: type endpoint description here
-        /// </summary>
-        /// <param name="orderId">Required parameter: Order Id</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetOrderResponse response from the API call</return>
-        Task<Models.GetOrderResponse> DeleteAllOrderItemsAsync(string orderId, string idempotencyKey = null);
 
         /// <summary>
         /// TODO: type endpoint description here
