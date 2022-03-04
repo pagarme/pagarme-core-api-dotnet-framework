@@ -25,6 +25,8 @@ namespace PagarmeCoreApi.PCL.Models
         private string qrCodeUrl;
         private DateTime expiresAt;
         private List<Models.PixAdditionalInformation> additionalInformation;
+        private string endToEndId;
+        private Models.GetPixPayerResponse payer;
 
         /// <summary>
         /// TODO: Write general description for this method
@@ -92,6 +94,40 @@ namespace PagarmeCoreApi.PCL.Models
             {
                 this.additionalInformation = value;
                 onPropertyChanged("AdditionalInformation");
+            }
+        }
+
+        /// <summary>
+        /// TODO: Write general description for this method
+        /// </summary>
+        [JsonProperty("end_to_end_id")]
+        public string EndToEndId 
+        { 
+            get 
+            {
+                return this.endToEndId; 
+            } 
+            set 
+            {
+                this.endToEndId = value;
+                onPropertyChanged("EndToEndId");
+            }
+        }
+
+        /// <summary>
+        /// TODO: Write general description for this method
+        /// </summary>
+        [JsonProperty("payer")]
+        public Models.GetPixPayerResponse Payer 
+        { 
+            get 
+            {
+                return this.payer; 
+            } 
+            set 
+            {
+                this.payer = value;
+                onPropertyChanged("Payer");
             }
         }
     }

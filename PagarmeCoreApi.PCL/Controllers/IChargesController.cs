@@ -39,6 +39,24 @@ namespace PagarmeCoreApi.PCL.Controllers
         Task<Models.GetChargeResponse> UpdateChargeMetadataAsync(string chargeId, Models.UpdateMetadataRequest request, string idempotencyKey = null);
 
         /// <summary>
+        /// Captures a charge
+        /// </summary>
+        /// <param name="chargeId">Required parameter: Charge id</param>
+        /// <param name="request">Optional parameter: Request for capturing a charge</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetChargeResponse response from the API call</return>
+        Models.GetChargeResponse CaptureCharge(string chargeId, Models.CreateCaptureChargeRequest request = null, string idempotencyKey = null);
+
+        /// <summary>
+        /// Captures a charge
+        /// </summary>
+        /// <param name="chargeId">Required parameter: Charge id</param>
+        /// <param name="request">Optional parameter: Request for capturing a charge</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetChargeResponse response from the API call</return>
+        Task<Models.GetChargeResponse> CaptureChargeAsync(string chargeId, Models.CreateCaptureChargeRequest request = null, string idempotencyKey = null);
+
+        /// <summary>
         /// Updates a charge's payment method
         /// </summary>
         /// <param name="chargeId">Required parameter: Charge id</param>
@@ -139,24 +157,6 @@ namespace PagarmeCoreApi.PCL.Controllers
                 string orderId = null,
                 DateTime? createdSince = null,
                 DateTime? createdUntil = null);
-
-        /// <summary>
-        /// Captures a charge
-        /// </summary>
-        /// <param name="chargeId">Required parameter: Charge id</param>
-        /// <param name="request">Optional parameter: Request for capturing a charge</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetChargeResponse response from the API call</return>
-        Models.GetChargeResponse CaptureCharge(string chargeId, Models.CreateCaptureChargeRequest request = null, string idempotencyKey = null);
-
-        /// <summary>
-        /// Captures a charge
-        /// </summary>
-        /// <param name="chargeId">Required parameter: Charge id</param>
-        /// <param name="request">Optional parameter: Request for capturing a charge</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetChargeResponse response from the API call</return>
-        Task<Models.GetChargeResponse> CaptureChargeAsync(string chargeId, Models.CreateCaptureChargeRequest request = null, string idempotencyKey = null);
 
         /// <summary>
         /// Updates the card from a charge
