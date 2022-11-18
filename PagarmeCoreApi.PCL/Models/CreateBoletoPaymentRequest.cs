@@ -30,6 +30,9 @@ namespace PagarmeCoreApi.PCL.Models
         private string nossoNumero;
         private string documentNumber;
         private string statementDescriptor;
+        private Models.CreateInterestRequest interest;
+        private Models.CreateFineRequest fine;
+        private int? maxDaysToPayPastDue;
 
         /// <summary>
         /// Number of retries
@@ -182,6 +185,57 @@ namespace PagarmeCoreApi.PCL.Models
             {
                 this.statementDescriptor = value;
                 onPropertyChanged("StatementDescriptor");
+            }
+        }
+
+        /// <summary>
+        /// TODO: Write general description for this method
+        /// </summary>
+        [JsonProperty("interest")]
+        public Models.CreateInterestRequest Interest 
+        { 
+            get 
+            {
+                return this.interest; 
+            } 
+            set 
+            {
+                this.interest = value;
+                onPropertyChanged("Interest");
+            }
+        }
+
+        /// <summary>
+        /// TODO: Write general description for this method
+        /// </summary>
+        [JsonProperty("fine")]
+        public Models.CreateFineRequest Fine 
+        { 
+            get 
+            {
+                return this.fine; 
+            } 
+            set 
+            {
+                this.fine = value;
+                onPropertyChanged("Fine");
+            }
+        }
+
+        /// <summary>
+        /// TODO: Write general description for this method
+        /// </summary>
+        [JsonProperty("max_days_to_pay_past_due")]
+        public int? MaxDaysToPayPastDue 
+        { 
+            get 
+            {
+                return this.maxDaysToPayPastDue; 
+            } 
+            set 
+            {
+                this.maxDaysToPayPastDue = value;
+                onPropertyChanged("MaxDaysToPayPastDue");
             }
         }
     }
