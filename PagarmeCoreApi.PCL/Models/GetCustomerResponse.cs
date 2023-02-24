@@ -193,7 +193,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// TODO: Write general description for this method
+        /// Response object for getting an Address
         /// </summary>
         [JsonProperty("address")]
         public Models.GetAddressResponse Address 

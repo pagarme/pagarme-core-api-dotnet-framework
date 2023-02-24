@@ -48,7 +48,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Debit card data
+        /// Card data
         /// </summary>
         [JsonProperty("card")]
         public Models.CreateCardRequest Card 
@@ -133,7 +133,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// The Debit card payment token request
+        /// The card payment contactless request
         /// </summary>
         [JsonProperty("token")]
         public Models.CreateCardPaymentContactlessRequest Token 

@@ -42,7 +42,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// The 3D-S authentication object
+        /// Creates a 3D-S authentication payment
         /// </summary>
         [JsonProperty("threed_secure")]
         public Models.CreateThreeDSecureRequest ThreedSecure 

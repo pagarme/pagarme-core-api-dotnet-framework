@@ -57,7 +57,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Settings for credit card payment
+        /// The settings for creating a credit card payment
         /// </summary>
         [JsonProperty("credit_card")]
         public Models.CreateCreditCardPaymentRequest CreditCard 
@@ -74,7 +74,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Settings for debit card payment
+        /// The settings for creating a debit card payment
         /// </summary>
         [JsonProperty("debit_card")]
         public Models.CreateDebitCardPaymentRequest DebitCard 
@@ -91,7 +91,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Settings for boleto payment
+        /// Contains the settings for creating a boleto payment
         /// </summary>
         [JsonProperty("boleto")]
         public Models.CreateBoletoPaymentRequest Boleto 
@@ -125,7 +125,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Settings for voucher payment
+        /// The settings for creating a voucher payment
         /// </summary>
         [JsonProperty("voucher")]
         public Models.CreateVoucherPaymentRequest Voucher 
@@ -159,7 +159,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Settings for bank transfer payment
+        /// Request for creating a bank transfer payment
         /// </summary>
         [JsonProperty("bank_transfer")]
         public Models.CreateBankTransferPaymentRequest BankTransfer 
@@ -210,7 +210,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Settings for checkout payment
+        /// Checkout payment request
         /// </summary>
         [JsonProperty("checkout")]
         public Models.CreateCheckoutPaymentRequest Checkout 
@@ -244,7 +244,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Customer
+        /// Request for creating a new customer
         /// </summary>
         [JsonProperty("customer")]
         public Models.CreateCustomerRequest Customer 
@@ -278,7 +278,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Settings for cash payment
+        /// TODO: Write general description for this method
         /// </summary>
         [JsonProperty("cash")]
         public Models.CreateCashPaymentRequest Cash 
@@ -295,7 +295,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Settings for private label payment
+        /// The settings for creating a private label payment
         /// </summary>
         [JsonProperty("private_label")]
         public Models.CreatePrivateLabelPaymentRequest PrivateLabel 
@@ -312,7 +312,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Settings for pix payment
+        /// Contains information to create a pix payment
         /// </summary>
         [JsonProperty("pix")]
         public Models.CreatePixPaymentRequest Pix 

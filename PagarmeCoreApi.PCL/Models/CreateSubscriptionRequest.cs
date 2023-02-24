@@ -55,7 +55,7 @@ namespace PagarmeCoreApi.PCL.Models
         private Models.CreateSubscriptionSplitRequest split;
 
         /// <summary>
-        /// Customer
+        /// Request for creating a new customer
         /// </summary>
         [JsonProperty("customer")]
         public Models.CreateCustomerRequest Customer 
@@ -72,7 +72,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Card
+        /// Card data
         /// </summary>
         [JsonProperty("card")]
         public Models.CreateCardRequest Card 
@@ -225,7 +225,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Subscription pricing scheme
+        /// Request for creating a pricing scheme
         /// </summary>
         [JsonProperty("pricing_scheme")]
         public Models.CreatePricingSchemeRequest PricingScheme 
@@ -259,7 +259,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Shipping
+        /// Shipping data
         /// </summary>
         [JsonProperty("shipping")]
         public Models.CreateShippingRequest Shipping 
@@ -310,7 +310,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Setup data
+        /// Request for creating a Setup for a subscription. The setup is an order that will be created at the subscription creation.
         /// </summary>
         [JsonProperty("setup")]
         public Models.CreateSetupRequest Setup 
@@ -583,7 +583,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Subscription's split
+        /// TODO: Write general description for this method
         /// </summary>
         [JsonProperty("split")]
         public Models.CreateSubscriptionSplitRequest Split 

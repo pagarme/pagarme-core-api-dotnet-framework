@@ -72,7 +72,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Credit card data
+        /// Card data
         /// </summary>
         [JsonProperty("card")]
         public Models.CreateCardRequest Card 
@@ -225,7 +225,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// The Credit card payment contactless request
+        /// The card payment contactless request
         /// </summary>
         [JsonProperty("contactless")]
         public Models.CreateCardPaymentContactlessRequest Contactless 

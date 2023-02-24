@@ -21,44 +21,44 @@ namespace PagarmeCoreApi.PCL.Controllers
     public partial interface ITransfersController
     {
         /// <summary>
-        /// TODO: type endpoint description here
+        /// GetTransferById
         /// </summary>
         /// <param name="transferId">Required parameter: Example: </param>
         /// <return>Returns the Models.GetTransfer response from the API call</return>
         Models.GetTransfer GetTransferById(string transferId);
 
         /// <summary>
-        /// TODO: type endpoint description here
+        /// GetTransferById
         /// </summary>
         /// <param name="transferId">Required parameter: Example: </param>
         /// <return>Returns the Models.GetTransfer response from the API call</return>
         Task<Models.GetTransfer> GetTransferByIdAsync(string transferId);
 
         /// <summary>
-        /// TODO: type endpoint description here
+        /// CreateTransfer
         /// </summary>
-        /// <param name="request">Required parameter: Example: </param>
+        /// <param name="body">Required parameter: Example: </param>
         /// <return>Returns the Models.GetTransfer response from the API call</return>
-        Models.GetTransfer CreateTransfer(Models.CreateTransfer request);
+        Models.GetTransfer PostCreateTransfer(Models.CreateTransfer body);
 
         /// <summary>
-        /// TODO: type endpoint description here
+        /// CreateTransfer
         /// </summary>
-        /// <param name="request">Required parameter: Example: </param>
+        /// <param name="body">Required parameter: Example: </param>
         /// <return>Returns the Models.GetTransfer response from the API call</return>
-        Task<Models.GetTransfer> CreateTransferAsync(Models.CreateTransfer request);
+        Task<Models.GetTransfer> PostCreateTransferAsync(Models.CreateTransfer body);
 
         /// <summary>
         /// Gets all transfers
         /// </summary>
         /// <return>Returns the Models.ListTransfers response from the API call</return>
-        Models.ListTransfers GetTransfers();
+        Models.ListTransfers GetTransfers1();
 
         /// <summary>
         /// Gets all transfers
         /// </summary>
         /// <return>Returns the Models.ListTransfers response from the API call</return>
-        Task<Models.ListTransfers> GetTransfersAsync();
+        Task<Models.ListTransfers> GetTransfers1Async();
 
     }
 } 

@@ -21,7 +21,7 @@ namespace PagarmeCoreApi.PCL.Models
     public class CreateTokenRequest : BaseModel 
     {
         // These fields hold the values for the public properties.
-        private string type = "card";
+        private string type;
         private Models.CreateCardTokenRequest card;
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Card data
+        /// Card token data
         /// </summary>
         [JsonProperty("card")]
         public Models.CreateCardTokenRequest Card 

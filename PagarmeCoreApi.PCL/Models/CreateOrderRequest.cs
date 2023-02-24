@@ -33,7 +33,7 @@ namespace PagarmeCoreApi.PCL.Models
         private string sessionId;
         private Models.CreateLocationRequest location;
         private Models.CreateDeviceRequest device;
-        private bool closed = true;
+        private bool closed;
         private string currency;
         private Models.CreateAntifraudRequest antifraud;
         private Models.CreateSubMerchantRequest submerchant;
@@ -56,7 +56,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Customer
+        /// Request for creating a new customer
         /// </summary>
         [JsonProperty("customer")]
         public Models.CreateCustomerRequest Customer 
@@ -209,7 +209,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Request's location
+        /// Request for creating a location
         /// </summary>
         [JsonProperty("location")]
         public Models.CreateLocationRequest Location 
@@ -226,7 +226,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Device's informations
+        /// Request for creating a device
         /// </summary>
         [JsonProperty("device")]
         public Models.CreateDeviceRequest Device 

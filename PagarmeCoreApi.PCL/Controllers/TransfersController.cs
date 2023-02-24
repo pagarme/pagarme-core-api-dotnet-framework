@@ -50,7 +50,7 @@ namespace PagarmeCoreApi.PCL.Controllers
         #endregion Singleton Pattern
 
         /// <summary>
-        /// TODO: type endpoint description here
+        /// GetTransferById
         /// </summary>
         /// <param name="transferId">Required parameter: Example: </param>
         /// <return>Returns the Models.GetTransfer response from the API call</return>
@@ -62,7 +62,7 @@ namespace PagarmeCoreApi.PCL.Controllers
         }
 
         /// <summary>
-        /// TODO: type endpoint description here
+        /// GetTransferById
         /// </summary>
         /// <param name="transferId">Required parameter: Example: </param>
         /// <return>Returns the Models.GetTransfer response from the API call</return>
@@ -98,6 +98,26 @@ namespace PagarmeCoreApi.PCL.Controllers
             //invoke request and get response
             HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
             HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
             //handle errors defined at the API level
             base.ValidateResponse(_response, _context);
 
@@ -112,23 +132,23 @@ namespace PagarmeCoreApi.PCL.Controllers
         }
 
         /// <summary>
-        /// TODO: type endpoint description here
+        /// CreateTransfer
         /// </summary>
-        /// <param name="request">Required parameter: Example: </param>
+        /// <param name="body">Required parameter: Example: </param>
         /// <return>Returns the Models.GetTransfer response from the API call</return>
-        public Models.GetTransfer CreateTransfer(Models.CreateTransfer request)
+        public Models.GetTransfer PostCreateTransfer(Models.CreateTransfer body)
         {
-            Task<Models.GetTransfer> t = CreateTransferAsync(request);
+            Task<Models.GetTransfer> t = PostCreateTransferAsync(body);
             APIHelper.RunTaskSynchronously(t);
             return t.Result;
         }
 
         /// <summary>
-        /// TODO: type endpoint description here
+        /// CreateTransfer
         /// </summary>
-        /// <param name="request">Required parameter: Example: </param>
+        /// <param name="body">Required parameter: Example: </param>
         /// <return>Returns the Models.GetTransfer response from the API call</return>
-        public async Task<Models.GetTransfer> CreateTransferAsync(Models.CreateTransfer request)
+        public async Task<Models.GetTransfer> PostCreateTransferAsync(Models.CreateTransfer body)
         {
             //the base uri for api requests
             string _baseUri = Configuration.BaseUri;
@@ -146,11 +166,11 @@ namespace PagarmeCoreApi.PCL.Controllers
             {
                 { "user-agent", "PagarmeCoreApi - DotNet 5.7.0" },
                 { "accept", "application/json" },
-                { "content-type", "application/json; charset=utf-8" }
+                { "Content-Type", "application/json" }
             };
 
             //append body params
-            var _body = APIHelper.JsonSerialize(request);
+            var _body = APIHelper.JsonSerialize(body);
 
             //prepare the API call request to fetch the response
             HttpRequest _request = ClientInstance.PostBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
@@ -158,6 +178,26 @@ namespace PagarmeCoreApi.PCL.Controllers
             //invoke request and get response
             HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
             HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
             //handle errors defined at the API level
             base.ValidateResponse(_response, _context);
 
@@ -175,9 +215,9 @@ namespace PagarmeCoreApi.PCL.Controllers
         /// Gets all transfers
         /// </summary>
         /// <return>Returns the Models.ListTransfers response from the API call</return>
-        public Models.ListTransfers GetTransfers()
+        public Models.ListTransfers GetTransfers1()
         {
-            Task<Models.ListTransfers> t = GetTransfersAsync();
+            Task<Models.ListTransfers> t = GetTransfers1Async();
             APIHelper.RunTaskSynchronously(t);
             return t.Result;
         }
@@ -186,7 +226,7 @@ namespace PagarmeCoreApi.PCL.Controllers
         /// Gets all transfers
         /// </summary>
         /// <return>Returns the Models.ListTransfers response from the API call</return>
-        public async Task<Models.ListTransfers> GetTransfersAsync()
+        public async Task<Models.ListTransfers> GetTransfers1Async()
         {
             //the base uri for api requests
             string _baseUri = Configuration.BaseUri;
@@ -212,6 +252,26 @@ namespace PagarmeCoreApi.PCL.Controllers
             //invoke request and get response
             HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
             HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
             //handle errors defined at the API level
             base.ValidateResponse(_response, _context);
 

@@ -263,7 +263,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Recipient
+        /// Recipient response
         /// </summary>
         [JsonProperty("recipient")]
         public Models.GetRecipientResponse Recipient 

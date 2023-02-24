@@ -30,7 +30,7 @@ namespace PagarmeCoreApi.PCL.Models
         private Dictionary<string, string> metadata;
         private Models.CreateTransferSettingsRequest transferSettings;
         private string code;
-        private string paymentMode = "bank_transfer";
+        private string paymentMode;
 
         /// <summary>
         /// Recipient name
@@ -118,7 +118,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Bank account
+        /// Request for creating a bank account
         /// </summary>
         [JsonProperty("default_bank_account")]
         public Models.CreateBankAccountRequest DefaultBankAccount 
@@ -152,7 +152,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Receiver Transfer Information
+        /// Informações de transferência do recebedor
         /// </summary>
         [JsonProperty("transfer_settings")]
         public Models.CreateTransferSettingsRequest TransferSettings 

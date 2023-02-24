@@ -154,7 +154,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// TODO: Write general description for this method
+        /// Response object for getting a period
         /// </summary>
         [JsonProperty("current_cycle")]
         public Models.GetPeriodResponse CurrentCycle 
@@ -275,7 +275,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// TODO: Write general description for this method
+        /// Response object for getting a customer
         /// </summary>
         [JsonProperty("customer")]
         public Models.GetCustomerResponse Customer 
@@ -292,7 +292,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// TODO: Write general description for this method
+        /// Response object for getting a credit card
         /// </summary>
         [JsonProperty("card")]
         public Models.GetCardResponse Card 
@@ -360,7 +360,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// TODO: Write general description for this method
+        /// Response object for getting the setup from a subscription
         /// </summary>
         [JsonProperty("setup")]
         public Models.GetSetupResponse Setup 
@@ -515,7 +515,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Subscription's split responde
+        /// TODO: Write general description for this method
         /// </summary>
         [JsonProperty("split")]
         public Models.GetSubscriptionSplitResponse Split 

@@ -21,14 +21,14 @@ namespace PagarmeCoreApi.PCL.Controllers
     public partial interface ITransactionsController
     {
         /// <summary>
-        /// TODO: type endpoint description here
+        /// GetTransaction
         /// </summary>
         /// <param name="transactionId">Required parameter: Example: </param>
         /// <return>Returns the Models.GetTransactionResponse response from the API call</return>
         Models.GetTransactionResponse GetTransaction(string transactionId);
 
         /// <summary>
-        /// TODO: type endpoint description here
+        /// GetTransaction
         /// </summary>
         /// <param name="transactionId">Required parameter: Example: </param>
         /// <return>Returns the Models.GetTransactionResponse response from the API call</return>

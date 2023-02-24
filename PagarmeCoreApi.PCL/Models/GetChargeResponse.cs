@@ -217,7 +217,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// TODO: Write general description for this method
+        /// Generic response object for getting a transaction.
         /// </summary>
         [JsonProperty("last_transaction")]
         public Models.GetTransactionResponse LastTransaction 
@@ -234,7 +234,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// TODO: Write general description for this method
+        /// Response object for getting an invoice
         /// </summary>
         [JsonProperty("invoice")]
         public Models.GetInvoiceResponse Invoice 
@@ -251,7 +251,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// TODO: Write general description for this method
+        /// Response object for getting an Order
         /// </summary>
         [JsonProperty("order")]
         public Models.GetOrderResponse Order 
@@ -268,7 +268,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// TODO: Write general description for this method
+        /// Response object for getting a customer
         /// </summary>
         [JsonProperty("customer")]
         public Models.GetCustomerResponse Customer 

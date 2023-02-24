@@ -44,7 +44,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// The ApplePay encrypted request
+        /// The ApplePay Token Payment Request
         /// </summary>
         [JsonProperty("apple_pay")]
         public Models.CreateApplePayRequest ApplePay 
@@ -61,7 +61,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// The GooglePay encrypted request
+        /// The GooglePay Token Payment Request
         /// </summary>
         [JsonProperty("google_pay")]
         public Models.CreateGooglePayRequest GooglePay 
@@ -78,7 +78,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// The Emv encrypted request
+        /// TODO: Write general description for this method
         /// </summary>
         [JsonProperty("emv")]
         public Models.CreateEmvDecryptRequest Emv 

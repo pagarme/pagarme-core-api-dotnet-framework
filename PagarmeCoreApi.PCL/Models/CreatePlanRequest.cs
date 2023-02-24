@@ -245,7 +245,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Plan's pricing scheme
+        /// Request for creating a pricing scheme
         /// </summary>
         [JsonProperty("pricing_scheme")]
         public Models.CreatePricingSchemeRequest PricingScheme 
