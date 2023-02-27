@@ -99,7 +99,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Customer
+        /// Response object for getting a customer
         /// </summary>
         [JsonProperty("customer")]
         public Models.GetCustomerResponse Customer 

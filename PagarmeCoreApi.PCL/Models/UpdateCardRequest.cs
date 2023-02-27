@@ -98,7 +98,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Billing address
+        /// Request for creating a new Address
         /// </summary>
         [JsonProperty("billing_address")]
         public Models.CreateAddressRequest BillingAddress 

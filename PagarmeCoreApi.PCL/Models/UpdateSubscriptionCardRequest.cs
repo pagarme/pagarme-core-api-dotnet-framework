@@ -25,7 +25,7 @@ namespace PagarmeCoreApi.PCL.Models
         private string cardId;
 
         /// <summary>
-        /// Credit card data
+        /// Card data
         /// </summary>
         [JsonProperty("card")]
         public Models.CreateCardRequest Card 

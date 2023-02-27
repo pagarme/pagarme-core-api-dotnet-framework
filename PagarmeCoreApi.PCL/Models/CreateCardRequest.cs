@@ -30,7 +30,7 @@ namespace PagarmeCoreApi.PCL.Models
         private string brand;
         private string billingAddressId;
         private Dictionary<string, string> metadata;
-        private string type = "credit";
+        private string type;
         private Models.CreateCardOptionsRequest options;
         private string holderDocument;
         private bool privateLabel;
@@ -124,7 +124,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Card's billing address
+        /// Request for creating a new Address
         /// </summary>
         [JsonProperty("billing_address")]
         public Models.CreateAddressRequest BillingAddress 

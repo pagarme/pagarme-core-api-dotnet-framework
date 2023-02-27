@@ -124,7 +124,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Credit Card payment request
+        /// Checkout card payment request
         /// </summary>
         [JsonProperty("credit_card")]
         public Models.CreateCheckoutCreditCardPaymentRequest CreditCard 
@@ -141,7 +141,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Debit Card payment request
+        /// Checkout credit card payment request
         /// </summary>
         [JsonProperty("debit_card")]
         public Models.CreateCheckoutDebitCardPaymentRequest DebitCard 
@@ -158,7 +158,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Boleto payment request
+        /// TODO: Write general description for this method
         /// </summary>
         [JsonProperty("boleto")]
         public Models.CreateCheckoutBoletoPaymentRequest Boleto 
@@ -243,7 +243,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Billing Address
+        /// Request for creating a new Address
         /// </summary>
         [JsonProperty("billing_address")]
         public Models.CreateAddressRequest BillingAddress 
@@ -260,7 +260,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Bank Transfer payment request
+        /// Checkout bank transfer payment request
         /// </summary>
         [JsonProperty("bank_transfer")]
         public Models.CreateCheckoutBankTransferRequest BankTransfer 
@@ -294,7 +294,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Pix payment request
+        /// Checkout pix payment request
         /// </summary>
         [JsonProperty("pix")]
         public Models.CreateCheckoutPixPaymentRequest Pix 

@@ -50,7 +50,7 @@ namespace PagarmeCoreApi.PCL.Controllers
         #endregion Singleton Pattern
 
         /// <summary>
-        /// TODO: type endpoint description here
+        /// GetTransaction
         /// </summary>
         /// <param name="transactionId">Required parameter: Example: </param>
         /// <return>Returns the Models.GetTransactionResponse response from the API call</return>
@@ -62,7 +62,7 @@ namespace PagarmeCoreApi.PCL.Controllers
         }
 
         /// <summary>
-        /// TODO: type endpoint description here
+        /// GetTransaction
         /// </summary>
         /// <param name="transactionId">Required parameter: Example: </param>
         /// <return>Returns the Models.GetTransactionResponse response from the API call</return>
@@ -98,6 +98,26 @@ namespace PagarmeCoreApi.PCL.Controllers
             //invoke request and get response
             HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
             HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
             //handle errors defined at the API level
             base.ValidateResponse(_response, _context);
 

@@ -78,7 +78,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// TODO: Write general description for this method
+        /// Payer's bank details.
         /// </summary>
         [JsonProperty("bank_account")]
         public Models.GetPixBankAccountResponse BankAccount 

@@ -25,7 +25,7 @@ namespace PagarmeCoreApi.PCL.Models
         private Models.GetAnticipationLimitResponse min;
 
         /// <summary>
-        /// Max limit
+        /// Anticipation limit
         /// </summary>
         [JsonProperty("max")]
         public Models.GetAnticipationLimitResponse Max 
@@ -42,7 +42,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Min limit
+        /// Anticipation limit
         /// </summary>
         [JsonProperty("min")]
         public Models.GetAnticipationLimitResponse Min 

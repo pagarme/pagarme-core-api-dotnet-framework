@@ -42,7 +42,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Paging object
+        /// Object used for returning lists of objects with pagination
         /// </summary>
         [JsonProperty("paging")]
         public Models.PagingResponse Paging 

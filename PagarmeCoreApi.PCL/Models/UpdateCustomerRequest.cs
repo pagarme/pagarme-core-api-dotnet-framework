@@ -101,7 +101,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Address
+        /// Request for creating a new Address
         /// </summary>
         [JsonProperty("address")]
         public Models.CreateAddressRequest Address 

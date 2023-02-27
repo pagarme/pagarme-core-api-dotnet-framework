@@ -64,7 +64,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Pricing scheme
+        /// Request for updating a pricing scheme
         /// </summary>
         [JsonProperty("pricing_scheme")]
         public Models.UpdatePricingSchemeRequest PricingScheme 

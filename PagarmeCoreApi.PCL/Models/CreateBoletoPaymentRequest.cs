@@ -104,7 +104,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Card's billing address
+        /// Request for creating a new Address
         /// </summary>
         [JsonProperty("billing_address")]
         public Models.CreateAddressRequest BillingAddress 
@@ -189,7 +189,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// TODO: Write general description for this method
+        /// Interest Request
         /// </summary>
         [JsonProperty("interest")]
         public Models.CreateInterestRequest Interest 
@@ -206,7 +206,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// TODO: Write general description for this method
+        /// Fine Request
         /// </summary>
         [JsonProperty("fine")]
         public Models.CreateFineRequest Fine 

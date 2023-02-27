@@ -35,6 +35,24 @@ namespace PagarmeCoreApi.PCL.Controllers
         Task<Models.GetPlanResponse> GetPlanAsync(string planId);
 
         /// <summary>
+        /// Updates a plan
+        /// </summary>
+        /// <param name="planId">Required parameter: Plan id</param>
+        /// <param name="body">Required parameter: Request for updating a plan</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetPlanResponse response from the API call</return>
+        Models.GetPlanResponse UpdatePlan(string planId, Models.UpdatePlanRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Updates a plan
+        /// </summary>
+        /// <param name="planId">Required parameter: Plan id</param>
+        /// <param name="body">Required parameter: Request for updating a plan</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetPlanResponse response from the API call</return>
+        Task<Models.GetPlanResponse> UpdatePlanAsync(string planId, Models.UpdatePlanRequest body, string idempotencyKey = null);
+
+        /// <summary>
         /// Deletes a plan
         /// </summary>
         /// <param name="planId">Required parameter: Plan id</param>
@@ -54,19 +72,19 @@ namespace PagarmeCoreApi.PCL.Controllers
         /// Updates the metadata from a plan
         /// </summary>
         /// <param name="planId">Required parameter: The plan id</param>
-        /// <param name="request">Required parameter: Request for updating the plan metadata</param>
+        /// <param name="body">Required parameter: Request for updating the plan metadata</param>
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
         /// <return>Returns the Models.GetPlanResponse response from the API call</return>
-        Models.GetPlanResponse UpdatePlanMetadata(string planId, Models.UpdateMetadataRequest request, string idempotencyKey = null);
+        Models.GetPlanResponse UpdatePlanMetadata(string planId, Models.UpdateMetadataRequest body, string idempotencyKey = null);
 
         /// <summary>
         /// Updates the metadata from a plan
         /// </summary>
         /// <param name="planId">Required parameter: The plan id</param>
-        /// <param name="request">Required parameter: Request for updating the plan metadata</param>
+        /// <param name="body">Required parameter: Request for updating the plan metadata</param>
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
         /// <return>Returns the Models.GetPlanResponse response from the API call</return>
-        Task<Models.GetPlanResponse> UpdatePlanMetadataAsync(string planId, Models.UpdateMetadataRequest request, string idempotencyKey = null);
+        Task<Models.GetPlanResponse> UpdatePlanMetadataAsync(string planId, Models.UpdateMetadataRequest body, string idempotencyKey = null);
 
         /// <summary>
         /// Updates a plan item
@@ -97,24 +115,6 @@ namespace PagarmeCoreApi.PCL.Controllers
                 string idempotencyKey = null);
 
         /// <summary>
-        /// Adds a new item to a plan
-        /// </summary>
-        /// <param name="planId">Required parameter: Plan id</param>
-        /// <param name="request">Required parameter: Request for creating a plan item</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetPlanItemResponse response from the API call</return>
-        Models.GetPlanItemResponse CreatePlanItem(string planId, Models.CreatePlanItemRequest request, string idempotencyKey = null);
-
-        /// <summary>
-        /// Adds a new item to a plan
-        /// </summary>
-        /// <param name="planId">Required parameter: Plan id</param>
-        /// <param name="request">Required parameter: Request for creating a plan item</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetPlanItemResponse response from the API call</return>
-        Task<Models.GetPlanItemResponse> CreatePlanItemAsync(string planId, Models.CreatePlanItemRequest request, string idempotencyKey = null);
-
-        /// <summary>
         /// Gets a plan item
         /// </summary>
         /// <param name="planId">Required parameter: Plan id</param>
@@ -129,22 +129,6 @@ namespace PagarmeCoreApi.PCL.Controllers
         /// <param name="planItemId">Required parameter: Plan item id</param>
         /// <return>Returns the Models.GetPlanItemResponse response from the API call</return>
         Task<Models.GetPlanItemResponse> GetPlanItemAsync(string planId, string planItemId);
-
-        /// <summary>
-        /// Creates a new plan
-        /// </summary>
-        /// <param name="body">Required parameter: Request for creating a plan</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetPlanResponse response from the API call</return>
-        Models.GetPlanResponse CreatePlan(Models.CreatePlanRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Creates a new plan
-        /// </summary>
-        /// <param name="body">Required parameter: Request for creating a plan</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetPlanResponse response from the API call</return>
-        Task<Models.GetPlanResponse> CreatePlanAsync(Models.CreatePlanRequest body, string idempotencyKey = null);
 
         /// <summary>
         /// Removes an item from a plan
@@ -163,6 +147,40 @@ namespace PagarmeCoreApi.PCL.Controllers
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
         /// <return>Returns the Models.GetPlanItemResponse response from the API call</return>
         Task<Models.GetPlanItemResponse> DeletePlanItemAsync(string planId, string planItemId, string idempotencyKey = null);
+
+        /// <summary>
+        /// Adds a new item to a plan
+        /// </summary>
+        /// <param name="planId">Required parameter: Plan id</param>
+        /// <param name="body">Required parameter: Request for creating a plan item</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetPlanItemResponse response from the API call</return>
+        Models.GetPlanItemResponse CreatePlanItem(string planId, Models.CreatePlanItemRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Adds a new item to a plan
+        /// </summary>
+        /// <param name="planId">Required parameter: Plan id</param>
+        /// <param name="body">Required parameter: Request for creating a plan item</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetPlanItemResponse response from the API call</return>
+        Task<Models.GetPlanItemResponse> CreatePlanItemAsync(string planId, Models.CreatePlanItemRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Creates a new plan
+        /// </summary>
+        /// <param name="body">Required parameter: Request for creating a plan</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetPlanResponse response from the API call</return>
+        Models.GetPlanResponse CreatePlan(Models.CreatePlanRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Creates a new plan
+        /// </summary>
+        /// <param name="body">Required parameter: Request for creating a plan</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetPlanResponse response from the API call</return>
+        Task<Models.GetPlanResponse> CreatePlanAsync(Models.CreatePlanRequest body, string idempotencyKey = null);
 
         /// <summary>
         /// Gets all plans
@@ -203,24 +221,6 @@ namespace PagarmeCoreApi.PCL.Controllers
                 string billingType = null,
                 DateTime? createdSince = null,
                 DateTime? createdUntil = null);
-
-        /// <summary>
-        /// Updates a plan
-        /// </summary>
-        /// <param name="planId">Required parameter: Plan id</param>
-        /// <param name="request">Required parameter: Request for updating a plan</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetPlanResponse response from the API call</return>
-        Models.GetPlanResponse UpdatePlan(string planId, Models.UpdatePlanRequest request, string idempotencyKey = null);
-
-        /// <summary>
-        /// Updates a plan
-        /// </summary>
-        /// <param name="planId">Required parameter: Plan id</param>
-        /// <param name="request">Required parameter: Request for updating a plan</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetPlanResponse response from the API call</return>
-        Task<Models.GetPlanResponse> UpdatePlanAsync(string planId, Models.UpdatePlanRequest request, string idempotencyKey = null);
 
     }
 } 

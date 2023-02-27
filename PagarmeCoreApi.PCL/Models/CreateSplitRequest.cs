@@ -79,7 +79,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// The split options request
+        /// The Split Options Request
         /// </summary>
         [JsonProperty("options")]
         public Models.CreateSplitOptionsRequest Options 

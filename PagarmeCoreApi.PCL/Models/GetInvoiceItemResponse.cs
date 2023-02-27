@@ -64,7 +64,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// TODO: Write general description for this method
+        /// Response object for getting a pricing scheme
         /// </summary>
         [JsonProperty("pricing_scheme")]
         public Models.GetPricingSchemeResponse PricingScheme 
@@ -81,7 +81,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// TODO: Write general description for this method
+        /// Response object for getting a price bracket
         /// </summary>
         [JsonProperty("price_bracket")]
         public Models.GetPriceBracketResponse PriceBracket 

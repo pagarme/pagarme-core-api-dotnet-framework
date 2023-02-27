@@ -12,19 +12,9 @@ namespace PagarmeCoreApi.PCL
     {
 
         /// <summary>
-        /// Singleton access to Plans controller
-        /// </summary>
-        IPlansController Plans { get;}
-
-        /// <summary>
         /// Singleton access to Subscriptions controller
         /// </summary>
         ISubscriptionsController Subscriptions { get;}
-
-        /// <summary>
-        /// Singleton access to Invoices controller
-        /// </summary>
-        IInvoicesController Invoices { get;}
 
         /// <summary>
         /// Singleton access to Orders controller
@@ -32,14 +22,19 @@ namespace PagarmeCoreApi.PCL
         IOrdersController Orders { get;}
 
         /// <summary>
+        /// Singleton access to Plans controller
+        /// </summary>
+        IPlansController Plans { get;}
+
+        /// <summary>
+        /// Singleton access to Invoices controller
+        /// </summary>
+        IInvoicesController Invoices { get;}
+
+        /// <summary>
         /// Singleton access to Customers controller
         /// </summary>
         ICustomersController Customers { get;}
-
-        /// <summary>
-        /// Singleton access to Recipients controller
-        /// </summary>
-        IRecipientsController Recipients { get;}
 
         /// <summary>
         /// Singleton access to Charges controller
@@ -47,9 +42,9 @@ namespace PagarmeCoreApi.PCL
         IChargesController Charges { get;}
 
         /// <summary>
-        /// Singleton access to Transfers controller
+        /// Singleton access to Recipients controller
         /// </summary>
-        ITransfersController Transfers { get;}
+        IRecipientsController Recipients { get;}
 
         /// <summary>
         /// Singleton access to Tokens controller
@@ -60,6 +55,11 @@ namespace PagarmeCoreApi.PCL
         /// Singleton access to Transactions controller
         /// </summary>
         ITransactionsController Transactions { get;}
+
+        /// <summary>
+        /// Singleton access to Transfers controller
+        /// </summary>
+        ITransfersController Transfers { get;}
 
     }
 }

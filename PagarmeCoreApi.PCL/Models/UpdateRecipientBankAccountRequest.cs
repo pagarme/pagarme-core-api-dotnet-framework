@@ -22,10 +22,10 @@ namespace PagarmeCoreApi.PCL.Models
     {
         // These fields hold the values for the public properties.
         private Models.CreateBankAccountRequest bankAccount;
-        private string paymentMode = "bank_transfer";
+        private string paymentMode;
 
         /// <summary>
-        /// Bank account
+        /// Request for creating a bank account
         /// </summary>
         [JsonProperty("bank_account")]
         public Models.CreateBankAccountRequest BankAccount 

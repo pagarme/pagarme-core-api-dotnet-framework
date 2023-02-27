@@ -37,7 +37,7 @@ namespace PagarmeCoreApi.PCL.Models
         private Models.GetAutomaticAnticipationResponse automaticAnticipationSettings;
         private Models.GetTransferSettingsResponse transferSettings;
         private string code;
-        private string paymentMode = "bank_transfer";
+        private string paymentMode;
 
         /// <summary>
         /// Id
@@ -213,7 +213,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Default bank account
+        /// TODO: Write general description for this method
         /// </summary>
         [JsonProperty("default_bank_account")]
         public Models.GetBankAccountResponse DefaultBankAccount 

@@ -250,7 +250,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// The Gateway Response
+        /// The Transaction Gateway Response
         /// </summary>
         [JsonProperty("gateway_response")]
         public Models.GetGatewayResponseResponse GatewayResponse 
@@ -318,7 +318,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// TODO: Write general description for this method
+        /// Interest response
         /// </summary>
         [JsonProperty("interest")]
         public Models.GetInterestResponse Interest 
@@ -335,7 +335,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// TODO: Write general description for this method
+        /// Fine Response
         /// </summary>
         [JsonProperty("fine")]
         public Models.GetFineResponse Fine 

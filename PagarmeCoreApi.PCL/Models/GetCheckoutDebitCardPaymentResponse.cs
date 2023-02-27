@@ -42,7 +42,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Payment Authentication response object data
+        /// Payment Authentication response
         /// </summary>
         [JsonProperty("authentication")]
         public Models.GetPaymentAuthenticationResponse Authentication 

@@ -274,7 +274,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Dados do comprador
+        /// Response object for getting a customer
         /// </summary>
         [JsonProperty("customer")]
         public Models.GetCustomerResponse Customer 
@@ -291,7 +291,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Dados do endereço de cobrança
+        /// Response object for getting an Address
         /// </summary>
         [JsonProperty("billingaddress")]
         public Models.GetAddressResponse Billingaddress 
@@ -308,7 +308,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Configurações de cartão de crédito
+        /// TODO: Write general description for this method
         /// </summary>
         [JsonProperty("credit_card")]
         public Models.GetCheckoutCreditCardPaymentResponse CreditCard 
@@ -325,7 +325,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Configurações de boleto
+        /// TODO: Write general description for this method
         /// </summary>
         [JsonProperty("boleto")]
         public Models.GetCheckoutBoletoPaymentResponse Boleto 
@@ -359,7 +359,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Configurações  de entrega
+        /// Response object for getting the shipping data
         /// </summary>
         [JsonProperty("shipping")]
         public Models.GetShippingResponse Shipping 
@@ -446,7 +446,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Configurações de cartão de débito
+        /// TODO: Write general description for this method
         /// </summary>
         [JsonProperty("debit_card")]
         public Models.GetCheckoutDebitCardPaymentResponse DebitCard 
@@ -463,7 +463,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Bank transfer payment response
+        /// Bank transfer checkout response
         /// </summary>
         [JsonProperty("bank_transfer")]
         public Models.GetCheckoutBankTransferPaymentResponse BankTransfer 
@@ -497,7 +497,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Pix payment response
+        /// Checkout pix payment response
         /// </summary>
         [JsonProperty("pix")]
         public Models.GetCheckoutPixPaymentResponse Pix 

@@ -97,7 +97,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// TODO: Write general description for this method
+        /// Card token data
         /// </summary>
         [JsonProperty("card")]
         public Models.GetCardTokenResponse Card 

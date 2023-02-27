@@ -156,7 +156,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Card data
+        /// Response object for getting a credit card
         /// </summary>
         [JsonProperty("card")]
         public Models.GetCardResponse Card 

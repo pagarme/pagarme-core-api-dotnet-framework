@@ -61,7 +61,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Creates payment authentication
+        /// The payment authentication request
         /// </summary>
         [JsonProperty("authentication")]
         public Models.CreatePaymentAuthenticationRequest Authentication 

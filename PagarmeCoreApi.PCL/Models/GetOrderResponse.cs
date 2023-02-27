@@ -109,7 +109,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// TODO: Write general description for this method
+        /// Response object for getting a customer
         /// </summary>
         [JsonProperty("customer")]
         public Models.GetCustomerResponse Customer 
@@ -213,7 +213,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// TODO: Write general description for this method
+        /// Response object for getting the shipping data
         /// </summary>
         [JsonProperty("shipping")]
         public Models.GetShippingResponse Shipping 
@@ -298,7 +298,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Location
+        /// Response object for geetting an order location request
         /// </summary>
         [JsonProperty("location")]
         public Models.GetLocationResponse Location 
@@ -315,7 +315,7 @@ namespace PagarmeCoreApi.PCL.Models
         }
 
         /// <summary>
-        /// Device's informations
+        /// Response object for geetting an order device
         /// </summary>
         [JsonProperty("device")]
         public Models.GetDeviceResponse Device 
