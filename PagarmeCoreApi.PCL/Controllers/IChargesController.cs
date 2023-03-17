@@ -195,16 +195,18 @@ namespace PagarmeCoreApi.PCL.Controllers
         /// </summary>
         /// <param name="chargeId">Required parameter: Charge id</param>
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <param name="body">Optional parameter: Request for cancelling a charge</param>
         /// <return>Returns the Models.GetChargeResponse response from the API call</return>
-        Models.GetChargeResponse CancelCharge(string chargeId, string idempotencyKey = null);
+        Models.GetChargeResponse CancelCharge(string chargeId, string idempotencyKey = null, Models.CreateCancelChargeRequest body = null);
 
         /// <summary>
         /// Cancel a charge
         /// </summary>
         /// <param name="chargeId">Required parameter: Charge id</param>
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <param name="body">Optional parameter: Request for cancelling a charge</param>
         /// <return>Returns the Models.GetChargeResponse response from the API call</return>
-        Task<Models.GetChargeResponse> CancelChargeAsync(string chargeId, string idempotencyKey = null);
+        Task<Models.GetChargeResponse> CancelChargeAsync(string chargeId, string idempotencyKey = null, Models.CreateCancelChargeRequest body = null);
 
         /// <summary>
         /// GetChargesSummary

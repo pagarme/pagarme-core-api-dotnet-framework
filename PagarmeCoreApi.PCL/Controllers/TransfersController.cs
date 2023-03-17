@@ -88,7 +88,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.0" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.1" },
                 { "accept", "application/json" }
             };
 
@@ -164,7 +164,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.0" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.1" },
                 { "accept", "application/json" },
                 { "Content-Type", "application/json" }
             };
@@ -242,7 +242,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.0" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.1" },
                 { "accept", "application/json" }
             };
 

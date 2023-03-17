@@ -315,8 +315,8 @@ Task<PCL.Models.ListUsagesResponse> GetUsages(
 ```csharp
 string subscriptionId = "subscription_id";
 string itemId = "item_id";
-int? page = 146;
-int? size = 146;
+int? page = 116;
+int? size = 116;
 string code = "code";
 string mgroup = "group";
 DateTime? usedSince = DateTime.Now();
@@ -498,8 +498,8 @@ Task<PCL.Models.ListSubscriptionItemsResponse> GetSubscriptionItems(
 
 ```csharp
 string subscriptionId = "subscription_id";
-int? page = 146;
-int? size = 146;
+int? page = 116;
+int? size = 116;
 string name = "name";
 string code = "code";
 string status = "status";
@@ -692,8 +692,8 @@ Task<PCL.Models.ListSubscriptionsResponse> GetSubscriptions(
 #### Example Usage
 
 ```csharp
-int? page = 146;
-int? size = 146;
+int? page = 116;
+int? size = 116;
 string code = "code";
 string billingType = "billing_type";
 string customerId = "customer_id";
@@ -766,7 +766,7 @@ PCL.Models.GetSubscriptionResponse result = await subscriptions.CreateSubscripti
 
 
 ```csharp
-Task<PCL.Models.GetSubscriptionResponse> CancelSubscription(string subscriptionId, string idempotencyKey = null)
+Task<PCL.Models.GetSubscriptionResponse> CancelSubscription(string subscriptionId, string idempotencyKey = null, PCL.Models.CreateCancelSubscriptionRequest body = null)
 ```
 
 #### Parameters
@@ -775,6 +775,7 @@ Task<PCL.Models.GetSubscriptionResponse> CancelSubscription(string subscriptionI
 |-----------|------|-------------|
 | subscriptionId |  ``` Required ```  | Subscription id |
 | idempotencyKey |  ``` Optional ```  | TODO: Add a parameter description |
+| body |  ``` Optional ```  | Request for cancelling a subscription |
 
 
 #### Example Usage
@@ -782,8 +783,9 @@ Task<PCL.Models.GetSubscriptionResponse> CancelSubscription(string subscriptionI
 ```csharp
 string subscriptionId = "subscription_id";
 string idempotencyKey = "idempotency-key";
+var body = new PCL.Models.CreateCancelSubscriptionRequest();
 
-PCL.Models.GetSubscriptionResponse result = await subscriptions.CancelSubscription(subscriptionId, idempotencyKey);
+PCL.Models.GetSubscriptionResponse result = await subscriptions.CancelSubscription(subscriptionId, idempotencyKey, body);
 
 ```
 
@@ -1180,8 +1182,8 @@ Task<PCL.Models.ListDiscountsResponse> GetDiscounts(string subscriptionId, int p
 
 ```csharp
 string subscriptionId = "subscription_id";
-int page = 146;
-int size = 146;
+int page = 116;
+int size = 116;
 
 PCL.Models.ListDiscountsResponse result = await subscriptions.GetDiscounts(subscriptionId, page, size);
 
@@ -1303,8 +1305,8 @@ Task<PCL.Models.ListIncrementsResponse> GetIncrements(string subscriptionId, int
 
 ```csharp
 string subscriptionId = "subscription_id";
-int? page = 146;
-int? size = 146;
+int? page = 116;
+int? size = 116;
 
 PCL.Models.ListIncrementsResponse result = await subscriptions.GetIncrements(subscriptionId, page, size);
 
@@ -1647,8 +1649,8 @@ Task<PCL.Models.ListOrderResponse> GetOrders(
 #### Example Usage
 
 ```csharp
-int? page = 146;
-int? size = 146;
+int? page = 116;
+int? size = 116;
 string code = "code";
 string status = "status";
 DateTime? createdSince = DateTime.Now();
@@ -2445,8 +2447,8 @@ Task<PCL.Models.ListPlansResponse> GetPlans(
 #### Example Usage
 
 ```csharp
-int? page = 146;
-int? size = 146;
+int? page = 116;
+int? size = 116;
 string name = "name";
 string status = "status";
 string billingType = "billing_type";
@@ -2722,8 +2724,8 @@ Task<PCL.Models.ListInvoicesResponse> GetInvoices(
 #### Example Usage
 
 ```csharp
-int? page = 146;
-int? size = 146;
+int? page = 207;
+int? size = 207;
 string code = "code";
 string customerId = "customer_id";
 string subscriptionId = "subscription_id";
@@ -3200,8 +3202,8 @@ Task<PCL.Models.ListAccessTokensResponse> GetAccessTokens(string customerId, int
 
 ```csharp
 string customerId = "customer_id";
-int? page = 238;
-int? size = 238;
+int? page = 207;
+int? size = 207;
 
 PCL.Models.ListAccessTokensResponse result = await customers.GetAccessTokens(customerId, page, size);
 
@@ -3282,8 +3284,8 @@ Task<PCL.Models.ListAddressesResponse> GetAddresses(string customerId, int? page
 
 ```csharp
 string customerId = "customer_id";
-int? page = 238;
-int? size = 238;
+int? page = 207;
+int? size = 207;
 
 PCL.Models.ListAddressesResponse result = await customers.GetAddresses(customerId, page, size);
 
@@ -3493,8 +3495,8 @@ Task<PCL.Models.ListCardsResponse> GetCards(string customerId, int? page = null,
 
 ```csharp
 string customerId = "customer_id";
-int? page = 238;
-int? size = 238;
+int? page = 207;
+int? size = 207;
 
 PCL.Models.ListCardsResponse result = await customers.GetCards(customerId, page, size);
 
@@ -3829,8 +3831,8 @@ Task<PCL.Models.ListChargeTransactionsResponse> GetChargeTransactions(string cha
 
 ```csharp
 string chargeId = "charge_id";
-int? page = 238;
-int? size = 238;
+int? page = 207;
+int? size = 207;
 
 PCL.Models.ListChargeTransactionsResponse result = await charges.GetChargeTransactions(chargeId, page, size);
 
@@ -3925,8 +3927,8 @@ Task<PCL.Models.ListChargesResponse> GetCharges(
 #### Example Usage
 
 ```csharp
-int? page = 238;
-int? size = 238;
+int? page = 207;
+int? size = 207;
 string code = "code";
 string status = "status";
 string paymentMethod = "payment_method";
@@ -4035,7 +4037,7 @@ PCL.Models.GetChargeResponse result = await charges.GetCharge(chargeId);
 
 
 ```csharp
-Task<PCL.Models.GetChargeResponse> CancelCharge(string chargeId, string idempotencyKey = null)
+Task<PCL.Models.GetChargeResponse> CancelCharge(string chargeId, string idempotencyKey = null, PCL.Models.CreateCancelChargeRequest body = null)
 ```
 
 #### Parameters
@@ -4044,6 +4046,7 @@ Task<PCL.Models.GetChargeResponse> CancelCharge(string chargeId, string idempote
 |-----------|------|-------------|
 | chargeId |  ``` Required ```  | Charge id |
 | idempotencyKey |  ``` Optional ```  | TODO: Add a parameter description |
+| body |  ``` Optional ```  | Request for cancelling a charge |
 
 
 #### Example Usage
@@ -4051,8 +4054,9 @@ Task<PCL.Models.GetChargeResponse> CancelCharge(string chargeId, string idempote
 ```csharp
 string chargeId = "charge_id";
 string idempotencyKey = "idempotency-key";
+var body = new PCL.Models.CreateCancelChargeRequest();
 
-PCL.Models.GetChargeResponse result = await charges.CancelCharge(chargeId, idempotencyKey);
+PCL.Models.GetChargeResponse result = await charges.CancelCharge(chargeId, idempotencyKey, body);
 
 ```
 
@@ -4435,8 +4439,8 @@ Task<PCL.Models.ListAnticipationResponse> GetAnticipations(
 
 ```csharp
 string recipientId = "recipient_id";
-int? page = 238;
-int? size = 238;
+int? page = 207;
+int? size = 207;
 string status = "status";
 string timeframe = "timeframe";
 DateTime? paymentDateSince = DateTime.Now();
@@ -4521,8 +4525,8 @@ Task<PCL.Models.ListRecipientResponse> GetRecipients(int? page = null, int? size
 #### Example Usage
 
 ```csharp
-int? page = 238;
-int? size = 238;
+int? page = 207;
+int? size = 207;
 
 PCL.Models.ListRecipientResponse result = await recipients.GetRecipients(page, size);
 
@@ -4731,8 +4735,8 @@ Task<PCL.Models.ListTransferResponse> GetTransfers(
 
 ```csharp
 string recipientId = "recipient_id";
-int? page = 238;
-int? size = 238;
+int? page = 207;
+int? size = 207;
 string status = "status";
 DateTime? createdSince = DateTime.Now();
 DateTime? createdUntil = DateTime.Now();
@@ -4864,8 +4868,8 @@ Task<PCL.Models.ListWithdrawals> GetWithdrawals(
 
 ```csharp
 string recipientId = "recipient_id";
-int? page = 238;
-int? size = 238;
+int? page = 207;
+int? size = 207;
 string status = "status";
 DateTime? createdSince = DateTime.Now();
 DateTime? createdUntil = DateTime.Now();

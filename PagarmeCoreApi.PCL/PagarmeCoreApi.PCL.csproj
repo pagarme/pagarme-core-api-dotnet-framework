@@ -10,7 +10,7 @@
     <AssemblyName>PagarmeCoreApi.PCL</AssemblyName>
     <OutputType>Library</OutputType>
     <OutputPath>bin/DEBUG/</OutputPath>
-    <ProjectGuid>{08883194-2e60-4d41-b074-f4de2375bfaf}</ProjectGuid>
+    <ProjectGuid>{70c90bb0-6882-4c82-bcfa-aa3adff1b80f}</ProjectGuid>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <NuGetPackageImportStamp>ee2bb91c</NuGetPackageImportStamp>
