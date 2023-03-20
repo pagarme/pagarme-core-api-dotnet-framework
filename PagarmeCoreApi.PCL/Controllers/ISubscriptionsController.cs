@@ -391,16 +391,18 @@ namespace PagarmeCoreApi.PCL.Controllers
         /// </summary>
         /// <param name="subscriptionId">Required parameter: Subscription id</param>
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <param name="body">Optional parameter: Request for cancelling a subscription</param>
         /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        Models.GetSubscriptionResponse CancelSubscription(string subscriptionId, string idempotencyKey = null);
+        Models.GetSubscriptionResponse CancelSubscription(string subscriptionId, string idempotencyKey = null, Models.CreateCancelSubscriptionRequest body = null);
 
         /// <summary>
         /// Cancels a subscription
         /// </summary>
         /// <param name="subscriptionId">Required parameter: Subscription id</param>
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <param name="body">Optional parameter: Request for cancelling a subscription</param>
         /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        Task<Models.GetSubscriptionResponse> CancelSubscriptionAsync(string subscriptionId, string idempotencyKey = null);
+        Task<Models.GetSubscriptionResponse> CancelSubscriptionAsync(string subscriptionId, string idempotencyKey = null, Models.CreateCancelSubscriptionRequest body = null);
 
         /// <summary>
         /// Gets a subscription
