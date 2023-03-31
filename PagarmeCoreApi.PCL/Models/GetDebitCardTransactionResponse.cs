@@ -35,6 +35,7 @@ namespace PagarmeCoreApi.PCL.Models
         private string eci;
         private string authenticationType;
         private string threedAuthenticationUrl;
+        private string fundingSource;
 
         /// <summary>
         /// Text that will appear on the debit card's statement
@@ -271,6 +272,23 @@ namespace PagarmeCoreApi.PCL.Models
             {
                 this.threedAuthenticationUrl = value;
                 onPropertyChanged("ThreedAuthenticationUrl");
+            }
+        }
+
+        /// <summary>
+        /// Identify when a card is prepaid, credit or debit.
+        /// </summary>
+        [JsonProperty("funding_source")]
+        public string FundingSource 
+        { 
+            get 
+            {
+                return this.fundingSource; 
+            } 
+            set 
+            {
+                this.fundingSource = value;
+                onPropertyChanged("FundingSource");
             }
         }
     }
