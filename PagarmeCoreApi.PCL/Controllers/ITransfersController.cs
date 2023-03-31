@@ -21,6 +21,18 @@ namespace PagarmeCoreApi.PCL.Controllers
     public partial interface ITransfersController
     {
         /// <summary>
+        /// Gets all transfers
+        /// </summary>
+        /// <return>Returns the Models.ListTransfers response from the API call</return>
+        Models.ListTransfers GetTransfers1();
+
+        /// <summary>
+        /// Gets all transfers
+        /// </summary>
+        /// <return>Returns the Models.ListTransfers response from the API call</return>
+        Task<Models.ListTransfers> GetTransfers1Async();
+
+        /// <summary>
         /// GetTransferById
         /// </summary>
         /// <param name="transferId">Required parameter: Example: </param>
@@ -47,18 +59,6 @@ namespace PagarmeCoreApi.PCL.Controllers
         /// <param name="body">Required parameter: Example: </param>
         /// <return>Returns the Models.GetTransfer response from the API call</return>
         Task<Models.GetTransfer> PostCreateTransferAsync(Models.CreateTransfer body);
-
-        /// <summary>
-        /// Gets all transfers
-        /// </summary>
-        /// <return>Returns the Models.ListTransfers response from the API call</return>
-        Models.ListTransfers GetTransfers1();
-
-        /// <summary>
-        /// Gets all transfers
-        /// </summary>
-        /// <return>Returns the Models.ListTransfers response from the API call</return>
-        Task<Models.ListTransfers> GetTransfers1Async();
 
     }
 } 
