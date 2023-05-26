@@ -39,6 +39,52 @@ namespace PagarmeCoreApi.PCL.Controllers
         Task<Models.GetSubscriptionResponse> UpdateSubscriptionCardAsync(string subscriptionId, Models.UpdateSubscriptionCardRequest body, string idempotencyKey = null);
 
         /// <summary>
+        /// Deletes a usage
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="itemId">Required parameter: The subscription item id</param>
+        /// <param name="usageId">Required parameter: The usage id</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetUsageResponse response from the API call</return>
+        Models.GetUsageResponse DeleteUsage(
+                string subscriptionId,
+                string itemId,
+                string usageId,
+                string idempotencyKey = null);
+
+        /// <summary>
+        /// Deletes a usage
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="itemId">Required parameter: The subscription item id</param>
+        /// <param name="usageId">Required parameter: The usage id</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetUsageResponse response from the API call</return>
+        Task<Models.GetUsageResponse> DeleteUsageAsync(
+                string subscriptionId,
+                string itemId,
+                string usageId,
+                string idempotencyKey = null);
+
+        /// <summary>
+        /// Creates a discount
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription id</param>
+        /// <param name="body">Required parameter: Request for creating a discount</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetDiscountResponse response from the API call</return>
+        Models.GetDiscountResponse CreateDiscount(string subscriptionId, Models.CreateDiscountRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Creates a discount
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription id</param>
+        /// <param name="body">Required parameter: Request for creating a discount</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetDiscountResponse response from the API call</return>
+        Task<Models.GetDiscountResponse> CreateDiscountAsync(string subscriptionId, Models.CreateDiscountRequest body, string idempotencyKey = null);
+
+        /// <summary>
         /// Create Usage
         /// </summary>
         /// <param name="subscriptionId">Required parameter: Subscription id</param>
@@ -57,6 +103,68 @@ namespace PagarmeCoreApi.PCL.Controllers
         Task<Models.GetUsageResponse> CreateAnUsageAsync(string subscriptionId, string itemId, string idempotencyKey = null);
 
         /// <summary>
+        /// Lists all usages from a subscription item
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="itemId">Required parameter: The subscription item id</param>
+        /// <param name="page">Optional parameter: Page number</param>
+        /// <param name="size">Optional parameter: Page size</param>
+        /// <param name="code">Optional parameter: Identification code in the client system</param>
+        /// <param name="mgroup">Optional parameter: Identification group in the client system</param>
+        /// <param name="usedSince">Optional parameter: Example: </param>
+        /// <param name="usedUntil">Optional parameter: Example: </param>
+        /// <return>Returns the Models.ListUsagesResponse response from the API call</return>
+        Models.ListUsagesResponse GetUsages(
+                string subscriptionId,
+                string itemId,
+                int? page = null,
+                int? size = null,
+                string code = null,
+                string mgroup = null,
+                DateTime? usedSince = null,
+                DateTime? usedUntil = null);
+
+        /// <summary>
+        /// Lists all usages from a subscription item
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="itemId">Required parameter: The subscription item id</param>
+        /// <param name="page">Optional parameter: Page number</param>
+        /// <param name="size">Optional parameter: Page size</param>
+        /// <param name="code">Optional parameter: Identification code in the client system</param>
+        /// <param name="mgroup">Optional parameter: Identification group in the client system</param>
+        /// <param name="usedSince">Optional parameter: Example: </param>
+        /// <param name="usedUntil">Optional parameter: Example: </param>
+        /// <return>Returns the Models.ListUsagesResponse response from the API call</return>
+        Task<Models.ListUsagesResponse> GetUsagesAsync(
+                string subscriptionId,
+                string itemId,
+                int? page = null,
+                int? size = null,
+                string code = null,
+                string mgroup = null,
+                DateTime? usedSince = null,
+                DateTime? usedUntil = null);
+
+        /// <summary>
+        /// UpdateCurrentCycleStatus
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
+        /// <param name="body">Required parameter: Request for updating the end date of the subscription current status</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the void response from the API call</return>
+        void UpdateCurrentCycleStatus(string subscriptionId, Models.UpdateCurrentCycleStatusRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// UpdateCurrentCycleStatus
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
+        /// <param name="body">Required parameter: Request for updating the end date of the subscription current status</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the void response from the API call</return>
+        Task UpdateCurrentCycleStatusAsync(string subscriptionId, Models.UpdateCurrentCycleStatusRequest body, string idempotencyKey = null);
+
+        /// <summary>
         /// Updates the payment method from a subscription
         /// </summary>
         /// <param name="subscriptionId">Required parameter: Subscription id</param>
@@ -73,128 +181,6 @@ namespace PagarmeCoreApi.PCL.Controllers
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
         /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
         Task<Models.GetSubscriptionResponse> UpdateSubscriptionPaymentMethodAsync(string subscriptionId, Models.UpdateSubscriptionPaymentMethodRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Creates a new Subscription item
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription id</param>
-        /// <param name="body">Required parameter: Request for creating a subscription item</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionItemResponse response from the API call</return>
-        Models.GetSubscriptionItemResponse CreateSubscriptionItem(string subscriptionId, Models.CreateSubscriptionItemRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Creates a new Subscription item
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription id</param>
-        /// <param name="body">Required parameter: Request for creating a subscription item</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionItemResponse response from the API call</return>
-        Task<Models.GetSubscriptionItemResponse> CreateSubscriptionItemAsync(string subscriptionId, Models.CreateSubscriptionItemRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Get Subscription Item
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
-        /// <param name="itemId">Required parameter: Item id</param>
-        /// <return>Returns the Models.GetSubscriptionItemResponse response from the API call</return>
-        Models.GetSubscriptionItemResponse GetSubscriptionItem(string subscriptionId, string itemId);
-
-        /// <summary>
-        /// Get Subscription Item
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
-        /// <param name="itemId">Required parameter: Item id</param>
-        /// <return>Returns the Models.GetSubscriptionItemResponse response from the API call</return>
-        Task<Models.GetSubscriptionItemResponse> GetSubscriptionItemAsync(string subscriptionId, string itemId);
-
-        /// <summary>
-        /// UpdateSubscriptionAffiliationId
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Example: </param>
-        /// <param name="body">Required parameter: Request for updating a subscription affiliation id</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        Models.GetSubscriptionResponse UpdateSubscriptionAffiliationId(string subscriptionId, Models.UpdateSubscriptionAffiliationIdRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// UpdateSubscriptionAffiliationId
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Example: </param>
-        /// <param name="body">Required parameter: Request for updating a subscription affiliation id</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        Task<Models.GetSubscriptionResponse> UpdateSubscriptionAffiliationIdAsync(string subscriptionId, Models.UpdateSubscriptionAffiliationIdRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// GetIncrements
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="page">Optional parameter: Page number</param>
-        /// <param name="size">Optional parameter: Page size</param>
-        /// <return>Returns the Models.ListIncrementsResponse response from the API call</return>
-        Models.ListIncrementsResponse GetIncrements(string subscriptionId, int? page = null, int? size = null);
-
-        /// <summary>
-        /// GetIncrements
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="page">Optional parameter: Page number</param>
-        /// <param name="size">Optional parameter: Page size</param>
-        /// <return>Returns the Models.ListIncrementsResponse response from the API call</return>
-        Task<Models.ListIncrementsResponse> GetIncrementsAsync(string subscriptionId, int? page = null, int? size = null);
-
-        /// <summary>
-        /// Updates the boleto due days from a subscription
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
-        /// <param name="body">Required parameter: Example: </param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        Models.GetSubscriptionResponse UpdateSubscriptionDueDays(string subscriptionId, Models.UpdateSubscriptionDueDaysRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Updates the boleto due days from a subscription
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
-        /// <param name="body">Required parameter: Example: </param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        Task<Models.GetSubscriptionResponse> UpdateSubscriptionDueDaysAsync(string subscriptionId, Models.UpdateSubscriptionDueDaysRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Updates the start at date from a subscription
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="body">Required parameter: Request for updating the subscription start date</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        Models.GetSubscriptionResponse UpdateSubscriptionStartAt(string subscriptionId, Models.UpdateSubscriptionStartAtRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Updates the start at date from a subscription
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="body">Required parameter: Request for updating the subscription start date</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        Task<Models.GetSubscriptionResponse> UpdateSubscriptionStartAtAsync(string subscriptionId, Models.UpdateSubscriptionStartAtRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// GetSubscriptionCycleById
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="cycleId">Required parameter: Example: </param>
-        /// <return>Returns the Models.GetPeriodResponse response from the API call</return>
-        Models.GetPeriodResponse GetSubscriptionCycleById(string subscriptionId, string cycleId);
-
-        /// <summary>
-        /// GetSubscriptionCycleById
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="cycleId">Required parameter: Example: </param>
-        /// <return>Returns the Models.GetPeriodResponse response from the API call</return>
-        Task<Models.GetPeriodResponse> GetSubscriptionCycleByIdAsync(string subscriptionId, string cycleId);
 
         /// <summary>
         /// Deletes a discount
@@ -263,6 +249,40 @@ namespace PagarmeCoreApi.PCL.Controllers
                 string createdUntil = null);
 
         /// <summary>
+        /// Creates a new Subscription item
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription id</param>
+        /// <param name="body">Required parameter: Request for creating a subscription item</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionItemResponse response from the API call</return>
+        Models.GetSubscriptionItemResponse CreateSubscriptionItem(string subscriptionId, Models.CreateSubscriptionItemRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Creates a new Subscription item
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription id</param>
+        /// <param name="body">Required parameter: Request for creating a subscription item</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionItemResponse response from the API call</return>
+        Task<Models.GetSubscriptionItemResponse> CreateSubscriptionItemAsync(string subscriptionId, Models.CreateSubscriptionItemRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Get Subscription Item
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
+        /// <param name="itemId">Required parameter: Item id</param>
+        /// <return>Returns the Models.GetSubscriptionItemResponse response from the API call</return>
+        Models.GetSubscriptionItemResponse GetSubscriptionItem(string subscriptionId, string itemId);
+
+        /// <summary>
+        /// Get Subscription Item
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
+        /// <param name="itemId">Required parameter: Item id</param>
+        /// <return>Returns the Models.GetSubscriptionItemResponse response from the API call</return>
+        Task<Models.GetSubscriptionItemResponse> GetSubscriptionItemAsync(string subscriptionId, string itemId);
+
+        /// <summary>
         /// Updates a subscription item
         /// </summary>
         /// <param name="subscriptionId">Required parameter: Subscription Id</param>
@@ -289,288 +309,6 @@ namespace PagarmeCoreApi.PCL.Controllers
                 string itemId,
                 Models.UpdateSubscriptionItemRequest body,
                 string idempotencyKey = null);
-
-        /// <summary>
-        /// Creates a new subscription
-        /// </summary>
-        /// <param name="body">Required parameter: Request for creating a subscription</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        Models.GetSubscriptionResponse CreateSubscription(Models.CreateSubscriptionRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Creates a new subscription
-        /// </summary>
-        /// <param name="body">Required parameter: Request for creating a subscription</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        Task<Models.GetSubscriptionResponse> CreateSubscriptionAsync(Models.CreateSubscriptionRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// GetDiscountById
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="discountId">Required parameter: Example: </param>
-        /// <return>Returns the Models.GetDiscountResponse response from the API call</return>
-        Models.GetDiscountResponse GetDiscountById(string subscriptionId, string discountId);
-
-        /// <summary>
-        /// GetDiscountById
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="discountId">Required parameter: Example: </param>
-        /// <return>Returns the Models.GetDiscountResponse response from the API call</return>
-        Task<Models.GetDiscountResponse> GetDiscountByIdAsync(string subscriptionId, string discountId);
-
-        /// <summary>
-        /// Updates the billing date from a subscription
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="body">Required parameter: Request for updating the subscription billing date</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        Models.GetSubscriptionResponse UpdateSubscriptionBillingDate(string subscriptionId, Models.UpdateSubscriptionBillingDateRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Updates the billing date from a subscription
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="body">Required parameter: Request for updating the subscription billing date</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        Task<Models.GetSubscriptionResponse> UpdateSubscriptionBillingDateAsync(string subscriptionId, Models.UpdateSubscriptionBillingDateRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// UpdateLatestPeriodEndAt
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Example: </param>
-        /// <param name="body">Required parameter: Request for updating the end date of the current signature cycle</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        Models.GetSubscriptionResponse UpdateLatestPeriodEndAt(string subscriptionId, Models.UpdateCurrentCycleEndDateRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// UpdateLatestPeriodEndAt
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Example: </param>
-        /// <param name="body">Required parameter: Request for updating the end date of the current signature cycle</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        Task<Models.GetSubscriptionResponse> UpdateLatestPeriodEndAtAsync(string subscriptionId, Models.UpdateCurrentCycleEndDateRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Creates a discount
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription id</param>
-        /// <param name="body">Required parameter: Request for creating a discount</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetDiscountResponse response from the API call</return>
-        Models.GetDiscountResponse CreateDiscount(string subscriptionId, Models.CreateDiscountRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Creates a discount
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription id</param>
-        /// <param name="body">Required parameter: Request for creating a discount</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetDiscountResponse response from the API call</return>
-        Task<Models.GetDiscountResponse> CreateDiscountAsync(string subscriptionId, Models.CreateDiscountRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Deletes a usage
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="itemId">Required parameter: The subscription item id</param>
-        /// <param name="usageId">Required parameter: The usage id</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetUsageResponse response from the API call</return>
-        Models.GetUsageResponse DeleteUsage(
-                string subscriptionId,
-                string itemId,
-                string usageId,
-                string idempotencyKey = null);
-
-        /// <summary>
-        /// Deletes a usage
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="itemId">Required parameter: The subscription item id</param>
-        /// <param name="usageId">Required parameter: The usage id</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetUsageResponse response from the API call</return>
-        Task<Models.GetUsageResponse> DeleteUsageAsync(
-                string subscriptionId,
-                string itemId,
-                string usageId,
-                string idempotencyKey = null);
-
-        /// <summary>
-        /// Lists all usages from a subscription item
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="itemId">Required parameter: The subscription item id</param>
-        /// <param name="page">Optional parameter: Page number</param>
-        /// <param name="size">Optional parameter: Page size</param>
-        /// <param name="code">Optional parameter: Identification code in the client system</param>
-        /// <param name="mgroup">Optional parameter: Identification group in the client system</param>
-        /// <param name="usedSince">Optional parameter: Example: </param>
-        /// <param name="usedUntil">Optional parameter: Example: </param>
-        /// <return>Returns the Models.ListUsagesResponse response from the API call</return>
-        Models.ListUsagesResponse GetUsages(
-                string subscriptionId,
-                string itemId,
-                int? page = null,
-                int? size = null,
-                string code = null,
-                string mgroup = null,
-                DateTime? usedSince = null,
-                DateTime? usedUntil = null);
-
-        /// <summary>
-        /// Lists all usages from a subscription item
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="itemId">Required parameter: The subscription item id</param>
-        /// <param name="page">Optional parameter: Page number</param>
-        /// <param name="size">Optional parameter: Page size</param>
-        /// <param name="code">Optional parameter: Identification code in the client system</param>
-        /// <param name="mgroup">Optional parameter: Identification group in the client system</param>
-        /// <param name="usedSince">Optional parameter: Example: </param>
-        /// <param name="usedUntil">Optional parameter: Example: </param>
-        /// <return>Returns the Models.ListUsagesResponse response from the API call</return>
-        Task<Models.ListUsagesResponse> GetUsagesAsync(
-                string subscriptionId,
-                string itemId,
-                int? page = null,
-                int? size = null,
-                string code = null,
-                string mgroup = null,
-                DateTime? usedSince = null,
-                DateTime? usedUntil = null);
-
-        /// <summary>
-        /// UpdateCurrentCycleStatus
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
-        /// <param name="body">Required parameter: Request for updating the end date of the subscription current status</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the void response from the API call</return>
-        void UpdateCurrentCycleStatus(string subscriptionId, Models.UpdateCurrentCycleStatusRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// UpdateCurrentCycleStatus
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
-        /// <param name="body">Required parameter: Request for updating the end date of the subscription current status</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the void response from the API call</return>
-        Task UpdateCurrentCycleStatusAsync(string subscriptionId, Models.UpdateCurrentCycleStatusRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Cancels a subscription
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription id</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <param name="body">Optional parameter: Request for cancelling a subscription</param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        Models.GetSubscriptionResponse CancelSubscription(string subscriptionId, string idempotencyKey = null, Models.CreateCancelSubscriptionRequest body = null);
-
-        /// <summary>
-        /// Cancels a subscription
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription id</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <param name="body">Optional parameter: Request for cancelling a subscription</param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        Task<Models.GetSubscriptionResponse> CancelSubscriptionAsync(string subscriptionId, string idempotencyKey = null, Models.CreateCancelSubscriptionRequest body = null);
-
-        /// <summary>
-        /// Creates a increment
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription id</param>
-        /// <param name="body">Required parameter: Request for creating a increment</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetIncrementResponse response from the API call</return>
-        Models.GetIncrementResponse CreateIncrement(string subscriptionId, Models.CreateIncrementRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Creates a increment
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription id</param>
-        /// <param name="body">Required parameter: Request for creating a increment</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetIncrementResponse response from the API call</return>
-        Task<Models.GetIncrementResponse> CreateIncrementAsync(string subscriptionId, Models.CreateIncrementRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Updates the metadata from a subscription
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="body">Required parameter: Request for updating the subscrption metadata</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        Models.GetSubscriptionResponse UpdateSubscriptionMetadata(string subscriptionId, Models.UpdateMetadataRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Updates the metadata from a subscription
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="body">Required parameter: Request for updating the subscrption metadata</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        Task<Models.GetSubscriptionResponse> UpdateSubscriptionMetadataAsync(string subscriptionId, Models.UpdateMetadataRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// GetDiscounts
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="page">Required parameter: Page number</param>
-        /// <param name="size">Required parameter: Page size</param>
-        /// <return>Returns the Models.ListDiscountsResponse response from the API call</return>
-        Models.ListDiscountsResponse GetDiscounts(string subscriptionId, int page, int size);
-
-        /// <summary>
-        /// GetDiscounts
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="page">Required parameter: Page number</param>
-        /// <param name="size">Required parameter: Page size</param>
-        /// <return>Returns the Models.ListDiscountsResponse response from the API call</return>
-        Task<Models.ListDiscountsResponse> GetDiscountsAsync(string subscriptionId, int page, int size);
-
-        /// <summary>
-        /// Atualização do valor mínimo da assinatura
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
-        /// <param name="body">Required parameter: Request da requisição com o valor mínimo que será configurado</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        Models.GetSubscriptionResponse UpdateSubscriptionMiniumPrice(string subscriptionId, Models.UpdateSubscriptionMinimumPriceRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Atualização do valor mínimo da assinatura
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
-        /// <param name="body">Required parameter: Request da requisição com o valor mínimo que será configurado</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        Task<Models.GetSubscriptionResponse> UpdateSubscriptionMiniumPriceAsync(string subscriptionId, Models.UpdateSubscriptionMinimumPriceRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// UpdateSplitSubscription
-        /// </summary>
-        /// <param name="id">Required parameter: Subscription's id</param>
-        /// <param name="body">Required parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        Models.GetSubscriptionResponse UpdateSplitSubscription(string id, Models.UpdateSubscriptionSplitRequest body);
-
-        /// <summary>
-        /// UpdateSplitSubscription
-        /// </summary>
-        /// <param name="id">Required parameter: Subscription's id</param>
-        /// <param name="body">Required parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        Task<Models.GetSubscriptionResponse> UpdateSplitSubscriptionAsync(string id, Models.UpdateSubscriptionSplitRequest body);
 
         /// <summary>
         /// Gets all subscriptions
@@ -633,6 +371,40 @@ namespace PagarmeCoreApi.PCL.Controllers
                 DateTime? createdUntil = null);
 
         /// <summary>
+        /// Creates a new subscription
+        /// </summary>
+        /// <param name="body">Required parameter: Request for creating a subscription</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        Models.GetSubscriptionResponse CreateSubscription(Models.CreateSubscriptionRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Creates a new subscription
+        /// </summary>
+        /// <param name="body">Required parameter: Request for creating a subscription</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        Task<Models.GetSubscriptionResponse> CreateSubscriptionAsync(Models.CreateSubscriptionRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Cancels a subscription
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription id</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <param name="body">Optional parameter: Request for cancelling a subscription</param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        Models.GetSubscriptionResponse CancelSubscription(string subscriptionId, string idempotencyKey = null, Models.CreateCancelSubscriptionRequest body = null);
+
+        /// <summary>
+        /// Cancels a subscription
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription id</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <param name="body">Optional parameter: Request for cancelling a subscription</param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        Task<Models.GetSubscriptionResponse> CancelSubscriptionAsync(string subscriptionId, string idempotencyKey = null, Models.CreateCancelSubscriptionRequest body = null);
+
+        /// <summary>
         /// Gets a subscription
         /// </summary>
         /// <param name="subscriptionId">Required parameter: Subscription id</param>
@@ -645,6 +417,76 @@ namespace PagarmeCoreApi.PCL.Controllers
         /// <param name="subscriptionId">Required parameter: Subscription id</param>
         /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
         Task<Models.GetSubscriptionResponse> GetSubscriptionAsync(string subscriptionId);
+
+        /// <summary>
+        /// Creates a increment
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription id</param>
+        /// <param name="body">Required parameter: Request for creating a increment</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetIncrementResponse response from the API call</return>
+        Models.GetIncrementResponse CreateIncrement(string subscriptionId, Models.CreateIncrementRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Creates a increment
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription id</param>
+        /// <param name="body">Required parameter: Request for creating a increment</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetIncrementResponse response from the API call</return>
+        Task<Models.GetIncrementResponse> CreateIncrementAsync(string subscriptionId, Models.CreateIncrementRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// GetDiscountById
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="discountId">Required parameter: Example: </param>
+        /// <return>Returns the Models.GetDiscountResponse response from the API call</return>
+        Models.GetDiscountResponse GetDiscountById(string subscriptionId, string discountId);
+
+        /// <summary>
+        /// GetDiscountById
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="discountId">Required parameter: Example: </param>
+        /// <return>Returns the Models.GetDiscountResponse response from the API call</return>
+        Task<Models.GetDiscountResponse> GetDiscountByIdAsync(string subscriptionId, string discountId);
+
+        /// <summary>
+        /// UpdateSubscriptionAffiliationId
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Example: </param>
+        /// <param name="body">Required parameter: Request for updating a subscription affiliation id</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        Models.GetSubscriptionResponse UpdateSubscriptionAffiliationId(string subscriptionId, Models.UpdateSubscriptionAffiliationIdRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// UpdateSubscriptionAffiliationId
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Example: </param>
+        /// <param name="body">Required parameter: Request for updating a subscription affiliation id</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        Task<Models.GetSubscriptionResponse> UpdateSubscriptionAffiliationIdAsync(string subscriptionId, Models.UpdateSubscriptionAffiliationIdRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Updates the metadata from a subscription
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="body">Required parameter: Request for updating the subscrption metadata</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        Models.GetSubscriptionResponse UpdateSubscriptionMetadata(string subscriptionId, Models.UpdateMetadataRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Updates the metadata from a subscription
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="body">Required parameter: Request for updating the subscrption metadata</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        Task<Models.GetSubscriptionResponse> UpdateSubscriptionMetadataAsync(string subscriptionId, Models.UpdateMetadataRequest body, string idempotencyKey = null);
 
         /// <summary>
         /// Deletes a increment
@@ -715,6 +557,42 @@ namespace PagarmeCoreApi.PCL.Controllers
         Task<Models.GetPeriodResponse> RenewSubscriptionAsync(string subscriptionId, string idempotencyKey = null);
 
         /// <summary>
+        /// GetDiscounts
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="page">Required parameter: Page number</param>
+        /// <param name="size">Required parameter: Page size</param>
+        /// <return>Returns the Models.ListDiscountsResponse response from the API call</return>
+        Models.ListDiscountsResponse GetDiscounts(string subscriptionId, int page, int size);
+
+        /// <summary>
+        /// GetDiscounts
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="page">Required parameter: Page number</param>
+        /// <param name="size">Required parameter: Page size</param>
+        /// <return>Returns the Models.ListDiscountsResponse response from the API call</return>
+        Task<Models.ListDiscountsResponse> GetDiscountsAsync(string subscriptionId, int page, int size);
+
+        /// <summary>
+        /// Updates the billing date from a subscription
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="body">Required parameter: Request for updating the subscription billing date</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        Models.GetSubscriptionResponse UpdateSubscriptionBillingDate(string subscriptionId, Models.UpdateSubscriptionBillingDateRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Updates the billing date from a subscription
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="body">Required parameter: Request for updating the subscription billing date</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        Task<Models.GetSubscriptionResponse> UpdateSubscriptionBillingDateAsync(string subscriptionId, Models.UpdateSubscriptionBillingDateRequest body, string idempotencyKey = null);
+
+        /// <summary>
         /// Deletes a subscription item
         /// </summary>
         /// <param name="subscriptionId">Required parameter: Subscription id</param>
@@ -733,6 +611,112 @@ namespace PagarmeCoreApi.PCL.Controllers
         Task<Models.GetSubscriptionItemResponse> DeleteSubscriptionItemAsync(string subscriptionId, string subscriptionItemId, string idempotencyKey = null);
 
         /// <summary>
+        /// GetIncrements
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="page">Optional parameter: Page number</param>
+        /// <param name="size">Optional parameter: Page size</param>
+        /// <return>Returns the Models.ListIncrementsResponse response from the API call</return>
+        Models.ListIncrementsResponse GetIncrements(string subscriptionId, int? page = null, int? size = null);
+
+        /// <summary>
+        /// GetIncrements
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="page">Optional parameter: Page number</param>
+        /// <param name="size">Optional parameter: Page size</param>
+        /// <return>Returns the Models.ListIncrementsResponse response from the API call</return>
+        Task<Models.ListIncrementsResponse> GetIncrementsAsync(string subscriptionId, int? page = null, int? size = null);
+
+        /// <summary>
+        /// Updates the boleto due days from a subscription
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
+        /// <param name="body">Required parameter: Example: </param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        Models.GetSubscriptionResponse UpdateSubscriptionDueDays(string subscriptionId, Models.UpdateSubscriptionDueDaysRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Updates the boleto due days from a subscription
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
+        /// <param name="body">Required parameter: Example: </param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        Task<Models.GetSubscriptionResponse> UpdateSubscriptionDueDaysAsync(string subscriptionId, Models.UpdateSubscriptionDueDaysRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Updates the start at date from a subscription
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="body">Required parameter: Request for updating the subscription start date</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        Models.GetSubscriptionResponse UpdateSubscriptionStartAt(string subscriptionId, Models.UpdateSubscriptionStartAtRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Updates the start at date from a subscription
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="body">Required parameter: Request for updating the subscription start date</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        Task<Models.GetSubscriptionResponse> UpdateSubscriptionStartAtAsync(string subscriptionId, Models.UpdateSubscriptionStartAtRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// UpdateLatestPeriodEndAt
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Example: </param>
+        /// <param name="body">Required parameter: Request for updating the end date of the current signature cycle</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        Models.GetSubscriptionResponse UpdateLatestPeriodEndAt(string subscriptionId, Models.UpdateCurrentCycleEndDateRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// UpdateLatestPeriodEndAt
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Example: </param>
+        /// <param name="body">Required parameter: Request for updating the end date of the current signature cycle</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        Task<Models.GetSubscriptionResponse> UpdateLatestPeriodEndAtAsync(string subscriptionId, Models.UpdateCurrentCycleEndDateRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Atualização do valor mínimo da assinatura
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
+        /// <param name="body">Required parameter: Request da requisição com o valor mínimo que será configurado</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        Models.GetSubscriptionResponse UpdateSubscriptionMiniumPrice(string subscriptionId, Models.UpdateSubscriptionMinimumPriceRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Atualização do valor mínimo da assinatura
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
+        /// <param name="body">Required parameter: Request da requisição com o valor mínimo que será configurado</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        Task<Models.GetSubscriptionResponse> UpdateSubscriptionMiniumPriceAsync(string subscriptionId, Models.UpdateSubscriptionMinimumPriceRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// GetSubscriptionCycleById
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="cycleId">Required parameter: Example: </param>
+        /// <return>Returns the Models.GetPeriodResponse response from the API call</return>
+        Models.GetPeriodResponse GetSubscriptionCycleById(string subscriptionId, string cycleId);
+
+        /// <summary>
+        /// GetSubscriptionCycleById
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="cycleId">Required parameter: Example: </param>
+        /// <return>Returns the Models.GetPeriodResponse response from the API call</return>
+        Task<Models.GetPeriodResponse> GetSubscriptionCycleByIdAsync(string subscriptionId, string cycleId);
+
+        /// <summary>
         /// GetUsageReport
         /// </summary>
         /// <param name="subscriptionId">Required parameter: The subscription Id</param>
@@ -747,6 +731,22 @@ namespace PagarmeCoreApi.PCL.Controllers
         /// <param name="periodId">Required parameter: The period Id</param>
         /// <return>Returns the Models.GetUsageReportResponse response from the API call</return>
         Task<Models.GetUsageReportResponse> GetUsageReportAsync(string subscriptionId, string periodId);
+
+        /// <summary>
+        /// UpdateSplitSubscription
+        /// </summary>
+        /// <param name="id">Required parameter: Subscription's id</param>
+        /// <param name="body">Required parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        Models.GetSubscriptionResponse UpdateSplitSubscription(string id, Models.UpdateSubscriptionSplitRequest body);
+
+        /// <summary>
+        /// UpdateSplitSubscription
+        /// </summary>
+        /// <param name="id">Required parameter: Subscription's id</param>
+        /// <param name="body">Required parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        Task<Models.GetSubscriptionResponse> UpdateSplitSubscriptionAsync(string id, Models.UpdateSubscriptionSplitRequest body);
 
     }
 } 

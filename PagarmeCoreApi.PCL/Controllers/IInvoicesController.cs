@@ -21,6 +21,20 @@ namespace PagarmeCoreApi.PCL.Controllers
     public partial interface IInvoicesController
     {
         /// <summary>
+        /// GetPartialInvoice
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
+        /// <return>Returns the Models.GetInvoiceResponse response from the API call</return>
+        Models.GetInvoiceResponse GetPartialInvoice(string subscriptionId);
+
+        /// <summary>
+        /// GetPartialInvoice
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
+        /// <return>Returns the Models.GetInvoiceResponse response from the API call</return>
+        Task<Models.GetInvoiceResponse> GetPartialInvoiceAsync(string subscriptionId);
+
+        /// <summary>
         /// Cancels an invoice
         /// </summary>
         /// <param name="invoiceId">Required parameter: Invoice id</param>
@@ -151,20 +165,6 @@ namespace PagarmeCoreApi.PCL.Controllers
                 DateTime? dueSince = null,
                 DateTime? dueUntil = null,
                 string customerDocument = null);
-
-        /// <summary>
-        /// GetPartialInvoice
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
-        /// <return>Returns the Models.GetInvoiceResponse response from the API call</return>
-        Models.GetInvoiceResponse GetPartialInvoice(string subscriptionId);
-
-        /// <summary>
-        /// GetPartialInvoice
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
-        /// <return>Returns the Models.GetInvoiceResponse response from the API call</return>
-        Task<Models.GetInvoiceResponse> GetPartialInvoiceAsync(string subscriptionId);
 
         /// <summary>
         /// Updates the status from an invoice

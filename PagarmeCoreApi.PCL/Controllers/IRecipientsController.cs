@@ -37,6 +37,24 @@ namespace PagarmeCoreApi.PCL.Controllers
         Task<Models.GetTransferResponse> GetTransferAsync(string recipientId, string transferId);
 
         /// <summary>
+        /// Updates a recipient
+        /// </summary>
+        /// <param name="recipientId">Required parameter: Recipient id</param>
+        /// <param name="body">Required parameter: Recipient data</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetRecipientResponse response from the API call</return>
+        Models.GetRecipientResponse UpdateRecipient(string recipientId, Models.UpdateRecipientRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Updates a recipient
+        /// </summary>
+        /// <param name="recipientId">Required parameter: Recipient id</param>
+        /// <param name="body">Required parameter: Recipient data</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetRecipientResponse response from the API call</return>
+        Task<Models.GetRecipientResponse> UpdateRecipientAsync(string recipientId, Models.UpdateRecipientRequest body, string idempotencyKey = null);
+
+        /// <summary>
         /// Retrieves recipient information
         /// </summary>
         /// <param name="recipientId">Required parameter: Recipiend id</param>
@@ -51,72 +69,22 @@ namespace PagarmeCoreApi.PCL.Controllers
         Task<Models.GetRecipientResponse> GetRecipientAsync(string recipientId);
 
         /// <summary>
-        /// Updates recipient metadata
+        /// Creates an anticipation
         /// </summary>
         /// <param name="recipientId">Required parameter: Recipient id</param>
-        /// <param name="body">Required parameter: Metadata</param>
+        /// <param name="body">Required parameter: Anticipation data</param>
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetRecipientResponse response from the API call</return>
-        Models.GetRecipientResponse UpdateRecipientMetadata(string recipientId, Models.UpdateMetadataRequest body, string idempotencyKey = null);
+        /// <return>Returns the Models.GetAnticipationResponse response from the API call</return>
+        Models.GetAnticipationResponse CreateAnticipation(string recipientId, Models.CreateAnticipationRequest body, string idempotencyKey = null);
 
         /// <summary>
-        /// Updates recipient metadata
+        /// Creates an anticipation
         /// </summary>
         /// <param name="recipientId">Required parameter: Recipient id</param>
-        /// <param name="body">Required parameter: Metadata</param>
+        /// <param name="body">Required parameter: Anticipation data</param>
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetRecipientResponse response from the API call</return>
-        Task<Models.GetRecipientResponse> UpdateRecipientMetadataAsync(string recipientId, Models.UpdateMetadataRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Creates a transfer for a recipient
-        /// </summary>
-        /// <param name="recipientId">Required parameter: Recipient Id</param>
-        /// <param name="body">Required parameter: Transfer data</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetTransferResponse response from the API call</return>
-        Models.GetTransferResponse CreateTransfer(string recipientId, Models.CreateTransferRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Creates a transfer for a recipient
-        /// </summary>
-        /// <param name="recipientId">Required parameter: Recipient Id</param>
-        /// <param name="body">Required parameter: Transfer data</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetTransferResponse response from the API call</return>
-        Task<Models.GetTransferResponse> CreateTransferAsync(string recipientId, Models.CreateTransferRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Updates recipient metadata
-        /// </summary>
-        /// <param name="recipientId">Required parameter: Recipient id</param>
-        /// <param name="body">Required parameter: Metadata</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetRecipientResponse response from the API call</return>
-        Models.GetRecipientResponse UpdateAutomaticAnticipationSettings(string recipientId, Models.UpdateAutomaticAnticipationSettingsRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Updates recipient metadata
-        /// </summary>
-        /// <param name="recipientId">Required parameter: Recipient id</param>
-        /// <param name="body">Required parameter: Metadata</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetRecipientResponse response from the API call</return>
-        Task<Models.GetRecipientResponse> UpdateAutomaticAnticipationSettingsAsync(string recipientId, Models.UpdateAutomaticAnticipationSettingsRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Get balance information for a recipient
-        /// </summary>
-        /// <param name="recipientId">Required parameter: Recipient id</param>
-        /// <return>Returns the Models.GetBalanceResponse response from the API call</return>
-        Models.GetBalanceResponse GetBalance(string recipientId);
-
-        /// <summary>
-        /// Get balance information for a recipient
-        /// </summary>
-        /// <param name="recipientId">Required parameter: Recipient id</param>
-        /// <return>Returns the Models.GetBalanceResponse response from the API call</return>
-        Task<Models.GetBalanceResponse> GetBalanceAsync(string recipientId);
+        /// <return>Returns the Models.GetAnticipationResponse response from the API call</return>
+        Task<Models.GetAnticipationResponse> CreateAnticipationAsync(string recipientId, Models.CreateAnticipationRequest body, string idempotencyKey = null);
 
         /// <summary>
         /// Retrieves a paginated list of anticipations from a recipient
@@ -165,106 +133,6 @@ namespace PagarmeCoreApi.PCL.Controllers
                 DateTime? paymentDateUntil = null,
                 DateTime? createdSince = null,
                 DateTime? createdUntil = null);
-
-        /// <summary>
-        /// GetWithdrawById
-        /// </summary>
-        /// <param name="recipientId">Required parameter: Example: </param>
-        /// <param name="withdrawalId">Required parameter: Example: </param>
-        /// <return>Returns the Models.GetWithdrawResponse response from the API call</return>
-        Models.GetWithdrawResponse GetWithdrawById(string recipientId, string withdrawalId);
-
-        /// <summary>
-        /// GetWithdrawById
-        /// </summary>
-        /// <param name="recipientId">Required parameter: Example: </param>
-        /// <param name="withdrawalId">Required parameter: Example: </param>
-        /// <return>Returns the Models.GetWithdrawResponse response from the API call</return>
-        Task<Models.GetWithdrawResponse> GetWithdrawByIdAsync(string recipientId, string withdrawalId);
-
-        /// <summary>
-        /// CreateWithdraw
-        /// </summary>
-        /// <param name="recipientId">Required parameter: Example: </param>
-        /// <param name="body">Required parameter: Example: </param>
-        /// <return>Returns the Models.GetWithdrawResponse response from the API call</return>
-        Models.GetWithdrawResponse CreateWithdraw(string recipientId, Models.CreateWithdrawRequest body);
-
-        /// <summary>
-        /// CreateWithdraw
-        /// </summary>
-        /// <param name="recipientId">Required parameter: Example: </param>
-        /// <param name="body">Required parameter: Example: </param>
-        /// <return>Returns the Models.GetWithdrawResponse response from the API call</return>
-        Task<Models.GetWithdrawResponse> CreateWithdrawAsync(string recipientId, Models.CreateWithdrawRequest body);
-
-        /// <summary>
-        /// Updates a recipient
-        /// </summary>
-        /// <param name="recipientId">Required parameter: Recipient id</param>
-        /// <param name="body">Required parameter: Recipient data</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetRecipientResponse response from the API call</return>
-        Models.GetRecipientResponse UpdateRecipient(string recipientId, Models.UpdateRecipientRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Updates a recipient
-        /// </summary>
-        /// <param name="recipientId">Required parameter: Recipient id</param>
-        /// <param name="body">Required parameter: Recipient data</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetRecipientResponse response from the API call</return>
-        Task<Models.GetRecipientResponse> UpdateRecipientAsync(string recipientId, Models.UpdateRecipientRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Creates an anticipation
-        /// </summary>
-        /// <param name="recipientId">Required parameter: Recipient id</param>
-        /// <param name="body">Required parameter: Anticipation data</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetAnticipationResponse response from the API call</return>
-        Models.GetAnticipationResponse CreateAnticipation(string recipientId, Models.CreateAnticipationRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Creates an anticipation
-        /// </summary>
-        /// <param name="recipientId">Required parameter: Recipient id</param>
-        /// <param name="body">Required parameter: Anticipation data</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetAnticipationResponse response from the API call</return>
-        Task<Models.GetAnticipationResponse> CreateAnticipationAsync(string recipientId, Models.CreateAnticipationRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Updates the default bank account from a recipient
-        /// </summary>
-        /// <param name="recipientId">Required parameter: Recipient id</param>
-        /// <param name="body">Required parameter: Bank account data</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetRecipientResponse response from the API call</return>
-        Models.GetRecipientResponse UpdateRecipientDefaultBankAccount(string recipientId, Models.UpdateRecipientBankAccountRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Updates the default bank account from a recipient
-        /// </summary>
-        /// <param name="recipientId">Required parameter: Recipient id</param>
-        /// <param name="body">Required parameter: Bank account data</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetRecipientResponse response from the API call</return>
-        Task<Models.GetRecipientResponse> UpdateRecipientDefaultBankAccountAsync(string recipientId, Models.UpdateRecipientBankAccountRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Retrieves recipient information
-        /// </summary>
-        /// <param name="code">Required parameter: Recipient code</param>
-        /// <return>Returns the Models.GetRecipientResponse response from the API call</return>
-        Models.GetRecipientResponse GetRecipientByCode(string code);
-
-        /// <summary>
-        /// Retrieves recipient information
-        /// </summary>
-        /// <param name="code">Required parameter: Recipient code</param>
-        /// <return>Returns the Models.GetRecipientResponse response from the API call</return>
-        Task<Models.GetRecipientResponse> GetRecipientByCodeAsync(string code);
 
         /// <summary>
         /// Gets the anticipation limits for a recipient
@@ -317,6 +185,58 @@ namespace PagarmeCoreApi.PCL.Controllers
         Task<Models.GetRecipientResponse> CreateRecipientAsync(Models.CreateRecipientRequest body, string idempotencyKey = null);
 
         /// <summary>
+        /// GetWithdrawById
+        /// </summary>
+        /// <param name="recipientId">Required parameter: Example: </param>
+        /// <param name="withdrawalId">Required parameter: Example: </param>
+        /// <return>Returns the Models.GetWithdrawResponse response from the API call</return>
+        Models.GetWithdrawResponse GetWithdrawById(string recipientId, string withdrawalId);
+
+        /// <summary>
+        /// GetWithdrawById
+        /// </summary>
+        /// <param name="recipientId">Required parameter: Example: </param>
+        /// <param name="withdrawalId">Required parameter: Example: </param>
+        /// <return>Returns the Models.GetWithdrawResponse response from the API call</return>
+        Task<Models.GetWithdrawResponse> GetWithdrawByIdAsync(string recipientId, string withdrawalId);
+
+        /// <summary>
+        /// Updates the default bank account from a recipient
+        /// </summary>
+        /// <param name="recipientId">Required parameter: Recipient id</param>
+        /// <param name="body">Required parameter: Bank account data</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetRecipientResponse response from the API call</return>
+        Models.GetRecipientResponse UpdateRecipientDefaultBankAccount(string recipientId, Models.UpdateRecipientBankAccountRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Updates the default bank account from a recipient
+        /// </summary>
+        /// <param name="recipientId">Required parameter: Recipient id</param>
+        /// <param name="body">Required parameter: Bank account data</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetRecipientResponse response from the API call</return>
+        Task<Models.GetRecipientResponse> UpdateRecipientDefaultBankAccountAsync(string recipientId, Models.UpdateRecipientBankAccountRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Updates recipient metadata
+        /// </summary>
+        /// <param name="recipientId">Required parameter: Recipient id</param>
+        /// <param name="body">Required parameter: Metadata</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetRecipientResponse response from the API call</return>
+        Models.GetRecipientResponse UpdateRecipientMetadata(string recipientId, Models.UpdateMetadataRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Updates recipient metadata
+        /// </summary>
+        /// <param name="recipientId">Required parameter: Recipient id</param>
+        /// <param name="body">Required parameter: Metadata</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetRecipientResponse response from the API call</return>
+        Task<Models.GetRecipientResponse> UpdateRecipientMetadataAsync(string recipientId, Models.UpdateMetadataRequest body, string idempotencyKey = null);
+
+        /// <summary>
         /// Gets a paginated list of transfers for the recipient
         /// </summary>
         /// <param name="recipientId">Required parameter: Recipient id</param>
@@ -351,6 +271,40 @@ namespace PagarmeCoreApi.PCL.Controllers
                 string status = null,
                 DateTime? createdSince = null,
                 DateTime? createdUntil = null);
+
+        /// <summary>
+        /// Creates a transfer for a recipient
+        /// </summary>
+        /// <param name="recipientId">Required parameter: Recipient Id</param>
+        /// <param name="body">Required parameter: Transfer data</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetTransferResponse response from the API call</return>
+        Models.GetTransferResponse CreateTransfer(string recipientId, Models.CreateTransferRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Creates a transfer for a recipient
+        /// </summary>
+        /// <param name="recipientId">Required parameter: Recipient Id</param>
+        /// <param name="body">Required parameter: Transfer data</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetTransferResponse response from the API call</return>
+        Task<Models.GetTransferResponse> CreateTransferAsync(string recipientId, Models.CreateTransferRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// CreateWithdraw
+        /// </summary>
+        /// <param name="recipientId">Required parameter: Example: </param>
+        /// <param name="body">Required parameter: Example: </param>
+        /// <return>Returns the Models.GetWithdrawResponse response from the API call</return>
+        Models.GetWithdrawResponse CreateWithdraw(string recipientId, Models.CreateWithdrawRequest body);
+
+        /// <summary>
+        /// CreateWithdraw
+        /// </summary>
+        /// <param name="recipientId">Required parameter: Example: </param>
+        /// <param name="body">Required parameter: Example: </param>
+        /// <return>Returns the Models.GetWithdrawResponse response from the API call</return>
+        Task<Models.GetWithdrawResponse> CreateWithdrawAsync(string recipientId, Models.CreateWithdrawRequest body);
 
         /// <summary>
         /// Gets a paginated list of transfers for the recipient
@@ -389,6 +343,24 @@ namespace PagarmeCoreApi.PCL.Controllers
                 DateTime? createdUntil = null);
 
         /// <summary>
+        /// Updates recipient metadata
+        /// </summary>
+        /// <param name="recipientId">Required parameter: Recipient id</param>
+        /// <param name="body">Required parameter: Metadata</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetRecipientResponse response from the API call</return>
+        Models.GetRecipientResponse UpdateAutomaticAnticipationSettings(string recipientId, Models.UpdateAutomaticAnticipationSettingsRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Updates recipient metadata
+        /// </summary>
+        /// <param name="recipientId">Required parameter: Recipient id</param>
+        /// <param name="body">Required parameter: Metadata</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetRecipientResponse response from the API call</return>
+        Task<Models.GetRecipientResponse> UpdateAutomaticAnticipationSettingsAsync(string recipientId, Models.UpdateAutomaticAnticipationSettingsRequest body, string idempotencyKey = null);
+
+        /// <summary>
         /// Gets an anticipation
         /// </summary>
         /// <param name="recipientId">Required parameter: Recipient id</param>
@@ -421,6 +393,34 @@ namespace PagarmeCoreApi.PCL.Controllers
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
         /// <return>Returns the Models.GetRecipientResponse response from the API call</return>
         Task<Models.GetRecipientResponse> UpdateRecipientTransferSettingsAsync(string recipientId, Models.UpdateTransferSettingsRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Get balance information for a recipient
+        /// </summary>
+        /// <param name="recipientId">Required parameter: Recipient id</param>
+        /// <return>Returns the Models.GetBalanceResponse response from the API call</return>
+        Models.GetBalanceResponse GetBalance(string recipientId);
+
+        /// <summary>
+        /// Get balance information for a recipient
+        /// </summary>
+        /// <param name="recipientId">Required parameter: Recipient id</param>
+        /// <return>Returns the Models.GetBalanceResponse response from the API call</return>
+        Task<Models.GetBalanceResponse> GetBalanceAsync(string recipientId);
+
+        /// <summary>
+        /// Retrieves recipient information
+        /// </summary>
+        /// <param name="code">Required parameter: Recipient code</param>
+        /// <return>Returns the Models.GetRecipientResponse response from the API call</return>
+        Models.GetRecipientResponse GetRecipientByCode(string code);
+
+        /// <summary>
+        /// Retrieves recipient information
+        /// </summary>
+        /// <param name="code">Required parameter: Recipient code</param>
+        /// <return>Returns the Models.GetRecipientResponse response from the API call</return>
+        Task<Models.GetRecipientResponse> GetRecipientByCodeAsync(string code);
 
         /// <summary>
         /// GetDefaultRecipient

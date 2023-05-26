@@ -102,17 +102,6 @@ namespace PagarmeCoreApi.PCL
         }
 
         /// <summary>
-        /// Singleton access to Transfers controller
-        /// </summary>
-        public ITransfersController Transfers
-        {
-            get
-            {
-                return TransfersController.Instance;
-            }
-        }
-
-        /// <summary>
         /// Singleton access to Transactions controller
         /// </summary>
         public ITransactionsController Transactions
@@ -120,6 +109,17 @@ namespace PagarmeCoreApi.PCL
             get
             {
                 return TransactionsController.Instance;
+            }
+        }
+
+        /// <summary>
+        /// Singleton access to Transfers controller
+        /// </summary>
+        public ITransfersController Transfers
+        {
+            get
+            {
+                return TransfersController.Instance;
             }
         }
         /// <summary>
