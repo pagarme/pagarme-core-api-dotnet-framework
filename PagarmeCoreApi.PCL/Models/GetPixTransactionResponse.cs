@@ -27,6 +27,7 @@ namespace PagarmeCoreApi.PCL.Models
         private List<Models.PixAdditionalInformation> additionalInformation;
         private string endToEndId;
         private Models.GetPixPayerResponse payer;
+        private string pixProviderTid;
 
         /// <summary>
         /// TODO: Write general description for this method
@@ -128,6 +129,23 @@ namespace PagarmeCoreApi.PCL.Models
             {
                 this.payer = value;
                 onPropertyChanged("Payer");
+            }
+        }
+
+        /// <summary>
+        /// Pix provider TID
+        /// </summary>
+        [JsonProperty("pix_provider_tid")]
+        public string PixProviderTid 
+        { 
+            get 
+            {
+                return this.pixProviderTid; 
+            } 
+            set 
+            {
+                this.pixProviderTid = value;
+                onPropertyChanged("PixProviderTid");
             }
         }
     }

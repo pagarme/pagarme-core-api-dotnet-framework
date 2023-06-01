@@ -50,6 +50,108 @@ namespace PagarmeCoreApi.PCL.Controllers
         #endregion Singleton Pattern
 
         /// <summary>
+        /// Updates a card
+        /// </summary>
+        /// <param name="customerId">Required parameter: Customer Id</param>
+        /// <param name="cardId">Required parameter: Card id</param>
+        /// <param name="body">Required parameter: Request for updating a card</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetCardResponse response from the API call</return>
+        public Models.GetCardResponse UpdateCard(
+                string customerId,
+                string cardId,
+                Models.UpdateCardRequest body,
+                string idempotencyKey = null)
+        {
+            Task<Models.GetCardResponse> t = UpdateCardAsync(customerId, cardId, body, idempotencyKey);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Updates a card
+        /// </summary>
+        /// <param name="customerId">Required parameter: Customer Id</param>
+        /// <param name="cardId">Required parameter: Card id</param>
+        /// <param name="body">Required parameter: Request for updating a card</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetCardResponse response from the API call</return>
+        public async Task<Models.GetCardResponse> UpdateCardAsync(
+                string customerId,
+                string cardId,
+                Models.UpdateCardRequest body,
+                string idempotencyKey = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/customers/{customer_id}/cards/{card_id}");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "customer_id", customerId },
+                { "card_id", cardId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" },
+                { "Content-Type", "application/json" },
+                { "idempotency-key", idempotencyKey }
+            };
+
+            //append body params
+            var _body = APIHelper.JsonSerialize(body);
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.PutBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetCardResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
         /// Delete a customer's card
         /// </summary>
         /// <param name="customerId">Required parameter: Customer Id</param>
@@ -93,13 +195,98 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" },
                 { "idempotency-key", idempotencyKey }
             };
 
             //prepare the API call request to fetch the response
             HttpRequest _request = ClientInstance.Delete(_queryUrl, _headers, null, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetCardResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// Get a customer's card
+        /// </summary>
+        /// <param name="customerId">Required parameter: Customer id</param>
+        /// <param name="cardId">Required parameter: Card id</param>
+        /// <return>Returns the Models.GetCardResponse response from the API call</return>
+        public Models.GetCardResponse GetCard(string customerId, string cardId)
+        {
+            Task<Models.GetCardResponse> t = GetCardAsync(customerId, cardId);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Get a customer's card
+        /// </summary>
+        /// <param name="customerId">Required parameter: Customer id</param>
+        /// <param name="cardId">Required parameter: Card id</param>
+        /// <return>Returns the Models.GetCardResponse response from the API call</return>
+        public async Task<Models.GetCardResponse> GetCardAsync(string customerId, string cardId)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/customers/{customer_id}/cards/{card_id}");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "customer_id", customerId },
+                { "card_id", cardId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" }
+            };
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
 
             //invoke request and get response
             HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
@@ -191,7 +378,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" },
                 { "Content-Type", "application/json" },
                 { "idempotency-key", idempotencyKey }
@@ -281,7 +468,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" }
             };
 
@@ -317,653 +504,6 @@ namespace PagarmeCoreApi.PCL.Controllers
             try
             {
                 return APIHelper.JsonDeserialize<Models.GetAddressResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// Get all access tokens from a customer
-        /// </summary>
-        /// <param name="customerId">Required parameter: Customer Id</param>
-        /// <param name="page">Optional parameter: Page number</param>
-        /// <param name="size">Optional parameter: Page size</param>
-        /// <return>Returns the Models.ListAccessTokensResponse response from the API call</return>
-        public Models.ListAccessTokensResponse GetAccessTokens(string customerId, int? page = null, int? size = null)
-        {
-            Task<Models.ListAccessTokensResponse> t = GetAccessTokensAsync(customerId, page, size);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Get all access tokens from a customer
-        /// </summary>
-        /// <param name="customerId">Required parameter: Customer Id</param>
-        /// <param name="page">Optional parameter: Page number</param>
-        /// <param name="size">Optional parameter: Page size</param>
-        /// <return>Returns the Models.ListAccessTokensResponse response from the API call</return>
-        public async Task<Models.ListAccessTokensResponse> GetAccessTokensAsync(string customerId, int? page = null, int? size = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/customers/{customer_id}/access-tokens");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "customer_id", customerId }
-            });
-
-            //process optional query parameters
-            APIHelper.AppendUrlWithQueryParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "page", page },
-                { "size", size }
-            },ArrayDeserializationFormat,ParameterSeparator);
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" }
-            };
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.ListAccessTokensResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// Updates a customer
-        /// </summary>
-        /// <param name="customerId">Required parameter: Customer id</param>
-        /// <param name="body">Required parameter: Request for updating a customer</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetCustomerResponse response from the API call</return>
-        public Models.GetCustomerResponse UpdateCustomer(string customerId, Models.UpdateCustomerRequest body, string idempotencyKey = null)
-        {
-            Task<Models.GetCustomerResponse> t = UpdateCustomerAsync(customerId, body, idempotencyKey);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Updates a customer
-        /// </summary>
-        /// <param name="customerId">Required parameter: Customer id</param>
-        /// <param name="body">Required parameter: Request for updating a customer</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetCustomerResponse response from the API call</return>
-        public async Task<Models.GetCustomerResponse> UpdateCustomerAsync(string customerId, Models.UpdateCustomerRequest body, string idempotencyKey = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/customers/{customer_id}");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "customer_id", customerId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" },
-                { "Content-Type", "application/json" },
-                { "idempotency-key", idempotencyKey }
-            };
-
-            //append body params
-            var _body = APIHelper.JsonSerialize(body);
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.PutBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetCustomerResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// Renew a card
-        /// </summary>
-        /// <param name="customerId">Required parameter: Customer id</param>
-        /// <param name="cardId">Required parameter: Card Id</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetCardResponse response from the API call</return>
-        public Models.GetCardResponse RenewCard(string customerId, string cardId, string idempotencyKey = null)
-        {
-            Task<Models.GetCardResponse> t = RenewCardAsync(customerId, cardId, idempotencyKey);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Renew a card
-        /// </summary>
-        /// <param name="customerId">Required parameter: Customer id</param>
-        /// <param name="cardId">Required parameter: Card Id</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetCardResponse response from the API call</return>
-        public async Task<Models.GetCardResponse> RenewCardAsync(string customerId, string cardId, string idempotencyKey = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/customers/{customer_id}/cards/{card_id}/renew");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "customer_id", customerId },
-                { "card_id", cardId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" },
-                { "idempotency-key", idempotencyKey }
-            };
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.Post(_queryUrl, _headers, null, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetCardResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// Get all Customers
-        /// </summary>
-        /// <param name="name">Optional parameter: Name of the Customer</param>
-        /// <param name="document">Optional parameter: Document of the Customer</param>
-        /// <param name="page">Optional parameter: Current page the the search</param>
-        /// <param name="size">Optional parameter: Quantity pages of the search</param>
-        /// <param name="email">Optional parameter: Customer's email</param>
-        /// <param name="code">Optional parameter: Customer's code</param>
-        /// <return>Returns the Models.ListCustomersResponse response from the API call</return>
-        public Models.ListCustomersResponse GetCustomers(
-                string name = null,
-                string document = null,
-                int? page = 1,
-                int? size = 10,
-                string email = null,
-                string code = null)
-        {
-            Task<Models.ListCustomersResponse> t = GetCustomersAsync(name, document, page, size, email, code);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Get all Customers
-        /// </summary>
-        /// <param name="name">Optional parameter: Name of the Customer</param>
-        /// <param name="document">Optional parameter: Document of the Customer</param>
-        /// <param name="page">Optional parameter: Current page the the search</param>
-        /// <param name="size">Optional parameter: Quantity pages of the search</param>
-        /// <param name="email">Optional parameter: Customer's email</param>
-        /// <param name="code">Optional parameter: Customer's code</param>
-        /// <return>Returns the Models.ListCustomersResponse response from the API call</return>
-        public async Task<Models.ListCustomersResponse> GetCustomersAsync(
-                string name = null,
-                string document = null,
-                int? page = 1,
-                int? size = 10,
-                string email = null,
-                string code = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/customers");
-
-            //process optional query parameters
-            APIHelper.AppendUrlWithQueryParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "name", name },
-                { "document", document },
-                { "page", (null != page) ? page : 1 },
-                { "size", (null != size) ? size : 10 },
-                { "email", email },
-                { "Code", code }
-            },ArrayDeserializationFormat,ParameterSeparator);
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" }
-            };
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.ListCustomersResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// Delete a Customer's access tokens
-        /// </summary>
-        /// <param name="customerId">Required parameter: Customer Id</param>
-        /// <return>Returns the Models.ListAccessTokensResponse response from the API call</return>
-        public Models.ListAccessTokensResponse DeleteAccessTokens(string customerId)
-        {
-            Task<Models.ListAccessTokensResponse> t = DeleteAccessTokensAsync(customerId);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Delete a Customer's access tokens
-        /// </summary>
-        /// <param name="customerId">Required parameter: Customer Id</param>
-        /// <return>Returns the Models.ListAccessTokensResponse response from the API call</return>
-        public async Task<Models.ListAccessTokensResponse> DeleteAccessTokensAsync(string customerId)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/customers/{customer_id}/access-tokens/");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "customer_id", customerId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" }
-            };
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.ListAccessTokensResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// Get a customer
-        /// </summary>
-        /// <param name="customerId">Required parameter: Customer Id</param>
-        /// <return>Returns the Models.GetCustomerResponse response from the API call</return>
-        public Models.GetCustomerResponse GetCustomer(string customerId)
-        {
-            Task<Models.GetCustomerResponse> t = GetCustomerAsync(customerId);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Get a customer
-        /// </summary>
-        /// <param name="customerId">Required parameter: Customer Id</param>
-        /// <return>Returns the Models.GetCustomerResponse response from the API call</return>
-        public async Task<Models.GetCustomerResponse> GetCustomerAsync(string customerId)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/customers/{customer_id}");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "customer_id", customerId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" }
-            };
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetCustomerResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// Updates a card
-        /// </summary>
-        /// <param name="customerId">Required parameter: Customer Id</param>
-        /// <param name="cardId">Required parameter: Card id</param>
-        /// <param name="body">Required parameter: Request for updating a card</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetCardResponse response from the API call</return>
-        public Models.GetCardResponse UpdateCard(
-                string customerId,
-                string cardId,
-                Models.UpdateCardRequest body,
-                string idempotencyKey = null)
-        {
-            Task<Models.GetCardResponse> t = UpdateCardAsync(customerId, cardId, body, idempotencyKey);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Updates a card
-        /// </summary>
-        /// <param name="customerId">Required parameter: Customer Id</param>
-        /// <param name="cardId">Required parameter: Card id</param>
-        /// <param name="body">Required parameter: Request for updating a card</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetCardResponse response from the API call</return>
-        public async Task<Models.GetCardResponse> UpdateCardAsync(
-                string customerId,
-                string cardId,
-                Models.UpdateCardRequest body,
-                string idempotencyKey = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/customers/{customer_id}/cards/{card_id}");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "customer_id", customerId },
-                { "card_id", cardId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" },
-                { "Content-Type", "application/json" },
-                { "idempotency-key", idempotencyKey }
-            };
-
-            //append body params
-            var _body = APIHelper.JsonSerialize(body);
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.PutBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetCardResponse>(_response.Body);
             }
             catch (Exception _ex)
             {
@@ -1015,7 +555,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" },
                 { "idempotency-key", idempotencyKey }
             };
@@ -1052,457 +592,6 @@ namespace PagarmeCoreApi.PCL.Controllers
             try
             {
                 return APIHelper.JsonDeserialize<Models.GetAddressResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// Creates a access token for a customer
-        /// </summary>
-        /// <param name="customerId">Required parameter: Customer Id</param>
-        /// <param name="body">Required parameter: Request for creating a access token</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetAccessTokenResponse response from the API call</return>
-        public Models.GetAccessTokenResponse CreateAccessToken(string customerId, Models.CreateAccessTokenRequest body, string idempotencyKey = null)
-        {
-            Task<Models.GetAccessTokenResponse> t = CreateAccessTokenAsync(customerId, body, idempotencyKey);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Creates a access token for a customer
-        /// </summary>
-        /// <param name="customerId">Required parameter: Customer Id</param>
-        /// <param name="body">Required parameter: Request for creating a access token</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetAccessTokenResponse response from the API call</return>
-        public async Task<Models.GetAccessTokenResponse> CreateAccessTokenAsync(string customerId, Models.CreateAccessTokenRequest body, string idempotencyKey = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/customers/{customer_id}/access-tokens");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "customer_id", customerId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" },
-                { "Content-Type", "application/json" },
-                { "idempotency-key", idempotencyKey }
-            };
-
-            //append body params
-            var _body = APIHelper.JsonSerialize(body);
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.PostBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetAccessTokenResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// Creates a new address for a customer
-        /// </summary>
-        /// <param name="customerId">Required parameter: Customer Id</param>
-        /// <param name="body">Required parameter: Request for creating an address</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetAddressResponse response from the API call</return>
-        public Models.GetAddressResponse CreateAddress(string customerId, Models.CreateAddressRequest body, string idempotencyKey = null)
-        {
-            Task<Models.GetAddressResponse> t = CreateAddressAsync(customerId, body, idempotencyKey);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Creates a new address for a customer
-        /// </summary>
-        /// <param name="customerId">Required parameter: Customer Id</param>
-        /// <param name="body">Required parameter: Request for creating an address</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetAddressResponse response from the API call</return>
-        public async Task<Models.GetAddressResponse> CreateAddressAsync(string customerId, Models.CreateAddressRequest body, string idempotencyKey = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/customers/{customer_id}/addresses");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "customer_id", customerId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" },
-                { "Content-Type", "application/json" },
-                { "idempotency-key", idempotencyKey }
-            };
-
-            //append body params
-            var _body = APIHelper.JsonSerialize(body);
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.PostBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetAddressResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// Get all cards from a customer
-        /// </summary>
-        /// <param name="customerId">Required parameter: Customer Id</param>
-        /// <param name="page">Optional parameter: Page number</param>
-        /// <param name="size">Optional parameter: Page size</param>
-        /// <return>Returns the Models.ListCardsResponse response from the API call</return>
-        public Models.ListCardsResponse GetCards(string customerId, int? page = null, int? size = null)
-        {
-            Task<Models.ListCardsResponse> t = GetCardsAsync(customerId, page, size);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Get all cards from a customer
-        /// </summary>
-        /// <param name="customerId">Required parameter: Customer Id</param>
-        /// <param name="page">Optional parameter: Page number</param>
-        /// <param name="size">Optional parameter: Page size</param>
-        /// <return>Returns the Models.ListCardsResponse response from the API call</return>
-        public async Task<Models.ListCardsResponse> GetCardsAsync(string customerId, int? page = null, int? size = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/customers/{customer_id}/cards");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "customer_id", customerId }
-            });
-
-            //process optional query parameters
-            APIHelper.AppendUrlWithQueryParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "page", page },
-                { "size", size }
-            },ArrayDeserializationFormat,ParameterSeparator);
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" }
-            };
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.ListCardsResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// Updates the metadata a customer
-        /// </summary>
-        /// <param name="customerId">Required parameter: The customer id</param>
-        /// <param name="body">Required parameter: Request for updating the customer metadata</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetCustomerResponse response from the API call</return>
-        public Models.GetCustomerResponse UpdateCustomerMetadata(string customerId, Models.UpdateMetadataRequest body, string idempotencyKey = null)
-        {
-            Task<Models.GetCustomerResponse> t = UpdateCustomerMetadataAsync(customerId, body, idempotencyKey);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Updates the metadata a customer
-        /// </summary>
-        /// <param name="customerId">Required parameter: The customer id</param>
-        /// <param name="body">Required parameter: Request for updating the customer metadata</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetCustomerResponse response from the API call</return>
-        public async Task<Models.GetCustomerResponse> UpdateCustomerMetadataAsync(string customerId, Models.UpdateMetadataRequest body, string idempotencyKey = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/Customers/{customer_id}/metadata");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "customer_id", customerId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" },
-                { "Content-Type", "application/json" },
-                { "idempotency-key", idempotencyKey }
-            };
-
-            //append body params
-            var _body = APIHelper.JsonSerialize(body);
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.PatchBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetCustomerResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// Get a customer's card
-        /// </summary>
-        /// <param name="customerId">Required parameter: Customer id</param>
-        /// <param name="cardId">Required parameter: Card id</param>
-        /// <return>Returns the Models.GetCardResponse response from the API call</return>
-        public Models.GetCardResponse GetCard(string customerId, string cardId)
-        {
-            Task<Models.GetCardResponse> t = GetCardAsync(customerId, cardId);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Get a customer's card
-        /// </summary>
-        /// <param name="customerId">Required parameter: Customer id</param>
-        /// <param name="cardId">Required parameter: Card id</param>
-        /// <return>Returns the Models.GetCardResponse response from the API call</return>
-        public async Task<Models.GetCardResponse> GetCardAsync(string customerId, string cardId)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/customers/{customer_id}/cards/{card_id}");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "customer_id", customerId },
-                { "card_id", cardId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" }
-            };
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetCardResponse>(_response.Body);
             }
             catch (Exception _ex)
             {
@@ -1554,7 +643,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" },
                 { "idempotency-key", idempotencyKey }
             };
@@ -1640,7 +729,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" }
             };
 
@@ -1676,6 +765,281 @@ namespace PagarmeCoreApi.PCL.Controllers
             try
             {
                 return APIHelper.JsonDeserialize<Models.GetAccessTokenResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// Creates a access token for a customer
+        /// </summary>
+        /// <param name="customerId">Required parameter: Customer Id</param>
+        /// <param name="body">Required parameter: Request for creating a access token</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetAccessTokenResponse response from the API call</return>
+        public Models.GetAccessTokenResponse CreateAccessToken(string customerId, Models.CreateAccessTokenRequest body, string idempotencyKey = null)
+        {
+            Task<Models.GetAccessTokenResponse> t = CreateAccessTokenAsync(customerId, body, idempotencyKey);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Creates a access token for a customer
+        /// </summary>
+        /// <param name="customerId">Required parameter: Customer Id</param>
+        /// <param name="body">Required parameter: Request for creating a access token</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetAccessTokenResponse response from the API call</return>
+        public async Task<Models.GetAccessTokenResponse> CreateAccessTokenAsync(string customerId, Models.CreateAccessTokenRequest body, string idempotencyKey = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/customers/{customer_id}/access-tokens");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "customer_id", customerId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" },
+                { "Content-Type", "application/json" },
+                { "idempotency-key", idempotencyKey }
+            };
+
+            //append body params
+            var _body = APIHelper.JsonSerialize(body);
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.PostBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetAccessTokenResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// Get all access tokens from a customer
+        /// </summary>
+        /// <param name="customerId">Required parameter: Customer Id</param>
+        /// <param name="page">Optional parameter: Page number</param>
+        /// <param name="size">Optional parameter: Page size</param>
+        /// <return>Returns the Models.ListAccessTokensResponse response from the API call</return>
+        public Models.ListAccessTokensResponse GetAccessTokens(string customerId, int? page = null, int? size = null)
+        {
+            Task<Models.ListAccessTokensResponse> t = GetAccessTokensAsync(customerId, page, size);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Get all access tokens from a customer
+        /// </summary>
+        /// <param name="customerId">Required parameter: Customer Id</param>
+        /// <param name="page">Optional parameter: Page number</param>
+        /// <param name="size">Optional parameter: Page size</param>
+        /// <return>Returns the Models.ListAccessTokensResponse response from the API call</return>
+        public async Task<Models.ListAccessTokensResponse> GetAccessTokensAsync(string customerId, int? page = null, int? size = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/customers/{customer_id}/access-tokens");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "customer_id", customerId }
+            });
+
+            //process optional query parameters
+            APIHelper.AppendUrlWithQueryParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "page", page },
+                { "size", size }
+            },ArrayDeserializationFormat,ParameterSeparator);
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" }
+            };
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.ListAccessTokensResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// Creates a new address for a customer
+        /// </summary>
+        /// <param name="customerId">Required parameter: Customer Id</param>
+        /// <param name="body">Required parameter: Request for creating an address</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetAddressResponse response from the API call</return>
+        public Models.GetAddressResponse CreateAddress(string customerId, Models.CreateAddressRequest body, string idempotencyKey = null)
+        {
+            Task<Models.GetAddressResponse> t = CreateAddressAsync(customerId, body, idempotencyKey);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Creates a new address for a customer
+        /// </summary>
+        /// <param name="customerId">Required parameter: Customer Id</param>
+        /// <param name="body">Required parameter: Request for creating an address</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetAddressResponse response from the API call</return>
+        public async Task<Models.GetAddressResponse> CreateAddressAsync(string customerId, Models.CreateAddressRequest body, string idempotencyKey = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/customers/{customer_id}/addresses");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "customer_id", customerId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" },
+                { "Content-Type", "application/json" },
+                { "idempotency-key", idempotencyKey }
+            };
+
+            //append body params
+            var _body = APIHelper.JsonSerialize(body);
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.PostBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetAddressResponse>(_response.Body);
             }
             catch (Exception _ex)
             {
@@ -1733,7 +1097,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" }
             };
 
@@ -1811,7 +1175,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" },
                 { "Content-Type", "application/json" },
                 { "idempotency-key", idempotencyKey }
@@ -1852,6 +1216,197 @@ namespace PagarmeCoreApi.PCL.Controllers
             try
             {
                 return APIHelper.JsonDeserialize<Models.GetCustomerResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// Get all Customers
+        /// </summary>
+        /// <param name="name">Optional parameter: Name of the Customer</param>
+        /// <param name="document">Optional parameter: Document of the Customer</param>
+        /// <param name="page">Optional parameter: Current page the the search</param>
+        /// <param name="size">Optional parameter: Quantity pages of the search</param>
+        /// <param name="email">Optional parameter: Customer's email</param>
+        /// <param name="code">Optional parameter: Customer's code</param>
+        /// <return>Returns the Models.ListCustomersResponse response from the API call</return>
+        public Models.ListCustomersResponse GetCustomers(
+                string name = null,
+                string document = null,
+                int? page = 1,
+                int? size = 10,
+                string email = null,
+                string code = null)
+        {
+            Task<Models.ListCustomersResponse> t = GetCustomersAsync(name, document, page, size, email, code);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Get all Customers
+        /// </summary>
+        /// <param name="name">Optional parameter: Name of the Customer</param>
+        /// <param name="document">Optional parameter: Document of the Customer</param>
+        /// <param name="page">Optional parameter: Current page the the search</param>
+        /// <param name="size">Optional parameter: Quantity pages of the search</param>
+        /// <param name="email">Optional parameter: Customer's email</param>
+        /// <param name="code">Optional parameter: Customer's code</param>
+        /// <return>Returns the Models.ListCustomersResponse response from the API call</return>
+        public async Task<Models.ListCustomersResponse> GetCustomersAsync(
+                string name = null,
+                string document = null,
+                int? page = 1,
+                int? size = 10,
+                string email = null,
+                string code = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/customers");
+
+            //process optional query parameters
+            APIHelper.AppendUrlWithQueryParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "name", name },
+                { "document", document },
+                { "page", (null != page) ? page : 1 },
+                { "size", (null != size) ? size : 10 },
+                { "email", email },
+                { "Code", code }
+            },ArrayDeserializationFormat,ParameterSeparator);
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" }
+            };
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.ListCustomersResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// Delete a Customer's access tokens
+        /// </summary>
+        /// <param name="customerId">Required parameter: Customer Id</param>
+        /// <return>Returns the Models.ListAccessTokensResponse response from the API call</return>
+        public Models.ListAccessTokensResponse DeleteAccessTokens(string customerId)
+        {
+            Task<Models.ListAccessTokensResponse> t = DeleteAccessTokensAsync(customerId);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Delete a Customer's access tokens
+        /// </summary>
+        /// <param name="customerId">Required parameter: Customer Id</param>
+        /// <return>Returns the Models.ListAccessTokensResponse response from the API call</return>
+        public async Task<Models.ListAccessTokensResponse> DeleteAccessTokensAsync(string customerId)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/customers/{customer_id}/access-tokens/");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "customer_id", customerId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" }
+            };
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.ListAccessTokensResponse>(_response.Body);
             }
             catch (Exception _ex)
             {
@@ -1902,7 +1457,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" },
                 { "Content-Type", "application/json" },
                 { "idempotency-key", idempotencyKey }
@@ -1943,6 +1498,451 @@ namespace PagarmeCoreApi.PCL.Controllers
             try
             {
                 return APIHelper.JsonDeserialize<Models.GetCardResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// Get all cards from a customer
+        /// </summary>
+        /// <param name="customerId">Required parameter: Customer Id</param>
+        /// <param name="page">Optional parameter: Page number</param>
+        /// <param name="size">Optional parameter: Page size</param>
+        /// <return>Returns the Models.ListCardsResponse response from the API call</return>
+        public Models.ListCardsResponse GetCards(string customerId, int? page = null, int? size = null)
+        {
+            Task<Models.ListCardsResponse> t = GetCardsAsync(customerId, page, size);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Get all cards from a customer
+        /// </summary>
+        /// <param name="customerId">Required parameter: Customer Id</param>
+        /// <param name="page">Optional parameter: Page number</param>
+        /// <param name="size">Optional parameter: Page size</param>
+        /// <return>Returns the Models.ListCardsResponse response from the API call</return>
+        public async Task<Models.ListCardsResponse> GetCardsAsync(string customerId, int? page = null, int? size = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/customers/{customer_id}/cards");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "customer_id", customerId }
+            });
+
+            //process optional query parameters
+            APIHelper.AppendUrlWithQueryParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "page", page },
+                { "size", size }
+            },ArrayDeserializationFormat,ParameterSeparator);
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" }
+            };
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.ListCardsResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// Updates a customer
+        /// </summary>
+        /// <param name="customerId">Required parameter: Customer id</param>
+        /// <param name="body">Required parameter: Request for updating a customer</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetCustomerResponse response from the API call</return>
+        public Models.GetCustomerResponse UpdateCustomer(string customerId, Models.UpdateCustomerRequest body, string idempotencyKey = null)
+        {
+            Task<Models.GetCustomerResponse> t = UpdateCustomerAsync(customerId, body, idempotencyKey);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Updates a customer
+        /// </summary>
+        /// <param name="customerId">Required parameter: Customer id</param>
+        /// <param name="body">Required parameter: Request for updating a customer</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetCustomerResponse response from the API call</return>
+        public async Task<Models.GetCustomerResponse> UpdateCustomerAsync(string customerId, Models.UpdateCustomerRequest body, string idempotencyKey = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/customers/{customer_id}");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "customer_id", customerId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" },
+                { "Content-Type", "application/json" },
+                { "idempotency-key", idempotencyKey }
+            };
+
+            //append body params
+            var _body = APIHelper.JsonSerialize(body);
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.PutBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetCustomerResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// Get a customer
+        /// </summary>
+        /// <param name="customerId">Required parameter: Customer Id</param>
+        /// <return>Returns the Models.GetCustomerResponse response from the API call</return>
+        public Models.GetCustomerResponse GetCustomer(string customerId)
+        {
+            Task<Models.GetCustomerResponse> t = GetCustomerAsync(customerId);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Get a customer
+        /// </summary>
+        /// <param name="customerId">Required parameter: Customer Id</param>
+        /// <return>Returns the Models.GetCustomerResponse response from the API call</return>
+        public async Task<Models.GetCustomerResponse> GetCustomerAsync(string customerId)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/customers/{customer_id}");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "customer_id", customerId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" }
+            };
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetCustomerResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// Renew a card
+        /// </summary>
+        /// <param name="customerId">Required parameter: Customer id</param>
+        /// <param name="cardId">Required parameter: Card Id</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetCardResponse response from the API call</return>
+        public Models.GetCardResponse RenewCard(string customerId, string cardId, string idempotencyKey = null)
+        {
+            Task<Models.GetCardResponse> t = RenewCardAsync(customerId, cardId, idempotencyKey);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Renew a card
+        /// </summary>
+        /// <param name="customerId">Required parameter: Customer id</param>
+        /// <param name="cardId">Required parameter: Card Id</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetCardResponse response from the API call</return>
+        public async Task<Models.GetCardResponse> RenewCardAsync(string customerId, string cardId, string idempotencyKey = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/customers/{customer_id}/cards/{card_id}/renew");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "customer_id", customerId },
+                { "card_id", cardId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" },
+                { "idempotency-key", idempotencyKey }
+            };
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.Post(_queryUrl, _headers, null, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetCardResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// Updates the metadata a customer
+        /// </summary>
+        /// <param name="customerId">Required parameter: The customer id</param>
+        /// <param name="body">Required parameter: Request for updating the customer metadata</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetCustomerResponse response from the API call</return>
+        public Models.GetCustomerResponse UpdateCustomerMetadata(string customerId, Models.UpdateMetadataRequest body, string idempotencyKey = null)
+        {
+            Task<Models.GetCustomerResponse> t = UpdateCustomerMetadataAsync(customerId, body, idempotencyKey);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Updates the metadata a customer
+        /// </summary>
+        /// <param name="customerId">Required parameter: The customer id</param>
+        /// <param name="body">Required parameter: Request for updating the customer metadata</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetCustomerResponse response from the API call</return>
+        public async Task<Models.GetCustomerResponse> UpdateCustomerMetadataAsync(string customerId, Models.UpdateMetadataRequest body, string idempotencyKey = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/Customers/{customer_id}/metadata");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "customer_id", customerId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" },
+                { "Content-Type", "application/json" },
+                { "idempotency-key", idempotencyKey }
+            };
+
+            //append body params
+            var _body = APIHelper.JsonSerialize(body);
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.PatchBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetCustomerResponse>(_response.Body);
             }
             catch (Exception _ex)
             {

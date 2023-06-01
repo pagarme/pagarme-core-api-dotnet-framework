@@ -92,7 +92,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" },
                 { "Content-Type", "application/json" },
                 { "idempotency-key", idempotencyKey }
@@ -133,6 +133,196 @@ namespace PagarmeCoreApi.PCL.Controllers
             try
             {
                 return APIHelper.JsonDeserialize<Models.GetSubscriptionResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// Deletes a usage
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="itemId">Required parameter: The subscription item id</param>
+        /// <param name="usageId">Required parameter: The usage id</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetUsageResponse response from the API call</return>
+        public Models.GetUsageResponse DeleteUsage(
+                string subscriptionId,
+                string itemId,
+                string usageId,
+                string idempotencyKey = null)
+        {
+            Task<Models.GetUsageResponse> t = DeleteUsageAsync(subscriptionId, itemId, usageId, idempotencyKey);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Deletes a usage
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="itemId">Required parameter: The subscription item id</param>
+        /// <param name="usageId">Required parameter: The usage id</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetUsageResponse response from the API call</return>
+        public async Task<Models.GetUsageResponse> DeleteUsageAsync(
+                string subscriptionId,
+                string itemId,
+                string usageId,
+                string idempotencyKey = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/subscriptions/{subscription_id}/items/{item_id}/usages/{usage_id}");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "subscription_id", subscriptionId },
+                { "item_id", itemId },
+                { "usage_id", usageId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" },
+                { "idempotency-key", idempotencyKey }
+            };
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.Delete(_queryUrl, _headers, null, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetUsageResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// Creates a discount
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription id</param>
+        /// <param name="body">Required parameter: Request for creating a discount</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetDiscountResponse response from the API call</return>
+        public Models.GetDiscountResponse CreateDiscount(string subscriptionId, Models.CreateDiscountRequest body, string idempotencyKey = null)
+        {
+            Task<Models.GetDiscountResponse> t = CreateDiscountAsync(subscriptionId, body, idempotencyKey);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Creates a discount
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription id</param>
+        /// <param name="body">Required parameter: Request for creating a discount</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetDiscountResponse response from the API call</return>
+        public async Task<Models.GetDiscountResponse> CreateDiscountAsync(string subscriptionId, Models.CreateDiscountRequest body, string idempotencyKey = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/subscriptions/{subscription_id}/discounts");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "subscription_id", subscriptionId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" },
+                { "Content-Type", "application/json" },
+                { "idempotency-key", idempotencyKey }
+            };
+
+            //append body params
+            var _body = APIHelper.JsonSerialize(body);
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.PostBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetDiscountResponse>(_response.Body);
             }
             catch (Exception _ex)
             {
@@ -184,7 +374,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" },
                 { "idempotency-key", idempotencyKey }
             };
@@ -226,6 +416,211 @@ namespace PagarmeCoreApi.PCL.Controllers
             {
                 throw new APIException("Failed to parse the response: " + _ex.Message, _context);
             }
+        }
+
+        /// <summary>
+        /// Lists all usages from a subscription item
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="itemId">Required parameter: The subscription item id</param>
+        /// <param name="page">Optional parameter: Page number</param>
+        /// <param name="size">Optional parameter: Page size</param>
+        /// <param name="code">Optional parameter: Identification code in the client system</param>
+        /// <param name="mgroup">Optional parameter: Identification group in the client system</param>
+        /// <param name="usedSince">Optional parameter: Example: </param>
+        /// <param name="usedUntil">Optional parameter: Example: </param>
+        /// <return>Returns the Models.ListUsagesResponse response from the API call</return>
+        public Models.ListUsagesResponse GetUsages(
+                string subscriptionId,
+                string itemId,
+                int? page = null,
+                int? size = null,
+                string code = null,
+                string mgroup = null,
+                DateTime? usedSince = null,
+                DateTime? usedUntil = null)
+        {
+            Task<Models.ListUsagesResponse> t = GetUsagesAsync(subscriptionId, itemId, page, size, code, mgroup, usedSince, usedUntil);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Lists all usages from a subscription item
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="itemId">Required parameter: The subscription item id</param>
+        /// <param name="page">Optional parameter: Page number</param>
+        /// <param name="size">Optional parameter: Page size</param>
+        /// <param name="code">Optional parameter: Identification code in the client system</param>
+        /// <param name="mgroup">Optional parameter: Identification group in the client system</param>
+        /// <param name="usedSince">Optional parameter: Example: </param>
+        /// <param name="usedUntil">Optional parameter: Example: </param>
+        /// <return>Returns the Models.ListUsagesResponse response from the API call</return>
+        public async Task<Models.ListUsagesResponse> GetUsagesAsync(
+                string subscriptionId,
+                string itemId,
+                int? page = null,
+                int? size = null,
+                string code = null,
+                string mgroup = null,
+                DateTime? usedSince = null,
+                DateTime? usedUntil = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/subscriptions/{subscription_id}/items/{item_id}/usages");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "subscription_id", subscriptionId },
+                { "item_id", itemId }
+            });
+
+            //process optional query parameters
+            APIHelper.AppendUrlWithQueryParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "page", page },
+                { "size", size },
+                { "code", code },
+                { "group", mgroup },
+                { "used_since", (usedSince.HasValue) ? usedSince.Value.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK") : null },
+                { "used_until", (usedUntil.HasValue) ? usedUntil.Value.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK") : null }
+            },ArrayDeserializationFormat,ParameterSeparator);
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" }
+            };
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.ListUsagesResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// UpdateCurrentCycleStatus
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
+        /// <param name="body">Required parameter: Request for updating the end date of the subscription current status</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the void response from the API call</return>
+        public void UpdateCurrentCycleStatus(string subscriptionId, Models.UpdateCurrentCycleStatusRequest body, string idempotencyKey = null)
+        {
+            Task t = UpdateCurrentCycleStatusAsync(subscriptionId, body, idempotencyKey);
+            APIHelper.RunTaskSynchronously(t);
+        }
+
+        /// <summary>
+        /// UpdateCurrentCycleStatus
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
+        /// <param name="body">Required parameter: Request for updating the end date of the subscription current status</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the void response from the API call</return>
+        public async Task UpdateCurrentCycleStatusAsync(string subscriptionId, Models.UpdateCurrentCycleStatusRequest body, string idempotencyKey = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/subscriptions/{subscription_id}/cycle-status");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "subscription_id", subscriptionId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "Content-Type", "application/json" },
+                { "idempotency-key", idempotencyKey }
+            };
+
+            //append body params
+            var _body = APIHelper.JsonSerialize(body);
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.PatchBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
         }
 
         /// <summary>
@@ -271,7 +666,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" },
                 { "Content-Type", "application/json" },
                 { "idempotency-key", idempotencyKey }
@@ -312,633 +707,6 @@ namespace PagarmeCoreApi.PCL.Controllers
             try
             {
                 return APIHelper.JsonDeserialize<Models.GetSubscriptionResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// Creates a new Subscription item
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription id</param>
-        /// <param name="body">Required parameter: Request for creating a subscription item</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionItemResponse response from the API call</return>
-        public Models.GetSubscriptionItemResponse CreateSubscriptionItem(string subscriptionId, Models.CreateSubscriptionItemRequest body, string idempotencyKey = null)
-        {
-            Task<Models.GetSubscriptionItemResponse> t = CreateSubscriptionItemAsync(subscriptionId, body, idempotencyKey);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Creates a new Subscription item
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription id</param>
-        /// <param name="body">Required parameter: Request for creating a subscription item</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionItemResponse response from the API call</return>
-        public async Task<Models.GetSubscriptionItemResponse> CreateSubscriptionItemAsync(string subscriptionId, Models.CreateSubscriptionItemRequest body, string idempotencyKey = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/subscriptions/{subscription_id}/items");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "subscription_id", subscriptionId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" },
-                { "Content-Type", "application/json" },
-                { "idempotency-key", idempotencyKey }
-            };
-
-            //append body params
-            var _body = APIHelper.JsonSerialize(body);
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.PostBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetSubscriptionItemResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// Get Subscription Item
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
-        /// <param name="itemId">Required parameter: Item id</param>
-        /// <return>Returns the Models.GetSubscriptionItemResponse response from the API call</return>
-        public Models.GetSubscriptionItemResponse GetSubscriptionItem(string subscriptionId, string itemId)
-        {
-            Task<Models.GetSubscriptionItemResponse> t = GetSubscriptionItemAsync(subscriptionId, itemId);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Get Subscription Item
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
-        /// <param name="itemId">Required parameter: Item id</param>
-        /// <return>Returns the Models.GetSubscriptionItemResponse response from the API call</return>
-        public async Task<Models.GetSubscriptionItemResponse> GetSubscriptionItemAsync(string subscriptionId, string itemId)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/subscriptions/{subscription_id}/items/{item_id}");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "subscription_id", subscriptionId },
-                { "item_id", itemId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" }
-            };
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetSubscriptionItemResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// UpdateSubscriptionAffiliationId
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Example: </param>
-        /// <param name="body">Required parameter: Request for updating a subscription affiliation id</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        public Models.GetSubscriptionResponse UpdateSubscriptionAffiliationId(string subscriptionId, Models.UpdateSubscriptionAffiliationIdRequest body, string idempotencyKey = null)
-        {
-            Task<Models.GetSubscriptionResponse> t = UpdateSubscriptionAffiliationIdAsync(subscriptionId, body, idempotencyKey);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// UpdateSubscriptionAffiliationId
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Example: </param>
-        /// <param name="body">Required parameter: Request for updating a subscription affiliation id</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        public async Task<Models.GetSubscriptionResponse> UpdateSubscriptionAffiliationIdAsync(string subscriptionId, Models.UpdateSubscriptionAffiliationIdRequest body, string idempotencyKey = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/subscriptions/{subscription_id}/gateway-affiliation-id");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "subscription_id", subscriptionId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" },
-                { "Content-Type", "application/json" },
-                { "idempotency-key", idempotencyKey }
-            };
-
-            //append body params
-            var _body = APIHelper.JsonSerialize(body);
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.PatchBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetSubscriptionResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// GetIncrements
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="page">Optional parameter: Page number</param>
-        /// <param name="size">Optional parameter: Page size</param>
-        /// <return>Returns the Models.ListIncrementsResponse response from the API call</return>
-        public Models.ListIncrementsResponse GetIncrements(string subscriptionId, int? page = null, int? size = null)
-        {
-            Task<Models.ListIncrementsResponse> t = GetIncrementsAsync(subscriptionId, page, size);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// GetIncrements
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="page">Optional parameter: Page number</param>
-        /// <param name="size">Optional parameter: Page size</param>
-        /// <return>Returns the Models.ListIncrementsResponse response from the API call</return>
-        public async Task<Models.ListIncrementsResponse> GetIncrementsAsync(string subscriptionId, int? page = null, int? size = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/subscriptions/{subscription_id}/increments/");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "subscription_id", subscriptionId }
-            });
-
-            //process optional query parameters
-            APIHelper.AppendUrlWithQueryParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "page", page },
-                { "size", size }
-            },ArrayDeserializationFormat,ParameterSeparator);
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" }
-            };
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.ListIncrementsResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// Updates the boleto due days from a subscription
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
-        /// <param name="body">Required parameter: Example: </param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        public Models.GetSubscriptionResponse UpdateSubscriptionDueDays(string subscriptionId, Models.UpdateSubscriptionDueDaysRequest body, string idempotencyKey = null)
-        {
-            Task<Models.GetSubscriptionResponse> t = UpdateSubscriptionDueDaysAsync(subscriptionId, body, idempotencyKey);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Updates the boleto due days from a subscription
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
-        /// <param name="body">Required parameter: Example: </param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        public async Task<Models.GetSubscriptionResponse> UpdateSubscriptionDueDaysAsync(string subscriptionId, Models.UpdateSubscriptionDueDaysRequest body, string idempotencyKey = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/subscriptions/{subscription_id}/boleto-due-days");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "subscription_id", subscriptionId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" },
-                { "Content-Type", "application/json" },
-                { "idempotency-key", idempotencyKey }
-            };
-
-            //append body params
-            var _body = APIHelper.JsonSerialize(body);
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.PatchBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetSubscriptionResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// Updates the start at date from a subscription
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="body">Required parameter: Request for updating the subscription start date</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        public Models.GetSubscriptionResponse UpdateSubscriptionStartAt(string subscriptionId, Models.UpdateSubscriptionStartAtRequest body, string idempotencyKey = null)
-        {
-            Task<Models.GetSubscriptionResponse> t = UpdateSubscriptionStartAtAsync(subscriptionId, body, idempotencyKey);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Updates the start at date from a subscription
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="body">Required parameter: Request for updating the subscription start date</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        public async Task<Models.GetSubscriptionResponse> UpdateSubscriptionStartAtAsync(string subscriptionId, Models.UpdateSubscriptionStartAtRequest body, string idempotencyKey = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/subscriptions/{subscription_id}/start-at");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "subscription_id", subscriptionId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" },
-                { "Content-Type", "application/json" },
-                { "idempotency-key", idempotencyKey }
-            };
-
-            //append body params
-            var _body = APIHelper.JsonSerialize(body);
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.PatchBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetSubscriptionResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// GetSubscriptionCycleById
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="cycleId">Required parameter: Example: </param>
-        /// <return>Returns the Models.GetPeriodResponse response from the API call</return>
-        public Models.GetPeriodResponse GetSubscriptionCycleById(string subscriptionId, string cycleId)
-        {
-            Task<Models.GetPeriodResponse> t = GetSubscriptionCycleByIdAsync(subscriptionId, cycleId);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// GetSubscriptionCycleById
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="cycleId">Required parameter: Example: </param>
-        /// <return>Returns the Models.GetPeriodResponse response from the API call</return>
-        public async Task<Models.GetPeriodResponse> GetSubscriptionCycleByIdAsync(string subscriptionId, string cycleId)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/subscriptions/{subscription_id}/cycles/{cycleId}");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "subscription_id", subscriptionId },
-                { "cycleId", cycleId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" }
-            };
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetPeriodResponse>(_response.Body);
             }
             catch (Exception _ex)
             {
@@ -990,7 +758,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" },
                 { "idempotency-key", idempotencyKey }
             };
@@ -1120,7 +888,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" }
             };
 
@@ -1156,6 +924,182 @@ namespace PagarmeCoreApi.PCL.Controllers
             try
             {
                 return APIHelper.JsonDeserialize<Models.ListSubscriptionItemsResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// Creates a new Subscription item
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription id</param>
+        /// <param name="body">Required parameter: Request for creating a subscription item</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionItemResponse response from the API call</return>
+        public Models.GetSubscriptionItemResponse CreateSubscriptionItem(string subscriptionId, Models.CreateSubscriptionItemRequest body, string idempotencyKey = null)
+        {
+            Task<Models.GetSubscriptionItemResponse> t = CreateSubscriptionItemAsync(subscriptionId, body, idempotencyKey);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Creates a new Subscription item
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription id</param>
+        /// <param name="body">Required parameter: Request for creating a subscription item</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionItemResponse response from the API call</return>
+        public async Task<Models.GetSubscriptionItemResponse> CreateSubscriptionItemAsync(string subscriptionId, Models.CreateSubscriptionItemRequest body, string idempotencyKey = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/subscriptions/{subscription_id}/items");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "subscription_id", subscriptionId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" },
+                { "Content-Type", "application/json" },
+                { "idempotency-key", idempotencyKey }
+            };
+
+            //append body params
+            var _body = APIHelper.JsonSerialize(body);
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.PostBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetSubscriptionItemResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// Get Subscription Item
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
+        /// <param name="itemId">Required parameter: Item id</param>
+        /// <return>Returns the Models.GetSubscriptionItemResponse response from the API call</return>
+        public Models.GetSubscriptionItemResponse GetSubscriptionItem(string subscriptionId, string itemId)
+        {
+            Task<Models.GetSubscriptionItemResponse> t = GetSubscriptionItemAsync(subscriptionId, itemId);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Get Subscription Item
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
+        /// <param name="itemId">Required parameter: Item id</param>
+        /// <return>Returns the Models.GetSubscriptionItemResponse response from the API call</return>
+        public async Task<Models.GetSubscriptionItemResponse> GetSubscriptionItemAsync(string subscriptionId, string itemId)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/subscriptions/{subscription_id}/items/{item_id}");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "subscription_id", subscriptionId },
+                { "item_id", itemId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" }
+            };
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetSubscriptionItemResponse>(_response.Body);
             }
             catch (Exception _ex)
             {
@@ -1217,7 +1161,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" },
                 { "Content-Type", "application/json" },
                 { "idempotency-key", idempotencyKey }
@@ -1258,1296 +1202,6 @@ namespace PagarmeCoreApi.PCL.Controllers
             try
             {
                 return APIHelper.JsonDeserialize<Models.GetSubscriptionItemResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// Creates a new subscription
-        /// </summary>
-        /// <param name="body">Required parameter: Request for creating a subscription</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        public Models.GetSubscriptionResponse CreateSubscription(Models.CreateSubscriptionRequest body, string idempotencyKey = null)
-        {
-            Task<Models.GetSubscriptionResponse> t = CreateSubscriptionAsync(body, idempotencyKey);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Creates a new subscription
-        /// </summary>
-        /// <param name="body">Required parameter: Request for creating a subscription</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        public async Task<Models.GetSubscriptionResponse> CreateSubscriptionAsync(Models.CreateSubscriptionRequest body, string idempotencyKey = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/subscriptions");
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" },
-                { "Content-Type", "application/json" },
-                { "idempotency-key", idempotencyKey }
-            };
-
-            //append body params
-            var _body = APIHelper.JsonSerialize(body);
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.PostBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetSubscriptionResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// GetDiscountById
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="discountId">Required parameter: Example: </param>
-        /// <return>Returns the Models.GetDiscountResponse response from the API call</return>
-        public Models.GetDiscountResponse GetDiscountById(string subscriptionId, string discountId)
-        {
-            Task<Models.GetDiscountResponse> t = GetDiscountByIdAsync(subscriptionId, discountId);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// GetDiscountById
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="discountId">Required parameter: Example: </param>
-        /// <return>Returns the Models.GetDiscountResponse response from the API call</return>
-        public async Task<Models.GetDiscountResponse> GetDiscountByIdAsync(string subscriptionId, string discountId)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/subscriptions/{subscription_id}/discounts/{discountId}");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "subscription_id", subscriptionId },
-                { "discountId", discountId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" }
-            };
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetDiscountResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// Updates the billing date from a subscription
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="body">Required parameter: Request for updating the subscription billing date</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        public Models.GetSubscriptionResponse UpdateSubscriptionBillingDate(string subscriptionId, Models.UpdateSubscriptionBillingDateRequest body, string idempotencyKey = null)
-        {
-            Task<Models.GetSubscriptionResponse> t = UpdateSubscriptionBillingDateAsync(subscriptionId, body, idempotencyKey);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Updates the billing date from a subscription
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="body">Required parameter: Request for updating the subscription billing date</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        public async Task<Models.GetSubscriptionResponse> UpdateSubscriptionBillingDateAsync(string subscriptionId, Models.UpdateSubscriptionBillingDateRequest body, string idempotencyKey = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/subscriptions/{subscription_id}/billing-date");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "subscription_id", subscriptionId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" },
-                { "Content-Type", "application/json" },
-                { "idempotency-key", idempotencyKey }
-            };
-
-            //append body params
-            var _body = APIHelper.JsonSerialize(body);
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.PatchBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetSubscriptionResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// UpdateLatestPeriodEndAt
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Example: </param>
-        /// <param name="body">Required parameter: Request for updating the end date of the current signature cycle</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        public Models.GetSubscriptionResponse UpdateLatestPeriodEndAt(string subscriptionId, Models.UpdateCurrentCycleEndDateRequest body, string idempotencyKey = null)
-        {
-            Task<Models.GetSubscriptionResponse> t = UpdateLatestPeriodEndAtAsync(subscriptionId, body, idempotencyKey);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// UpdateLatestPeriodEndAt
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Example: </param>
-        /// <param name="body">Required parameter: Request for updating the end date of the current signature cycle</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        public async Task<Models.GetSubscriptionResponse> UpdateLatestPeriodEndAtAsync(string subscriptionId, Models.UpdateCurrentCycleEndDateRequest body, string idempotencyKey = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/subscriptions/{subscription_id}/periods/latest/end-at");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "subscription_id", subscriptionId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" },
-                { "Content-Type", "application/json" },
-                { "idempotency-key", idempotencyKey }
-            };
-
-            //append body params
-            var _body = APIHelper.JsonSerialize(body);
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.PatchBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetSubscriptionResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// Creates a discount
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription id</param>
-        /// <param name="body">Required parameter: Request for creating a discount</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetDiscountResponse response from the API call</return>
-        public Models.GetDiscountResponse CreateDiscount(string subscriptionId, Models.CreateDiscountRequest body, string idempotencyKey = null)
-        {
-            Task<Models.GetDiscountResponse> t = CreateDiscountAsync(subscriptionId, body, idempotencyKey);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Creates a discount
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription id</param>
-        /// <param name="body">Required parameter: Request for creating a discount</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetDiscountResponse response from the API call</return>
-        public async Task<Models.GetDiscountResponse> CreateDiscountAsync(string subscriptionId, Models.CreateDiscountRequest body, string idempotencyKey = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/subscriptions/{subscription_id}/discounts");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "subscription_id", subscriptionId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" },
-                { "Content-Type", "application/json" },
-                { "idempotency-key", idempotencyKey }
-            };
-
-            //append body params
-            var _body = APIHelper.JsonSerialize(body);
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.PostBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetDiscountResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// Deletes a usage
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="itemId">Required parameter: The subscription item id</param>
-        /// <param name="usageId">Required parameter: The usage id</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetUsageResponse response from the API call</return>
-        public Models.GetUsageResponse DeleteUsage(
-                string subscriptionId,
-                string itemId,
-                string usageId,
-                string idempotencyKey = null)
-        {
-            Task<Models.GetUsageResponse> t = DeleteUsageAsync(subscriptionId, itemId, usageId, idempotencyKey);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Deletes a usage
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="itemId">Required parameter: The subscription item id</param>
-        /// <param name="usageId">Required parameter: The usage id</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetUsageResponse response from the API call</return>
-        public async Task<Models.GetUsageResponse> DeleteUsageAsync(
-                string subscriptionId,
-                string itemId,
-                string usageId,
-                string idempotencyKey = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/subscriptions/{subscription_id}/items/{item_id}/usages/{usage_id}");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "subscription_id", subscriptionId },
-                { "item_id", itemId },
-                { "usage_id", usageId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" },
-                { "idempotency-key", idempotencyKey }
-            };
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.Delete(_queryUrl, _headers, null, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetUsageResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// Lists all usages from a subscription item
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="itemId">Required parameter: The subscription item id</param>
-        /// <param name="page">Optional parameter: Page number</param>
-        /// <param name="size">Optional parameter: Page size</param>
-        /// <param name="code">Optional parameter: Identification code in the client system</param>
-        /// <param name="mgroup">Optional parameter: Identification group in the client system</param>
-        /// <param name="usedSince">Optional parameter: Example: </param>
-        /// <param name="usedUntil">Optional parameter: Example: </param>
-        /// <return>Returns the Models.ListUsagesResponse response from the API call</return>
-        public Models.ListUsagesResponse GetUsages(
-                string subscriptionId,
-                string itemId,
-                int? page = null,
-                int? size = null,
-                string code = null,
-                string mgroup = null,
-                DateTime? usedSince = null,
-                DateTime? usedUntil = null)
-        {
-            Task<Models.ListUsagesResponse> t = GetUsagesAsync(subscriptionId, itemId, page, size, code, mgroup, usedSince, usedUntil);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Lists all usages from a subscription item
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="itemId">Required parameter: The subscription item id</param>
-        /// <param name="page">Optional parameter: Page number</param>
-        /// <param name="size">Optional parameter: Page size</param>
-        /// <param name="code">Optional parameter: Identification code in the client system</param>
-        /// <param name="mgroup">Optional parameter: Identification group in the client system</param>
-        /// <param name="usedSince">Optional parameter: Example: </param>
-        /// <param name="usedUntil">Optional parameter: Example: </param>
-        /// <return>Returns the Models.ListUsagesResponse response from the API call</return>
-        public async Task<Models.ListUsagesResponse> GetUsagesAsync(
-                string subscriptionId,
-                string itemId,
-                int? page = null,
-                int? size = null,
-                string code = null,
-                string mgroup = null,
-                DateTime? usedSince = null,
-                DateTime? usedUntil = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/subscriptions/{subscription_id}/items/{item_id}/usages");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "subscription_id", subscriptionId },
-                { "item_id", itemId }
-            });
-
-            //process optional query parameters
-            APIHelper.AppendUrlWithQueryParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "page", page },
-                { "size", size },
-                { "code", code },
-                { "group", mgroup },
-                { "used_since", (usedSince.HasValue) ? usedSince.Value.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK") : null },
-                { "used_until", (usedUntil.HasValue) ? usedUntil.Value.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK") : null }
-            },ArrayDeserializationFormat,ParameterSeparator);
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" }
-            };
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.ListUsagesResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// UpdateCurrentCycleStatus
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
-        /// <param name="body">Required parameter: Request for updating the end date of the subscription current status</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the void response from the API call</return>
-        public void UpdateCurrentCycleStatus(string subscriptionId, Models.UpdateCurrentCycleStatusRequest body, string idempotencyKey = null)
-        {
-            Task t = UpdateCurrentCycleStatusAsync(subscriptionId, body, idempotencyKey);
-            APIHelper.RunTaskSynchronously(t);
-        }
-
-        /// <summary>
-        /// UpdateCurrentCycleStatus
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
-        /// <param name="body">Required parameter: Request for updating the end date of the subscription current status</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the void response from the API call</return>
-        public async Task UpdateCurrentCycleStatusAsync(string subscriptionId, Models.UpdateCurrentCycleStatusRequest body, string idempotencyKey = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/subscriptions/{subscription_id}/cycle-status");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "subscription_id", subscriptionId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "Content-Type", "application/json" },
-                { "idempotency-key", idempotencyKey }
-            };
-
-            //append body params
-            var _body = APIHelper.JsonSerialize(body);
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.PatchBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-        }
-
-        /// <summary>
-        /// Cancels a subscription
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription id</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <param name="body">Optional parameter: Request for cancelling a subscription</param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        public Models.GetSubscriptionResponse CancelSubscription(string subscriptionId, string idempotencyKey = null, Models.CreateCancelSubscriptionRequest body = null)
-        {
-            Task<Models.GetSubscriptionResponse> t = CancelSubscriptionAsync(subscriptionId, idempotencyKey, body);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Cancels a subscription
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription id</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <param name="body">Optional parameter: Request for cancelling a subscription</param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        public async Task<Models.GetSubscriptionResponse> CancelSubscriptionAsync(string subscriptionId, string idempotencyKey = null, Models.CreateCancelSubscriptionRequest body = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/subscriptions/{subscription_id}");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "subscription_id", subscriptionId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" },
-                { "Content-Type", "application/json" },
-                { "idempotency-key", idempotencyKey }
-            };
-
-            //append body params
-            var _body = APIHelper.JsonSerialize(body);
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.DeleteBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetSubscriptionResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// Creates a increment
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription id</param>
-        /// <param name="body">Required parameter: Request for creating a increment</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetIncrementResponse response from the API call</return>
-        public Models.GetIncrementResponse CreateIncrement(string subscriptionId, Models.CreateIncrementRequest body, string idempotencyKey = null)
-        {
-            Task<Models.GetIncrementResponse> t = CreateIncrementAsync(subscriptionId, body, idempotencyKey);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Creates a increment
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription id</param>
-        /// <param name="body">Required parameter: Request for creating a increment</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetIncrementResponse response from the API call</return>
-        public async Task<Models.GetIncrementResponse> CreateIncrementAsync(string subscriptionId, Models.CreateIncrementRequest body, string idempotencyKey = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/subscriptions/{subscription_id}/increments");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "subscription_id", subscriptionId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" },
-                { "Content-Type", "application/json" },
-                { "idempotency-key", idempotencyKey }
-            };
-
-            //append body params
-            var _body = APIHelper.JsonSerialize(body);
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.PostBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetIncrementResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// Updates the metadata from a subscription
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="body">Required parameter: Request for updating the subscrption metadata</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        public Models.GetSubscriptionResponse UpdateSubscriptionMetadata(string subscriptionId, Models.UpdateMetadataRequest body, string idempotencyKey = null)
-        {
-            Task<Models.GetSubscriptionResponse> t = UpdateSubscriptionMetadataAsync(subscriptionId, body, idempotencyKey);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Updates the metadata from a subscription
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="body">Required parameter: Request for updating the subscrption metadata</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        public async Task<Models.GetSubscriptionResponse> UpdateSubscriptionMetadataAsync(string subscriptionId, Models.UpdateMetadataRequest body, string idempotencyKey = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/Subscriptions/{subscription_id}/metadata");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "subscription_id", subscriptionId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" },
-                { "Content-Type", "application/json" },
-                { "idempotency-key", idempotencyKey }
-            };
-
-            //append body params
-            var _body = APIHelper.JsonSerialize(body);
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.PatchBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetSubscriptionResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// GetDiscounts
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="page">Required parameter: Page number</param>
-        /// <param name="size">Required parameter: Page size</param>
-        /// <return>Returns the Models.ListDiscountsResponse response from the API call</return>
-        public Models.ListDiscountsResponse GetDiscounts(string subscriptionId, int page, int size)
-        {
-            Task<Models.ListDiscountsResponse> t = GetDiscountsAsync(subscriptionId, page, size);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// GetDiscounts
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: The subscription id</param>
-        /// <param name="page">Required parameter: Page number</param>
-        /// <param name="size">Required parameter: Page size</param>
-        /// <return>Returns the Models.ListDiscountsResponse response from the API call</return>
-        public async Task<Models.ListDiscountsResponse> GetDiscountsAsync(string subscriptionId, int page, int size)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/subscriptions/{subscription_id}/discounts/");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "subscription_id", subscriptionId }
-            });
-
-            //process optional query parameters
-            APIHelper.AppendUrlWithQueryParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "page", page },
-                { "size", size }
-            },ArrayDeserializationFormat,ParameterSeparator);
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" }
-            };
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.ListDiscountsResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// Atualização do valor mínimo da assinatura
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
-        /// <param name="body">Required parameter: Request da requisição com o valor mínimo que será configurado</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        public Models.GetSubscriptionResponse UpdateSubscriptionMiniumPrice(string subscriptionId, Models.UpdateSubscriptionMinimumPriceRequest body, string idempotencyKey = null)
-        {
-            Task<Models.GetSubscriptionResponse> t = UpdateSubscriptionMiniumPriceAsync(subscriptionId, body, idempotencyKey);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Atualização do valor mínimo da assinatura
-        /// </summary>
-        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
-        /// <param name="body">Required parameter: Request da requisição com o valor mínimo que será configurado</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        public async Task<Models.GetSubscriptionResponse> UpdateSubscriptionMiniumPriceAsync(string subscriptionId, Models.UpdateSubscriptionMinimumPriceRequest body, string idempotencyKey = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/subscriptions/{subscription_id}/minimum_price");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "subscription_id", subscriptionId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" },
-                { "Content-Type", "application/json" },
-                { "idempotency-key", idempotencyKey }
-            };
-
-            //append body params
-            var _body = APIHelper.JsonSerialize(body);
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.PatchBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetSubscriptionResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// UpdateSplitSubscription
-        /// </summary>
-        /// <param name="id">Required parameter: Subscription's id</param>
-        /// <param name="body">Required parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        public Models.GetSubscriptionResponse UpdateSplitSubscription(string id, Models.UpdateSubscriptionSplitRequest body)
-        {
-            Task<Models.GetSubscriptionResponse> t = UpdateSplitSubscriptionAsync(id, body);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// UpdateSplitSubscription
-        /// </summary>
-        /// <param name="id">Required parameter: Subscription's id</param>
-        /// <param name="body">Required parameter: Example: </param>
-        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
-        public async Task<Models.GetSubscriptionResponse> UpdateSplitSubscriptionAsync(string id, Models.UpdateSubscriptionSplitRequest body)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/subscriptions/{id}/split");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "id", id }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" },
-                { "Content-Type", "application/json" }
-            };
-
-            //append body params
-            var _body = APIHelper.JsonSerialize(body);
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.PatchBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetSubscriptionResponse>(_response.Body);
             }
             catch (Exception _ex)
             {
@@ -2651,7 +1305,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" }
             };
 
@@ -2687,6 +1341,180 @@ namespace PagarmeCoreApi.PCL.Controllers
             try
             {
                 return APIHelper.JsonDeserialize<Models.ListSubscriptionsResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// Creates a new subscription
+        /// </summary>
+        /// <param name="body">Required parameter: Request for creating a subscription</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        public Models.GetSubscriptionResponse CreateSubscription(Models.CreateSubscriptionRequest body, string idempotencyKey = null)
+        {
+            Task<Models.GetSubscriptionResponse> t = CreateSubscriptionAsync(body, idempotencyKey);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Creates a new subscription
+        /// </summary>
+        /// <param name="body">Required parameter: Request for creating a subscription</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        public async Task<Models.GetSubscriptionResponse> CreateSubscriptionAsync(Models.CreateSubscriptionRequest body, string idempotencyKey = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/subscriptions");
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" },
+                { "Content-Type", "application/json" },
+                { "idempotency-key", idempotencyKey }
+            };
+
+            //append body params
+            var _body = APIHelper.JsonSerialize(body);
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.PostBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetSubscriptionResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// Cancels a subscription
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription id</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <param name="body">Optional parameter: Request for cancelling a subscription</param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        public Models.GetSubscriptionResponse CancelSubscription(string subscriptionId, string idempotencyKey = null, Models.CreateCancelSubscriptionRequest body = null)
+        {
+            Task<Models.GetSubscriptionResponse> t = CancelSubscriptionAsync(subscriptionId, idempotencyKey, body);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Cancels a subscription
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription id</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <param name="body">Optional parameter: Request for cancelling a subscription</param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        public async Task<Models.GetSubscriptionResponse> CancelSubscriptionAsync(string subscriptionId, string idempotencyKey = null, Models.CreateCancelSubscriptionRequest body = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/subscriptions/{subscription_id}");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "subscription_id", subscriptionId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" },
+                { "Content-Type", "application/json" },
+                { "idempotency-key", idempotencyKey }
+            };
+
+            //append body params
+            var _body = APIHelper.JsonSerialize(body);
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.DeleteBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetSubscriptionResponse>(_response.Body);
             }
             catch (Exception _ex)
             {
@@ -2733,12 +1561,370 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" }
             };
 
             //prepare the API call request to fetch the response
             HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetSubscriptionResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// Creates a increment
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription id</param>
+        /// <param name="body">Required parameter: Request for creating a increment</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetIncrementResponse response from the API call</return>
+        public Models.GetIncrementResponse CreateIncrement(string subscriptionId, Models.CreateIncrementRequest body, string idempotencyKey = null)
+        {
+            Task<Models.GetIncrementResponse> t = CreateIncrementAsync(subscriptionId, body, idempotencyKey);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Creates a increment
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription id</param>
+        /// <param name="body">Required parameter: Request for creating a increment</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetIncrementResponse response from the API call</return>
+        public async Task<Models.GetIncrementResponse> CreateIncrementAsync(string subscriptionId, Models.CreateIncrementRequest body, string idempotencyKey = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/subscriptions/{subscription_id}/increments");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "subscription_id", subscriptionId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" },
+                { "Content-Type", "application/json" },
+                { "idempotency-key", idempotencyKey }
+            };
+
+            //append body params
+            var _body = APIHelper.JsonSerialize(body);
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.PostBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetIncrementResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// GetDiscountById
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="discountId">Required parameter: Example: </param>
+        /// <return>Returns the Models.GetDiscountResponse response from the API call</return>
+        public Models.GetDiscountResponse GetDiscountById(string subscriptionId, string discountId)
+        {
+            Task<Models.GetDiscountResponse> t = GetDiscountByIdAsync(subscriptionId, discountId);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// GetDiscountById
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="discountId">Required parameter: Example: </param>
+        /// <return>Returns the Models.GetDiscountResponse response from the API call</return>
+        public async Task<Models.GetDiscountResponse> GetDiscountByIdAsync(string subscriptionId, string discountId)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/subscriptions/{subscription_id}/discounts/{discountId}");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "subscription_id", subscriptionId },
+                { "discountId", discountId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" }
+            };
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetDiscountResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// UpdateSubscriptionAffiliationId
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Example: </param>
+        /// <param name="body">Required parameter: Request for updating a subscription affiliation id</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        public Models.GetSubscriptionResponse UpdateSubscriptionAffiliationId(string subscriptionId, Models.UpdateSubscriptionAffiliationIdRequest body, string idempotencyKey = null)
+        {
+            Task<Models.GetSubscriptionResponse> t = UpdateSubscriptionAffiliationIdAsync(subscriptionId, body, idempotencyKey);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// UpdateSubscriptionAffiliationId
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Example: </param>
+        /// <param name="body">Required parameter: Request for updating a subscription affiliation id</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        public async Task<Models.GetSubscriptionResponse> UpdateSubscriptionAffiliationIdAsync(string subscriptionId, Models.UpdateSubscriptionAffiliationIdRequest body, string idempotencyKey = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/subscriptions/{subscription_id}/gateway-affiliation-id");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "subscription_id", subscriptionId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" },
+                { "Content-Type", "application/json" },
+                { "idempotency-key", idempotencyKey }
+            };
+
+            //append body params
+            var _body = APIHelper.JsonSerialize(body);
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.PatchBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetSubscriptionResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// Updates the metadata from a subscription
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="body">Required parameter: Request for updating the subscrption metadata</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        public Models.GetSubscriptionResponse UpdateSubscriptionMetadata(string subscriptionId, Models.UpdateMetadataRequest body, string idempotencyKey = null)
+        {
+            Task<Models.GetSubscriptionResponse> t = UpdateSubscriptionMetadataAsync(subscriptionId, body, idempotencyKey);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Updates the metadata from a subscription
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="body">Required parameter: Request for updating the subscrption metadata</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        public async Task<Models.GetSubscriptionResponse> UpdateSubscriptionMetadataAsync(string subscriptionId, Models.UpdateMetadataRequest body, string idempotencyKey = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/Subscriptions/{subscription_id}/metadata");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "subscription_id", subscriptionId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" },
+                { "Content-Type", "application/json" },
+                { "idempotency-key", idempotencyKey }
+            };
+
+            //append body params
+            var _body = APIHelper.JsonSerialize(body);
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.PatchBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
 
             //invoke request and get response
             HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
@@ -2820,7 +2006,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" },
                 { "idempotency-key", idempotencyKey }
             };
@@ -2906,7 +2092,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" }
             };
 
@@ -2999,7 +2185,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" }
             };
 
@@ -3083,7 +2269,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" },
                 { "idempotency-key", idempotencyKey }
             };
@@ -3120,6 +2306,190 @@ namespace PagarmeCoreApi.PCL.Controllers
             try
             {
                 return APIHelper.JsonDeserialize<Models.GetPeriodResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// GetDiscounts
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="page">Required parameter: Page number</param>
+        /// <param name="size">Required parameter: Page size</param>
+        /// <return>Returns the Models.ListDiscountsResponse response from the API call</return>
+        public Models.ListDiscountsResponse GetDiscounts(string subscriptionId, int page, int size)
+        {
+            Task<Models.ListDiscountsResponse> t = GetDiscountsAsync(subscriptionId, page, size);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// GetDiscounts
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="page">Required parameter: Page number</param>
+        /// <param name="size">Required parameter: Page size</param>
+        /// <return>Returns the Models.ListDiscountsResponse response from the API call</return>
+        public async Task<Models.ListDiscountsResponse> GetDiscountsAsync(string subscriptionId, int page, int size)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/subscriptions/{subscription_id}/discounts/");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "subscription_id", subscriptionId }
+            });
+
+            //process optional query parameters
+            APIHelper.AppendUrlWithQueryParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "page", page },
+                { "size", size }
+            },ArrayDeserializationFormat,ParameterSeparator);
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" }
+            };
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.ListDiscountsResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// Updates the billing date from a subscription
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="body">Required parameter: Request for updating the subscription billing date</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        public Models.GetSubscriptionResponse UpdateSubscriptionBillingDate(string subscriptionId, Models.UpdateSubscriptionBillingDateRequest body, string idempotencyKey = null)
+        {
+            Task<Models.GetSubscriptionResponse> t = UpdateSubscriptionBillingDateAsync(subscriptionId, body, idempotencyKey);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Updates the billing date from a subscription
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="body">Required parameter: Request for updating the subscription billing date</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        public async Task<Models.GetSubscriptionResponse> UpdateSubscriptionBillingDateAsync(string subscriptionId, Models.UpdateSubscriptionBillingDateRequest body, string idempotencyKey = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/subscriptions/{subscription_id}/billing-date");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "subscription_id", subscriptionId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" },
+                { "Content-Type", "application/json" },
+                { "idempotency-key", idempotencyKey }
+            };
+
+            //append body params
+            var _body = APIHelper.JsonSerialize(body);
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.PatchBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetSubscriptionResponse>(_response.Body);
             }
             catch (Exception _ex)
             {
@@ -3171,7 +2541,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" },
                 { "idempotency-key", idempotencyKey }
             };
@@ -3208,6 +2578,548 @@ namespace PagarmeCoreApi.PCL.Controllers
             try
             {
                 return APIHelper.JsonDeserialize<Models.GetSubscriptionItemResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// GetIncrements
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="page">Optional parameter: Page number</param>
+        /// <param name="size">Optional parameter: Page size</param>
+        /// <return>Returns the Models.ListIncrementsResponse response from the API call</return>
+        public Models.ListIncrementsResponse GetIncrements(string subscriptionId, int? page = null, int? size = null)
+        {
+            Task<Models.ListIncrementsResponse> t = GetIncrementsAsync(subscriptionId, page, size);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// GetIncrements
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="page">Optional parameter: Page number</param>
+        /// <param name="size">Optional parameter: Page size</param>
+        /// <return>Returns the Models.ListIncrementsResponse response from the API call</return>
+        public async Task<Models.ListIncrementsResponse> GetIncrementsAsync(string subscriptionId, int? page = null, int? size = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/subscriptions/{subscription_id}/increments/");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "subscription_id", subscriptionId }
+            });
+
+            //process optional query parameters
+            APIHelper.AppendUrlWithQueryParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "page", page },
+                { "size", size }
+            },ArrayDeserializationFormat,ParameterSeparator);
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" }
+            };
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.ListIncrementsResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// Updates the boleto due days from a subscription
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
+        /// <param name="body">Required parameter: Example: </param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        public Models.GetSubscriptionResponse UpdateSubscriptionDueDays(string subscriptionId, Models.UpdateSubscriptionDueDaysRequest body, string idempotencyKey = null)
+        {
+            Task<Models.GetSubscriptionResponse> t = UpdateSubscriptionDueDaysAsync(subscriptionId, body, idempotencyKey);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Updates the boleto due days from a subscription
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
+        /// <param name="body">Required parameter: Example: </param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        public async Task<Models.GetSubscriptionResponse> UpdateSubscriptionDueDaysAsync(string subscriptionId, Models.UpdateSubscriptionDueDaysRequest body, string idempotencyKey = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/subscriptions/{subscription_id}/boleto-due-days");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "subscription_id", subscriptionId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" },
+                { "Content-Type", "application/json" },
+                { "idempotency-key", idempotencyKey }
+            };
+
+            //append body params
+            var _body = APIHelper.JsonSerialize(body);
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.PatchBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetSubscriptionResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// Updates the start at date from a subscription
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="body">Required parameter: Request for updating the subscription start date</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        public Models.GetSubscriptionResponse UpdateSubscriptionStartAt(string subscriptionId, Models.UpdateSubscriptionStartAtRequest body, string idempotencyKey = null)
+        {
+            Task<Models.GetSubscriptionResponse> t = UpdateSubscriptionStartAtAsync(subscriptionId, body, idempotencyKey);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Updates the start at date from a subscription
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="body">Required parameter: Request for updating the subscription start date</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        public async Task<Models.GetSubscriptionResponse> UpdateSubscriptionStartAtAsync(string subscriptionId, Models.UpdateSubscriptionStartAtRequest body, string idempotencyKey = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/subscriptions/{subscription_id}/start-at");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "subscription_id", subscriptionId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" },
+                { "Content-Type", "application/json" },
+                { "idempotency-key", idempotencyKey }
+            };
+
+            //append body params
+            var _body = APIHelper.JsonSerialize(body);
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.PatchBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetSubscriptionResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// UpdateLatestPeriodEndAt
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Example: </param>
+        /// <param name="body">Required parameter: Request for updating the end date of the current signature cycle</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        public Models.GetSubscriptionResponse UpdateLatestPeriodEndAt(string subscriptionId, Models.UpdateCurrentCycleEndDateRequest body, string idempotencyKey = null)
+        {
+            Task<Models.GetSubscriptionResponse> t = UpdateLatestPeriodEndAtAsync(subscriptionId, body, idempotencyKey);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// UpdateLatestPeriodEndAt
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Example: </param>
+        /// <param name="body">Required parameter: Request for updating the end date of the current signature cycle</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        public async Task<Models.GetSubscriptionResponse> UpdateLatestPeriodEndAtAsync(string subscriptionId, Models.UpdateCurrentCycleEndDateRequest body, string idempotencyKey = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/subscriptions/{subscription_id}/periods/latest/end-at");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "subscription_id", subscriptionId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" },
+                { "Content-Type", "application/json" },
+                { "idempotency-key", idempotencyKey }
+            };
+
+            //append body params
+            var _body = APIHelper.JsonSerialize(body);
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.PatchBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetSubscriptionResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// Atualização do valor mínimo da assinatura
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
+        /// <param name="body">Required parameter: Request da requisição com o valor mínimo que será configurado</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        public Models.GetSubscriptionResponse UpdateSubscriptionMiniumPrice(string subscriptionId, Models.UpdateSubscriptionMinimumPriceRequest body, string idempotencyKey = null)
+        {
+            Task<Models.GetSubscriptionResponse> t = UpdateSubscriptionMiniumPriceAsync(subscriptionId, body, idempotencyKey);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Atualização do valor mínimo da assinatura
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: Subscription Id</param>
+        /// <param name="body">Required parameter: Request da requisição com o valor mínimo que será configurado</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        public async Task<Models.GetSubscriptionResponse> UpdateSubscriptionMiniumPriceAsync(string subscriptionId, Models.UpdateSubscriptionMinimumPriceRequest body, string idempotencyKey = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/subscriptions/{subscription_id}/minimum_price");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "subscription_id", subscriptionId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" },
+                { "Content-Type", "application/json" },
+                { "idempotency-key", idempotencyKey }
+            };
+
+            //append body params
+            var _body = APIHelper.JsonSerialize(body);
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.PatchBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetSubscriptionResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// GetSubscriptionCycleById
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="cycleId">Required parameter: Example: </param>
+        /// <return>Returns the Models.GetPeriodResponse response from the API call</return>
+        public Models.GetPeriodResponse GetSubscriptionCycleById(string subscriptionId, string cycleId)
+        {
+            Task<Models.GetPeriodResponse> t = GetSubscriptionCycleByIdAsync(subscriptionId, cycleId);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// GetSubscriptionCycleById
+        /// </summary>
+        /// <param name="subscriptionId">Required parameter: The subscription id</param>
+        /// <param name="cycleId">Required parameter: Example: </param>
+        /// <return>Returns the Models.GetPeriodResponse response from the API call</return>
+        public async Task<Models.GetPeriodResponse> GetSubscriptionCycleByIdAsync(string subscriptionId, string cycleId)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/subscriptions/{subscription_id}/cycles/{cycleId}");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "subscription_id", subscriptionId },
+                { "cycleId", cycleId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" }
+            };
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetPeriodResponse>(_response.Body);
             }
             catch (Exception _ex)
             {
@@ -3257,7 +3169,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" }
             };
 
@@ -3293,6 +3205,94 @@ namespace PagarmeCoreApi.PCL.Controllers
             try
             {
                 return APIHelper.JsonDeserialize<Models.GetUsageReportResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// UpdateSplitSubscription
+        /// </summary>
+        /// <param name="id">Required parameter: Subscription's id</param>
+        /// <param name="body">Required parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        public Models.GetSubscriptionResponse UpdateSplitSubscription(string id, Models.UpdateSubscriptionSplitRequest body)
+        {
+            Task<Models.GetSubscriptionResponse> t = UpdateSplitSubscriptionAsync(id, body);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// UpdateSplitSubscription
+        /// </summary>
+        /// <param name="id">Required parameter: Subscription's id</param>
+        /// <param name="body">Required parameter: Example: </param>
+        /// <return>Returns the Models.GetSubscriptionResponse response from the API call</return>
+        public async Task<Models.GetSubscriptionResponse> UpdateSplitSubscriptionAsync(string id, Models.UpdateSubscriptionSplitRequest body)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/subscriptions/{id}/split");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "id", id }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" },
+                { "Content-Type", "application/json" }
+            };
+
+            //append body params
+            var _body = APIHelper.JsonSerialize(body);
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.PatchBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetSubscriptionResponse>(_response.Body);
             }
             catch (Exception _ex)
             {

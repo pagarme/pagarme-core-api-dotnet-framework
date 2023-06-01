@@ -77,6 +77,22 @@ namespace PagarmeCoreApi.PCL.Controllers
         Task<Models.GetOrderResponse> CreateOrderAsync(Models.CreateOrderRequest body, string idempotencyKey = null);
 
         /// <summary>
+        /// DeleteAllOrderItems
+        /// </summary>
+        /// <param name="orderId">Required parameter: Order Id</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetOrderResponse response from the API call</return>
+        Models.GetOrderResponse DeleteAllOrderItems(string orderId, string idempotencyKey = null);
+
+        /// <summary>
+        /// DeleteAllOrderItems
+        /// </summary>
+        /// <param name="orderId">Required parameter: Order Id</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetOrderResponse response from the API call</return>
+        Task<Models.GetOrderResponse> DeleteAllOrderItemsAsync(string orderId, string idempotencyKey = null);
+
+        /// <summary>
         /// CreateOrderItem
         /// </summary>
         /// <param name="orderId">Required parameter: Order Id</param>
@@ -93,74 +109,6 @@ namespace PagarmeCoreApi.PCL.Controllers
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
         /// <return>Returns the Models.GetOrderItemResponse response from the API call</return>
         Task<Models.GetOrderItemResponse> CreateOrderItemAsync(string orderId, Models.CreateOrderItemRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// GetOrderItem
-        /// </summary>
-        /// <param name="orderId">Required parameter: Order Id</param>
-        /// <param name="itemId">Required parameter: Item Id</param>
-        /// <return>Returns the Models.GetOrderItemResponse response from the API call</return>
-        Models.GetOrderItemResponse GetOrderItem(string orderId, string itemId);
-
-        /// <summary>
-        /// GetOrderItem
-        /// </summary>
-        /// <param name="orderId">Required parameter: Order Id</param>
-        /// <param name="itemId">Required parameter: Item Id</param>
-        /// <return>Returns the Models.GetOrderItemResponse response from the API call</return>
-        Task<Models.GetOrderItemResponse> GetOrderItemAsync(string orderId, string itemId);
-
-        /// <summary>
-        /// DeleteOrderItem
-        /// </summary>
-        /// <param name="orderId">Required parameter: Order Id</param>
-        /// <param name="itemId">Required parameter: Item Id</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetOrderItemResponse response from the API call</return>
-        Models.GetOrderItemResponse DeleteOrderItem(string orderId, string itemId, string idempotencyKey = null);
-
-        /// <summary>
-        /// DeleteOrderItem
-        /// </summary>
-        /// <param name="orderId">Required parameter: Order Id</param>
-        /// <param name="itemId">Required parameter: Item Id</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetOrderItemResponse response from the API call</return>
-        Task<Models.GetOrderItemResponse> DeleteOrderItemAsync(string orderId, string itemId, string idempotencyKey = null);
-
-        /// <summary>
-        /// Updates the metadata from an order
-        /// </summary>
-        /// <param name="orderId">Required parameter: The order id</param>
-        /// <param name="body">Required parameter: Request for updating the order metadata</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetOrderResponse response from the API call</return>
-        Models.GetOrderResponse UpdateOrderMetadata(string orderId, Models.UpdateMetadataRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// Updates the metadata from an order
-        /// </summary>
-        /// <param name="orderId">Required parameter: The order id</param>
-        /// <param name="body">Required parameter: Request for updating the order metadata</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetOrderResponse response from the API call</return>
-        Task<Models.GetOrderResponse> UpdateOrderMetadataAsync(string orderId, Models.UpdateMetadataRequest body, string idempotencyKey = null);
-
-        /// <summary>
-        /// DeleteAllOrderItems
-        /// </summary>
-        /// <param name="orderId">Required parameter: Order Id</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetOrderResponse response from the API call</return>
-        Models.GetOrderResponse DeleteAllOrderItems(string orderId, string idempotencyKey = null);
-
-        /// <summary>
-        /// DeleteAllOrderItems
-        /// </summary>
-        /// <param name="orderId">Required parameter: Order Id</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetOrderResponse response from the API call</return>
-        Task<Models.GetOrderResponse> DeleteAllOrderItemsAsync(string orderId, string idempotencyKey = null);
 
         /// <summary>
         /// UpdateOrderItem
@@ -191,6 +139,40 @@ namespace PagarmeCoreApi.PCL.Controllers
                 string idempotencyKey = null);
 
         /// <summary>
+        /// DeleteOrderItem
+        /// </summary>
+        /// <param name="orderId">Required parameter: Order Id</param>
+        /// <param name="itemId">Required parameter: Item Id</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetOrderItemResponse response from the API call</return>
+        Models.GetOrderItemResponse DeleteOrderItem(string orderId, string itemId, string idempotencyKey = null);
+
+        /// <summary>
+        /// DeleteOrderItem
+        /// </summary>
+        /// <param name="orderId">Required parameter: Order Id</param>
+        /// <param name="itemId">Required parameter: Item Id</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetOrderItemResponse response from the API call</return>
+        Task<Models.GetOrderItemResponse> DeleteOrderItemAsync(string orderId, string itemId, string idempotencyKey = null);
+
+        /// <summary>
+        /// GetOrderItem
+        /// </summary>
+        /// <param name="orderId">Required parameter: Order Id</param>
+        /// <param name="itemId">Required parameter: Item Id</param>
+        /// <return>Returns the Models.GetOrderItemResponse response from the API call</return>
+        Models.GetOrderItemResponse GetOrderItem(string orderId, string itemId);
+
+        /// <summary>
+        /// GetOrderItem
+        /// </summary>
+        /// <param name="orderId">Required parameter: Order Id</param>
+        /// <param name="itemId">Required parameter: Item Id</param>
+        /// <return>Returns the Models.GetOrderItemResponse response from the API call</return>
+        Task<Models.GetOrderItemResponse> GetOrderItemAsync(string orderId, string itemId);
+
+        /// <summary>
         /// CloseOrder
         /// </summary>
         /// <param name="id">Required parameter: Order Id</param>
@@ -207,6 +189,24 @@ namespace PagarmeCoreApi.PCL.Controllers
         /// <param name="idempotencyKey">Optional parameter: Example: </param>
         /// <return>Returns the Models.GetOrderResponse response from the API call</return>
         Task<Models.GetOrderResponse> CloseOrderAsync(string id, Models.UpdateOrderStatusRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Updates the metadata from an order
+        /// </summary>
+        /// <param name="orderId">Required parameter: The order id</param>
+        /// <param name="body">Required parameter: Request for updating the order metadata</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetOrderResponse response from the API call</return>
+        Models.GetOrderResponse UpdateOrderMetadata(string orderId, Models.UpdateMetadataRequest body, string idempotencyKey = null);
+
+        /// <summary>
+        /// Updates the metadata from an order
+        /// </summary>
+        /// <param name="orderId">Required parameter: The order id</param>
+        /// <param name="body">Required parameter: Request for updating the order metadata</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetOrderResponse response from the API call</return>
+        Task<Models.GetOrderResponse> UpdateOrderMetadataAsync(string orderId, Models.UpdateMetadataRequest body, string idempotencyKey = null);
 
         /// <summary>
         /// Gets an order

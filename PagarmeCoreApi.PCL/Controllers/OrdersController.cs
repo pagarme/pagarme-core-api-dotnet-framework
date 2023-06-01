@@ -120,7 +120,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" }
             };
 
@@ -198,7 +198,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" },
                 { "Content-Type", "application/json" },
                 { "idempotency-key", idempotencyKey }
@@ -209,6 +209,91 @@ namespace PagarmeCoreApi.PCL.Controllers
 
             //prepare the API call request to fetch the response
             HttpRequest _request = ClientInstance.PostBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetOrderResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// DeleteAllOrderItems
+        /// </summary>
+        /// <param name="orderId">Required parameter: Order Id</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetOrderResponse response from the API call</return>
+        public Models.GetOrderResponse DeleteAllOrderItems(string orderId, string idempotencyKey = null)
+        {
+            Task<Models.GetOrderResponse> t = DeleteAllOrderItemsAsync(orderId, idempotencyKey);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// DeleteAllOrderItems
+        /// </summary>
+        /// <param name="orderId">Required parameter: Order Id</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetOrderResponse response from the API call</return>
+        public async Task<Models.GetOrderResponse> DeleteAllOrderItemsAsync(string orderId, string idempotencyKey = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/orders/{orderId}/items");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "orderId", orderId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" },
+                { "idempotency-key", idempotencyKey }
+            };
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.Delete(_queryUrl, _headers, null, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
 
             //invoke request and get response
             HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
@@ -289,7 +374,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" },
                 { "Content-Type", "application/json" },
                 { "idempotency-key", idempotencyKey }
@@ -338,25 +423,37 @@ namespace PagarmeCoreApi.PCL.Controllers
         }
 
         /// <summary>
-        /// GetOrderItem
+        /// UpdateOrderItem
         /// </summary>
         /// <param name="orderId">Required parameter: Order Id</param>
         /// <param name="itemId">Required parameter: Item Id</param>
+        /// <param name="body">Required parameter: Item Model</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
         /// <return>Returns the Models.GetOrderItemResponse response from the API call</return>
-        public Models.GetOrderItemResponse GetOrderItem(string orderId, string itemId)
+        public Models.GetOrderItemResponse UpdateOrderItem(
+                string orderId,
+                string itemId,
+                Models.UpdateOrderItemRequest body,
+                string idempotencyKey = null)
         {
-            Task<Models.GetOrderItemResponse> t = GetOrderItemAsync(orderId, itemId);
+            Task<Models.GetOrderItemResponse> t = UpdateOrderItemAsync(orderId, itemId, body, idempotencyKey);
             APIHelper.RunTaskSynchronously(t);
             return t.Result;
         }
 
         /// <summary>
-        /// GetOrderItem
+        /// UpdateOrderItem
         /// </summary>
         /// <param name="orderId">Required parameter: Order Id</param>
         /// <param name="itemId">Required parameter: Item Id</param>
+        /// <param name="body">Required parameter: Item Model</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
         /// <return>Returns the Models.GetOrderItemResponse response from the API call</return>
-        public async Task<Models.GetOrderItemResponse> GetOrderItemAsync(string orderId, string itemId)
+        public async Task<Models.GetOrderItemResponse> UpdateOrderItemAsync(
+                string orderId,
+                string itemId,
+                Models.UpdateOrderItemRequest body,
+                string idempotencyKey = null)
         {
             //the base uri for api requests
             string _baseUri = Configuration.BaseUri;
@@ -379,12 +476,17 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" }
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" },
+                { "Content-Type", "application/json" },
+                { "idempotency-key", idempotencyKey }
             };
 
+            //append body params
+            var _body = APIHelper.JsonSerialize(body);
+
             //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+            HttpRequest _request = ClientInstance.PutBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
 
             //invoke request and get response
             HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
@@ -466,7 +568,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" },
                 { "idempotency-key", idempotencyKey }
             };
@@ -511,213 +613,25 @@ namespace PagarmeCoreApi.PCL.Controllers
         }
 
         /// <summary>
-        /// Updates the metadata from an order
-        /// </summary>
-        /// <param name="orderId">Required parameter: The order id</param>
-        /// <param name="body">Required parameter: Request for updating the order metadata</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetOrderResponse response from the API call</return>
-        public Models.GetOrderResponse UpdateOrderMetadata(string orderId, Models.UpdateMetadataRequest body, string idempotencyKey = null)
-        {
-            Task<Models.GetOrderResponse> t = UpdateOrderMetadataAsync(orderId, body, idempotencyKey);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// Updates the metadata from an order
-        /// </summary>
-        /// <param name="orderId">Required parameter: The order id</param>
-        /// <param name="body">Required parameter: Request for updating the order metadata</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetOrderResponse response from the API call</return>
-        public async Task<Models.GetOrderResponse> UpdateOrderMetadataAsync(string orderId, Models.UpdateMetadataRequest body, string idempotencyKey = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/Orders/{order_id}/metadata");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "order_id", orderId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" },
-                { "Content-Type", "application/json" },
-                { "idempotency-key", idempotencyKey }
-            };
-
-            //append body params
-            var _body = APIHelper.JsonSerialize(body);
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.PatchBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetOrderResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// DeleteAllOrderItems
-        /// </summary>
-        /// <param name="orderId">Required parameter: Order Id</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetOrderResponse response from the API call</return>
-        public Models.GetOrderResponse DeleteAllOrderItems(string orderId, string idempotencyKey = null)
-        {
-            Task<Models.GetOrderResponse> t = DeleteAllOrderItemsAsync(orderId, idempotencyKey);
-            APIHelper.RunTaskSynchronously(t);
-            return t.Result;
-        }
-
-        /// <summary>
-        /// DeleteAllOrderItems
-        /// </summary>
-        /// <param name="orderId">Required parameter: Order Id</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
-        /// <return>Returns the Models.GetOrderResponse response from the API call</return>
-        public async Task<Models.GetOrderResponse> DeleteAllOrderItemsAsync(string orderId, string idempotencyKey = null)
-        {
-            //the base uri for api requests
-            string _baseUri = Configuration.BaseUri;
-
-            //prepare query string for API call
-            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
-            _queryBuilder.Append("/orders/{orderId}/items");
-
-            //process optional template parameters
-            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
-            {
-                { "orderId", orderId }
-            });
-
-
-            //validate and preprocess url
-            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
-
-            //append request with appropriate headers and parameters
-            var _headers = new Dictionary<string,string>()
-            {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" },
-                { "idempotency-key", idempotencyKey }
-            };
-
-            //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.Delete(_queryUrl, _headers, null, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
-
-            //invoke request and get response
-            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
-            HttpContext _context = new HttpContext(_request,_response);
-
-            //Error handling using HTTP status codes
-            if (_response.StatusCode == 400)
-                throw new ErrorException("Invalid request", _context);
-
-            if (_response.StatusCode == 401)
-                throw new ErrorException("Invalid API key", _context);
-
-            if (_response.StatusCode == 404)
-                throw new ErrorException("An informed resource was not found", _context);
-
-            if (_response.StatusCode == 412)
-                throw new ErrorException("Business validation error", _context);
-
-            if (_response.StatusCode == 422)
-                throw new ErrorException("Contract validation error", _context);
-
-            if (_response.StatusCode == 500)
-                throw new ErrorException("Internal server error", _context);
-
-            //handle errors defined at the API level
-            base.ValidateResponse(_response, _context);
-
-            try
-            {
-                return APIHelper.JsonDeserialize<Models.GetOrderResponse>(_response.Body);
-            }
-            catch (Exception _ex)
-            {
-                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
-            }
-        }
-
-        /// <summary>
-        /// UpdateOrderItem
+        /// GetOrderItem
         /// </summary>
         /// <param name="orderId">Required parameter: Order Id</param>
         /// <param name="itemId">Required parameter: Item Id</param>
-        /// <param name="body">Required parameter: Item Model</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
         /// <return>Returns the Models.GetOrderItemResponse response from the API call</return>
-        public Models.GetOrderItemResponse UpdateOrderItem(
-                string orderId,
-                string itemId,
-                Models.UpdateOrderItemRequest body,
-                string idempotencyKey = null)
+        public Models.GetOrderItemResponse GetOrderItem(string orderId, string itemId)
         {
-            Task<Models.GetOrderItemResponse> t = UpdateOrderItemAsync(orderId, itemId, body, idempotencyKey);
+            Task<Models.GetOrderItemResponse> t = GetOrderItemAsync(orderId, itemId);
             APIHelper.RunTaskSynchronously(t);
             return t.Result;
         }
 
         /// <summary>
-        /// UpdateOrderItem
+        /// GetOrderItem
         /// </summary>
         /// <param name="orderId">Required parameter: Order Id</param>
         /// <param name="itemId">Required parameter: Item Id</param>
-        /// <param name="body">Required parameter: Item Model</param>
-        /// <param name="idempotencyKey">Optional parameter: Example: </param>
         /// <return>Returns the Models.GetOrderItemResponse response from the API call</return>
-        public async Task<Models.GetOrderItemResponse> UpdateOrderItemAsync(
-                string orderId,
-                string itemId,
-                Models.UpdateOrderItemRequest body,
-                string idempotencyKey = null)
+        public async Task<Models.GetOrderItemResponse> GetOrderItemAsync(string orderId, string itemId)
         {
             //the base uri for api requests
             string _baseUri = Configuration.BaseUri;
@@ -740,17 +654,12 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
-                { "accept", "application/json" },
-                { "Content-Type", "application/json" },
-                { "idempotency-key", idempotencyKey }
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" }
             };
 
-            //append body params
-            var _body = APIHelper.JsonSerialize(body);
-
             //prepare the API call request to fetch the response
-            HttpRequest _request = ClientInstance.PutBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+            HttpRequest _request = ClientInstance.Get(_queryUrl,_headers, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
 
             //invoke request and get response
             HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
@@ -831,7 +740,98 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
+                { "accept", "application/json" },
+                { "Content-Type", "application/json" },
+                { "idempotency-key", idempotencyKey }
+            };
+
+            //append body params
+            var _body = APIHelper.JsonSerialize(body);
+
+            //prepare the API call request to fetch the response
+            HttpRequest _request = ClientInstance.PatchBody(_queryUrl, _headers, _body, Configuration.BasicAuthUserName, Configuration.BasicAuthPassword);
+
+            //invoke request and get response
+            HttpStringResponse _response = (HttpStringResponse) await ClientInstance.ExecuteAsStringAsync(_request).ConfigureAwait(false);
+            HttpContext _context = new HttpContext(_request,_response);
+
+            //Error handling using HTTP status codes
+            if (_response.StatusCode == 400)
+                throw new ErrorException("Invalid request", _context);
+
+            if (_response.StatusCode == 401)
+                throw new ErrorException("Invalid API key", _context);
+
+            if (_response.StatusCode == 404)
+                throw new ErrorException("An informed resource was not found", _context);
+
+            if (_response.StatusCode == 412)
+                throw new ErrorException("Business validation error", _context);
+
+            if (_response.StatusCode == 422)
+                throw new ErrorException("Contract validation error", _context);
+
+            if (_response.StatusCode == 500)
+                throw new ErrorException("Internal server error", _context);
+
+            //handle errors defined at the API level
+            base.ValidateResponse(_response, _context);
+
+            try
+            {
+                return APIHelper.JsonDeserialize<Models.GetOrderResponse>(_response.Body);
+            }
+            catch (Exception _ex)
+            {
+                throw new APIException("Failed to parse the response: " + _ex.Message, _context);
+            }
+        }
+
+        /// <summary>
+        /// Updates the metadata from an order
+        /// </summary>
+        /// <param name="orderId">Required parameter: The order id</param>
+        /// <param name="body">Required parameter: Request for updating the order metadata</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetOrderResponse response from the API call</return>
+        public Models.GetOrderResponse UpdateOrderMetadata(string orderId, Models.UpdateMetadataRequest body, string idempotencyKey = null)
+        {
+            Task<Models.GetOrderResponse> t = UpdateOrderMetadataAsync(orderId, body, idempotencyKey);
+            APIHelper.RunTaskSynchronously(t);
+            return t.Result;
+        }
+
+        /// <summary>
+        /// Updates the metadata from an order
+        /// </summary>
+        /// <param name="orderId">Required parameter: The order id</param>
+        /// <param name="body">Required parameter: Request for updating the order metadata</param>
+        /// <param name="idempotencyKey">Optional parameter: Example: </param>
+        /// <return>Returns the Models.GetOrderResponse response from the API call</return>
+        public async Task<Models.GetOrderResponse> UpdateOrderMetadataAsync(string orderId, Models.UpdateMetadataRequest body, string idempotencyKey = null)
+        {
+            //the base uri for api requests
+            string _baseUri = Configuration.BaseUri;
+
+            //prepare query string for API call
+            StringBuilder _queryBuilder = new StringBuilder(_baseUri);
+            _queryBuilder.Append("/Orders/{order_id}/metadata");
+
+            //process optional template parameters
+            APIHelper.AppendUrlWithTemplateParameters(_queryBuilder, new Dictionary<string, object>()
+            {
+                { "order_id", orderId }
+            });
+
+
+            //validate and preprocess url
+            string _queryUrl = APIHelper.CleanUrl(_queryBuilder);
+
+            //append request with appropriate headers and parameters
+            var _headers = new Dictionary<string,string>()
+            {
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" },
                 { "Content-Type", "application/json" },
                 { "idempotency-key", idempotencyKey }
@@ -918,7 +918,7 @@ namespace PagarmeCoreApi.PCL.Controllers
             //append request with appropriate headers and parameters
             var _headers = new Dictionary<string,string>()
             {
-                { "user-agent", "PagarmeCoreApi - DotNet 5.7.3" },
+                { "user-agent", "PagarmeCoreApi - DotNet 5.7.4" },
                 { "accept", "application/json" }
             };
 
