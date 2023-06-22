@@ -8,7 +8,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{eade28b8-497b-4b21-8e2b-01dd5b34246f}</ProjectGuid>
+    <ProjectGuid>{293cb3cc-5f9f-4d4a-9fd3-f7d8be6c8b3c}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PagarmeCoreApi.Tests</RootNamespace>
@@ -90,7 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PagarmeCoreApi.PCL\PagarmeCoreApi.PCL.csproj">
-      <Project>{0a44ae4e-5a93-49ab-9940-9473350d9919}</Project>
+      <Project>{aac4326b-f9e4-4f41-811f-842519cdd2ca}</Project>
       <Name>PagarmeCoreApi.PCL</Name>
     </ProjectReference>
   </ItemGroup>
