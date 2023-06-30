@@ -151,6 +151,12 @@ namespace PagarmeCoreApi.PCL
             Configuration.BasicAuthPassword = basicAuthPassword;
             Configuration.ServiceRefererName = serviceRefererName;
         }
+
+         public PagarmeCoreApiClient(string basicAuthUserName, string basicAuthPassword)
+        {
+            Configuration.BasicAuthUserName = basicAuthUserName;
+            Configuration.BasicAuthPassword = basicAuthPassword;
+        }
         #endregion
     }
 }
